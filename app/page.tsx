@@ -13,6 +13,7 @@ import { FilterControls } from "@/components/dashboard/FilterControls";
 import { DriverProfile } from "@/components/dashboard/DriverProfile";
 import { Separator } from "@/components/ui/separator";
 import type { CareerTotals, RateSummary, SeasonStat, RecordItem, FilterState } from "@/lib/types";
+import Script from "next/script";
 
 export default function HomePage() {
   const [career, setCareer] = useState<(CareerTotals & { rates: RateSummary }) | null>(null);
@@ -95,11 +96,78 @@ export default function HomePage() {
   const minYear = Math.min(...allSeasons.map(s => s.season));
   const maxYear = Math.max(...allSeasons.map(s => s.season));
 
+  // Generate structured data for SEO
+  const structuredData = career ? {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Max Verstappen",
+    "jobTitle": "Formula 1 Racing Driver",
+    "description": "Four-time Formula 1 World Champion and Red Bull Racing driver",
+    "image": "https://maxverstapen.pages.dev/images/max-verstappen.jpg",
+    "url": "https://maxverstapen.pages.dev",
+    "nationality": "Dutch",
+    "birthDate": "1997-09-30",
+    "birthPlace": {
+      "@type": "Place",
+      "name": "Hasselt, Belgium"
+    },
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Red Bull Racing",
+      "url": "https://www.redbull.com/int-en/redbullracing"
+    },
+    "sport": "Formula 1",
+    "award": [
+      "Formula 1 World Champion 2021",
+      "Formula 1 World Champion 2022", 
+      "Formula 1 World Champion 2023",
+      "Formula 1 World Champion 2024"
+    ],
+    "achievement": [
+      {
+        "@type": "Achievement",
+        "name": "Formula 1 Career Wins",
+        "value": career.wins.toString()
+      },
+      {
+        "@type": "Achievement", 
+        "name": "Formula 1 Pole Positions",
+        "value": career.poles.toString()
+      },
+      {
+        "@type": "Achievement",
+        "name": "Formula 1 Podium Finishes", 
+        "value": career.podiums.toString()
+      },
+      {
+        "@type": "Achievement",
+        "name": "Formula 1 Championship Points",
+        "value": career.points.toString()
+      }
+    ],
+    "sameAs": [
+      "https://en.wikipedia.org/wiki/Max_Verstappen",
+      "https://www.formula1.com/en/drivers/max-verstappen.html"
+    ]
+  } : null;
+
   return (
-    <div className="min-h-screen bg-background mobile-safe-area">
-      <Header driverName={career?.driver || "Max Verstappen"} lastUpdated={career?.asOfDate || "Loading..."} />
+    <>
+      {/* Structured Data for SEO */}
+      {structuredData && (
+        <Script
+          id="structured-data"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData),
+          }}
+        />
+      )}
       
-      <main className="container mx-auto px-3 py-3 sm:px-6 lg:px-8 lg:py-8 max-w-full overflow-x-hidden">
+      <div className="min-h-screen bg-background mobile-safe-area">
+        <Header driverName={career?.driver || "Max Verstappen"} lastUpdated={career?.asOfDate || "Loading..."} />
+      
+      <main className="container mx-auto px-3 py-3 sm:px-6 lg:px-8 lg:py-8 max-w-full overflow-x-hidden" itemScope itemType="https://schema.org/Person">
         <div className="grid gap-3 sm:gap-6 lg:gap-8 lg:grid-cols-4 w-full">
           {/* Main Content Area */}
           <div className="lg:col-span-3 space-y-3 sm:space-y-6 lg:space-y-8 min-w-0 w-full">
@@ -110,7 +178,8 @@ export default function HomePage() {
 
             {/* KPI Section - Primary stats */}
             {career && (
-              <section className="w-full">
+              <section className="w-full" aria-labelledby="kpi-heading">
+                <h2 id="kpi-heading" className="sr-only">Career Statistics</h2>
                 <KPIGroup career={career} />
               </section>
             )}
@@ -119,7 +188,8 @@ export default function HomePage() {
 
             {/* Rate Cards Section - Performance percentages */}
             {career && (
-              <section className="w-full">
+              <section className="w-full" aria-labelledby="rates-heading">
+                <h2 id="rates-heading" className="sr-only">Performance Rates</h2>
                 <RateCards rates={career.rates} />
               </section>
             )}
@@ -137,7 +207,8 @@ export default function HomePage() {
             </section>
 
             {/* Charts Section - Stack vertically on mobile for better readability */}
-            <section className="w-full min-w-0">
+            <section className="w-full min-w-0" aria-labelledby="charts-heading">
+              <h2 id="charts-heading" className="sr-only">Performance Charts</h2>
               <div className="grid gap-3 sm:gap-6 md:grid-cols-2 w-full">
                 <div className="min-w-0 w-full">
                   <WinRateTrend seasons={filteredSeasons} />
@@ -172,5 +243,6 @@ export default function HomePage() {
         </div>
       </main>
     </div>
+    </>
   );
 }

@@ -1,0 +1,28 @@
+{
+  "name": "Max Verstappen F1 Stats Dashboard",
+  "short_name": "Max F1 Stats",
+  "description": "Complete Formula 1 career statistics, biography, and records for Max Verstappen, four-time World Champion",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "categories": ["sports", "entertainment", "news"],
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/images/max-verstappen.jpg",
+      "sizes": "400x400",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/max-verstappen.jpg",
+      "sizes": "400x400",
+      "type": "image/jpeg",
+      "form_factor": "narrow"
+    }
+  ]
+}

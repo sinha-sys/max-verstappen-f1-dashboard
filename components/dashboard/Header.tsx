@@ -38,12 +38,12 @@ export function Header({ driverName, lastUpdated }: HeaderProps) {
                 </div>
               </div>
             </div>
-            <div>
-              <h1 className="text-lg sm:text-xl font-bold">{driverName}</h1>
-              <p className="text-xs text-muted-foreground">
-                F1 Career Dashboard
-              </p>
-            </div>
+                                <div>
+                      <h1 className="text-lg sm:text-xl font-bold" itemProp="name">{driverName}</h1>
+                      <p className="text-xs text-muted-foreground" itemProp="description">
+                        F1 Career Dashboard
+                      </p>
+                    </div>
           </div>
 
           <div className="flex items-center space-x-4">

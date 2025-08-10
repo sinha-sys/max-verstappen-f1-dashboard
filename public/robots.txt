@@ -1,0 +1,26 @@
+# Robots.txt for Max Verstappen F1 Dashboard
+User-agent: *
+Allow: /
+
+# Allow all major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# Sitemap location
+Sitemap: https://maxverstapen.pages.dev/sitemap.xml
+
+# Crawl-delay for good behavior
+Crawl-delay: 1
+
+# Disallow any admin or sensitive paths (none in this case)
+# User-agent: *
+# Disallow: /admin/
