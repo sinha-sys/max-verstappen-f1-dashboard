@@ -1,31 +1,50 @@
 import type { CareerTotals, RateSummary, SeasonStat, RecordItem } from "@/lib/types";
 
-// Import JSON data directly for static export
-import maxData from "@/data/max.json";
-import seasonsData from "@/data/seasons.json";
-import recordsData from "@/data/records.json";
-
 export async function getCareer(): Promise<{ career: CareerTotals & { rates: RateSummary } }> {
-  return maxData as { career: CareerTotals & { rates: RateSummary } };
+  const res = await fetch("/api/stats", { next: { revalidate: 60 } });
+  if (!res.ok) {
+    throw new Error("Failed to fetch career stats");
+  }
+  return res.json();
 }
 
 export async function getSeasons(): Promise<SeasonStat[]> {
-  return seasonsData as SeasonStat[];
+  const res = await fetch("/api/seasons", { next: { revalidate: 60 } });
+  if (!res.ok) {
+    throw new Error("Failed to fetch seasons data");
+  }
+  return res.json();
 }
 
 export async function getRecords(): Promise<RecordItem[]> {
-  return recordsData as RecordItem[];
+  const res = await fetch("/api/records", { next: { revalidate: 60 } });
+  if (!res.ok) {
+    throw new Error("Failed to fetch records data");
+  }
+  return res.json();
 }
 
-// Client-side fetchers for dynamic components (same as server-side for static export)
+// Client-side fetchers for dynamic components
 export async function getCareerClient(): Promise<{ career: CareerTotals & { rates: RateSummary } }> {
-  return maxData as { career: CareerTotals & { rates: RateSummary } };
+  const res = await fetch("/api/stats");
+  if (!res.ok) {
+    throw new Error("Failed to fetch career stats");
+  }
+  return res.json();
 }
 
 export async function getSeasonsClient(): Promise<SeasonStat[]> {
-  return seasonsData as SeasonStat[];
+  const res = await fetch("/api/seasons");
+  if (!res.ok) {
+    throw new Error("Failed to fetch seasons data");
+  }
+  return res.json();
 }
 
 export async function getRecordsClient(): Promise<RecordItem[]> {
-  return recordsData as RecordItem[];
+  const res = await fetch("/api/records");
+  if (!res.ok) {
+    throw new Error("Failed to fetch records data");
+  }
+  return res.json();
 }

@@ -28,6 +28,10 @@ const nextConfig = {
     }
     return config;
   },
+  // Handle runtime exports for client components
+  async rewrites() {
+    return [];
+  },
 };
 
 module.exports = nextConfig;

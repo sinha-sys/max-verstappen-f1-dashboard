@@ -1,7 +1,7 @@
 # Cloudflare Pages Configuration for Next.js
 name = "max-verstappen-dashboard"
 compatibility_date = "2024-04-07"
-pages_build_output_dir = "out"
+pages_build_output_dir = ".next"
 
 # Environment variables
 [env.production]
