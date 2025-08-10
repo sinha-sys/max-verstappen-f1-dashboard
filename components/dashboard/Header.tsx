@@ -20,16 +20,20 @@ export function Header({ driverName, lastUpdated }: HeaderProps) {
                   alt="Max Verstappen"
                   width={80}
                   height={80}
-                  className="rounded-full object-cover border-2 border-primary/20"
+                  className="rounded-full object-cover border-2 border-primary/20 relative z-10"
                   priority
                   onError={(e) => {
-                    // Fallback to a placeholder or hide image on error
+                    // Hide the image and show placeholder
                     const target = e.target as HTMLImageElement;
                     target.style.display = 'none';
+                    const placeholder = target.parentElement?.querySelector('.placeholder') as HTMLElement;
+                    if (placeholder) {
+                      placeholder.style.display = 'flex';
+                    }
                   }}
                 />
-                {/* Fallback placeholder */}
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-red-500 to-blue-500 flex items-center justify-center text-white font-bold text-lg">
+                {/* Fallback placeholder - hidden by default */}
+                <div className="placeholder absolute inset-0 rounded-full bg-gradient-to-br from-red-500 to-blue-500 items-center justify-center text-white font-bold text-lg hidden">
                   MV
                 </div>
               </div>
