@@ -1,0 +1,26 @@
+# Cloudflare Pages Configuration for Next.js
+name = "max-verstappen-dashboard"
+compatibility_date = "2024-04-07"  # Latest compatibility date
+
+# Custom build configuration
+[build]
+command = "npm run build"  # Use our build script from package.json
+cwd = "."  # Execute in root directory
+watch_dir = [
+  "app",
+  "components",
+  "lib",
+  "public",
+  "styles"
+]  # Watch these directories for changes during development
+
+# Environment variables
+[env.production]
+NODE_ENV = "production"
+
+[env.preview]
+NODE_ENV = "development"
+
+# Build output configuration
+[site]
+bucket = ".next"  # Next.js build output directory
