@@ -2,6 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { getCareerClient, getSeasonsClient, getRecordsClient } from "@/lib/fetchers";
+import { Header } from "@/components/dashboard/Header";
+import { KPIGroup } from "@/components/dashboard/KPIGroup";
+import { RateCards } from "@/components/dashboard/RateCards";
+import { WinRateTrend } from "@/components/dashboard/Charts/WinRateTrend";
+import { CumulativeWins } from "@/components/dashboard/Charts/CumulativeWins";
+import { SeasonTable } from "@/components/dashboard/SeasonTable";
+import { Records } from "@/components/dashboard/Records";
+import { FilterControls } from "@/components/dashboard/FilterControls";
+import { DriverProfile } from "@/components/dashboard/DriverProfile";
+import { Separator } from "@/components/ui/separator";
 import type { CareerTotals, RateSummary, SeasonStat, RecordItem, FilterState } from "@/lib/types";
 
 export default function HomePage() {
@@ -86,43 +96,73 @@ export default function HomePage() {
   const maxYear = Math.max(...allSeasons.map(s => s.season));
 
   return (
-    <div className="min-h-screen bg-background p-8">
-      <header className="mb-8">
-        <h1 className="text-4xl font-bold text-center">Max Verstappen F1 Dashboard</h1>
-        <p className="text-center text-muted-foreground mt-2">
-          Last updated: {career?.asOfDate || "Loading..."}
-        </p>
-      </header>
+    <div className="min-h-screen bg-background mobile-safe-area">
+      <Header driverName={career?.driver || "Max Verstappen"} lastUpdated={career?.asOfDate || "Loading..."} />
       
-      <main className="container mx-auto max-w-6xl">
-        {career && (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <div className="bg-card rounded-lg p-6 text-center">
-              <h3 className="text-lg font-semibold">Starts</h3>
-              <p className="text-3xl font-bold text-blue-600">{career.starts}</p>
-            </div>
-            <div className="bg-card rounded-lg p-6 text-center">
-              <h3 className="text-lg font-semibold">Wins</h3>
-              <p className="text-3xl font-bold text-yellow-600">{career.wins}</p>
-            </div>
-            <div className="bg-card rounded-lg p-6 text-center">
-              <h3 className="text-lg font-semibold">Podiums</h3>
-              <p className="text-3xl font-bold text-green-600">{career.podiums}</p>
-            </div>
-            <div className="bg-card rounded-lg p-6 text-center">
-              <h3 className="text-lg font-semibold">Championships</h3>
-              <p className="text-3xl font-bold text-amber-600">{career.championships}</p>
-            </div>
+      <main className="container mx-auto px-3 py-4 iphone:px-4 sm:px-6 lg:px-8 lg:py-8">
+        <div className="grid gap-4 iphone:gap-6 lg:gap-8 lg:grid-cols-4">
+          {/* Main Content Area */}
+          <div className="lg:col-span-3 space-y-4 iphone:space-y-6 lg:space-y-8">
+            {/* Mobile Driver Profile */}
+            <section className="lg:hidden">
+              <DriverProfile />
+            </section>
+
+            {/* KPI Section */}
+            {career && (
+              <section>
+                <KPIGroup career={career} />
+              </section>
+            )}
+
+            <Separator />
+
+            {/* Rate Cards Section */}
+            {career && (
+              <section>
+                <RateCards rates={career.rates} />
+              </section>
+            )}
+
+            <Separator />
+
+            {/* Filter Controls */}
+            <section>
+              <FilterControls
+                filters={filters}
+                onFiltersChange={setFilters}
+                minYear={minYear}
+                maxYear={maxYear}
+              />
+            </section>
+
+            {/* Charts Section */}
+            <section className="grid gap-6 lg:grid-cols-2">
+              <WinRateTrend seasons={filteredSeasons} />
+              <CumulativeWins seasons={filteredSeasons} />
+            </section>
+
+            <Separator />
+
+            {/* Season Table */}
+            <section>
+              <SeasonTable seasons={filteredSeasons} />
+            </section>
+
+            <Separator />
+
+            {/* Records Section */}
+            <section>
+              <Records records={records} />
+            </section>
           </div>
-        )}
-        
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">Season Records</h2>
-          <div className="bg-card rounded-lg p-6">
-            <p className="text-center text-muted-foreground">
-              Showing {allSeasons.length} seasons of F1 data
-            </p>
-          </div>
+
+          {/* Sidebar - Driver Profile */}
+          <aside className="lg:col-span-1">
+            <div className="sticky top-8">
+              <DriverProfile />
+            </div>
+          </aside>
         </div>
       </main>
     </div>
