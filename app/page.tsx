@@ -99,35 +99,35 @@ export default function HomePage() {
     <div className="min-h-screen bg-background mobile-safe-area">
       <Header driverName={career?.driver || "Max Verstappen"} lastUpdated={career?.asOfDate || "Loading..."} />
       
-      <main className="container mx-auto px-2 py-3 sm:px-6 lg:px-8 lg:py-8">
-        <div className="grid gap-3 sm:gap-6 lg:gap-8 lg:grid-cols-4">
+      <main className="container mx-auto px-3 py-3 sm:px-6 lg:px-8 lg:py-8 max-w-full overflow-x-hidden">
+        <div className="grid gap-3 sm:gap-6 lg:gap-8 lg:grid-cols-4 w-full">
           {/* Main Content Area */}
-          <div className="lg:col-span-3 space-y-3 sm:space-y-6 lg:space-y-8">
-            {/* Mobile Driver Profile */}
-            <section className="lg:hidden">
+          <div className="lg:col-span-3 space-y-3 sm:space-y-6 lg:space-y-8 min-w-0 w-full">
+            {/* Mobile Driver Profile - Collapsible */}
+            <section className="lg:hidden w-full">
               <DriverProfile />
             </section>
 
-            {/* KPI Section */}
+            {/* KPI Section - Primary stats */}
             {career && (
-              <section>
+              <section className="w-full">
                 <KPIGroup career={career} />
               </section>
             )}
 
-            <Separator />
+            <Separator className="hidden sm:block" />
 
-            {/* Rate Cards Section */}
+            {/* Rate Cards Section - Performance percentages */}
             {career && (
-              <section>
+              <section className="w-full">
                 <RateCards rates={career.rates} />
               </section>
             )}
 
-            <Separator />
+            <Separator className="hidden sm:block" />
 
-            {/* Filter Controls */}
-            <section>
+            {/* Filter Controls - Keep close to data it affects */}
+            <section className="w-full">
               <FilterControls
                 filters={filters}
                 onFiltersChange={setFilters}
@@ -136,23 +136,29 @@ export default function HomePage() {
               />
             </section>
 
-            {/* Charts Section */}
-            <section className="grid gap-3 sm:gap-6 md:grid-cols-2">
-              <WinRateTrend seasons={filteredSeasons} />
-              <CumulativeWins seasons={filteredSeasons} />
+            {/* Charts Section - Stack vertically on mobile for better readability */}
+            <section className="w-full min-w-0">
+              <div className="grid gap-3 sm:gap-6 md:grid-cols-2 w-full">
+                <div className="min-w-0 w-full">
+                  <WinRateTrend seasons={filteredSeasons} />
+                </div>
+                <div className="min-w-0 w-full">
+                  <CumulativeWins seasons={filteredSeasons} />
+                </div>
+              </div>
             </section>
 
-            <Separator />
+            <Separator className="hidden sm:block" />
 
-            {/* Season Table */}
-            <section>
+            {/* Season Table - Horizontally scrollable */}
+            <section className="w-full min-w-0">
               <SeasonTable seasons={filteredSeasons} />
             </section>
 
-            <Separator />
+            <Separator className="hidden sm:block" />
 
-            {/* Records Section */}
-            <section>
+            {/* Records Section - Last for easy access */}
+            <section className="w-full min-w-0">
               <Records records={records} />
             </section>
           </div>

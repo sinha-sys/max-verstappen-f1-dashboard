@@ -57,9 +57,9 @@ export function RateCards({ rates }: RateCardsProps) {
   ];
 
   return (
-    <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+    <div className="grid gap-2 grid-cols-2 sm:gap-3 sm:grid-cols-3 lg:grid-cols-5 w-full min-w-0">
       {rateCards.map((card) => (
-        <Card key={card.title} className="hover:shadow-md transition-shadow">
+        <Card key={card.title} className="hover:shadow-md transition-shadow min-w-0">
           <CardHeader className="pb-2">
             <CardTitle className="text-xs sm:text-sm font-medium text-center">{card.title}</CardTitle>
           </CardHeader>
@@ -93,7 +93,7 @@ export function RateCards({ rates }: RateCardsProps) {
       ))}
 
       {/* Average Points per Start */}
-      <Card className="hover:shadow-md transition-shadow">
+      <Card className="hover:shadow-md transition-shadow min-w-0">
         <CardHeader className="pb-2">
           <CardTitle className="text-xs sm:text-sm font-medium text-center">Avg Points/Start</CardTitle>
         </CardHeader>

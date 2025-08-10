@@ -60,8 +60,8 @@ export function SeasonTable({ seasons }: SeasonTableProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="overflow-x-auto">
-          <Table className="min-w-full">
+        <div className="overflow-x-auto w-full max-w-full">
+          <Table className="min-w-full w-full">
             <TableHeader>
               <TableRow className="hover:bg-transparent">
                 <TableHead className="text-left">

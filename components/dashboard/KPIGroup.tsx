@@ -60,10 +60,10 @@ export function KPIGroup({ career }: KPIGroupProps) {
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 md:grid-cols-4 lg:grid-cols-8">
+    <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 md:grid-cols-4 lg:grid-cols-8 w-full min-w-0">
       {kpis.map(({ icon: Icon, label, value, color }) => (
-        <Card key={label} className="hover:shadow-md transition-shadow mobile-tap-highlight mobile-touch-action">
-          <CardContent className="p-2 sm:p-3 md:p-4">
+        <Card key={label} className="hover:shadow-md transition-shadow mobile-tap-highlight mobile-touch-action min-w-0">
+          <CardContent className="p-2 sm:p-3 md:p-4 min-w-0">
             <div className="flex flex-col items-center text-center space-y-1 sm:space-y-2">
               <Icon className={`h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 ${color}`} />
               <div>

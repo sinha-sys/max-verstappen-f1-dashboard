@@ -8,8 +8,8 @@ interface HeaderProps {
 
 export function Header({ driverName, lastUpdated }: HeaderProps) {
   return (
-    <header className="border-b bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="border-b bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/50 w-full overflow-x-hidden">
+      <div className="container mx-auto px-3 sm:px-6 lg:px-8 max-w-full">
         <div className="flex h-16 sm:h-20 items-center justify-between">
           <div className="flex items-center space-x-2 sm:space-x-4">
             {/* Driver Image */}
@@ -56,8 +56,8 @@ export function Header({ driverName, lastUpdated }: HeaderProps) {
         </div>
 
         {/* Legend - More compact on mobile */}
-        <div className="border-t py-2">
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-xs text-muted-foreground">
+        <div className="border-t py-2 overflow-x-hidden">
+          <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 md:gap-4 text-xs text-muted-foreground max-w-full">
             <span className="flex items-center gap-1">
               <div className="h-2 w-2 rounded-full bg-blue-500"></div>
               <span className="hidden sm:inline">Starts</span>
