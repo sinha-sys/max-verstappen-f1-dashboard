@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Enable static export to avoid prerender issues
+  output: 'export',
+  trailingSlash: true,
+  skipTrailingSlashRedirect: true,
+  distDir: 'out',
   images: {
     unoptimized: true,
   },
@@ -27,10 +32,6 @@ const nextConfig = {
       };
     }
     return config;
-  },
-  // Handle runtime exports for client components
-  async rewrites() {
-    return [];
   },
 };
 

@@ -1,50 +1,34 @@
 import type { CareerTotals, RateSummary, SeasonStat, RecordItem } from "@/lib/types";
 
+// Import JSON data directly for static export
+import maxData from "@/data/max.json";
+import seasonsData from "@/data/seasons.json";
+import recordsData from "@/data/records.json";
+
 export async function getCareer(): Promise<{ career: CareerTotals & { rates: RateSummary } }> {
-  const res = await fetch("/api/stats", { next: { revalidate: 60 } });
-  if (!res.ok) {
-    throw new Error("Failed to fetch career stats");
-  }
-  return res.json();
+  // Return data directly for static export
+  return Promise.resolve(maxData as { career: CareerTotals & { rates: RateSummary } });
 }
 
 export async function getSeasons(): Promise<SeasonStat[]> {
-  const res = await fetch("/api/seasons", { next: { revalidate: 60 } });
-  if (!res.ok) {
-    throw new Error("Failed to fetch seasons data");
-  }
-  return res.json();
+  // Return data directly for static export
+  return Promise.resolve(seasonsData as SeasonStat[]);
 }
 
 export async function getRecords(): Promise<RecordItem[]> {
-  const res = await fetch("/api/records", { next: { revalidate: 60 } });
-  if (!res.ok) {
-    throw new Error("Failed to fetch records data");
-  }
-  return res.json();
+  // Return data directly for static export
+  return Promise.resolve(recordsData as RecordItem[]);
 }
 
-// Client-side fetchers for dynamic components
+// Client-side fetchers (same as server-side for static export)
 export async function getCareerClient(): Promise<{ career: CareerTotals & { rates: RateSummary } }> {
-  const res = await fetch("/api/stats");
-  if (!res.ok) {
-    throw new Error("Failed to fetch career stats");
-  }
-  return res.json();
+  return Promise.resolve(maxData as { career: CareerTotals & { rates: RateSummary } });
 }
 
 export async function getSeasonsClient(): Promise<SeasonStat[]> {
-  const res = await fetch("/api/seasons");
-  if (!res.ok) {
-    throw new Error("Failed to fetch seasons data");
-  }
-  return res.json();
+  return Promise.resolve(seasonsData as SeasonStat[]);
 }
 
 export async function getRecordsClient(): Promise<RecordItem[]> {
-  const res = await fetch("/api/records");
-  if (!res.ok) {
-    throw new Error("Failed to fetch records data");
-  }
-  return res.json();
+  return Promise.resolve(recordsData as RecordItem[]);
 }
