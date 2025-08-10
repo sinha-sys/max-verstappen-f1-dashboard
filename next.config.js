@@ -6,13 +6,9 @@ const nextConfig = {
   swcMinify: true,
   poweredByHeader: false,
   compress: true,
-  // Fix for Cloudflare Pages static generation
+  // Cloudflare Pages compatibility
   experimental: {
-    serverComponentsExternalPackages: ['recharts'],
-  },
-  // Disable static optimization for problematic pages
-  async redirects() {
-    return [];
+    // Remove serverComponentsExternalPackages to avoid conflicts
   },
 };
 
