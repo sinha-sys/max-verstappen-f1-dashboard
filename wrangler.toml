@@ -1,14 +1,18 @@
 # Cloudflare Pages Configuration
 
 name = "max-verstappen-dashboard"
-compatibility_date = "2024-08-09"
+compatibility_date = "2024-08-10"
+pages_build_output_dir = ".next"
 
 [build]
 command = "npm run build"
-publish = "out"
+publish = ".next"
 
 [[build.environment_variables]]
 NODE_VERSION = "18"
+
+[[build.environment_variables]]
+NEXT_PUBLIC_CLOUDFLARE = "true"
 
 [env.production]
 NEXT_PUBLIC_ENV = "production"
