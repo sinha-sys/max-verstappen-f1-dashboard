@@ -60,15 +60,15 @@ export function KPIGroup({ career }: KPIGroupProps) {
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-2 iphone:gap-3 sm:gap-4 sm:grid-cols-4 lg:grid-cols-8">
+    <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 md:grid-cols-4 lg:grid-cols-8">
       {kpis.map(({ icon: Icon, label, value, color }) => (
         <Card key={label} className="hover:shadow-md transition-shadow mobile-tap-highlight mobile-touch-action">
-          <CardContent className="p-2 iphone:p-3 sm:p-4">
-            <div className="flex flex-col items-center text-center space-y-1 iphone:space-y-2">
-              <Icon className={`h-4 w-4 iphone:h-5 iphone:w-5 sm:h-6 sm:w-6 ${color}`} />
+          <CardContent className="p-2 sm:p-3 md:p-4">
+            <div className="flex flex-col items-center text-center space-y-1 sm:space-y-2">
+              <Icon className={`h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 ${color}`} />
               <div>
-                <p className="text-lg iphone:text-xl sm:text-2xl font-bold leading-tight">{value}</p>
-                <p className="text-xs sm:text-xs text-muted-foreground leading-tight">{label}</p>
+                <p className="text-sm sm:text-lg md:text-xl lg:text-2xl font-bold leading-tight">{value}</p>
+                <p className="text-xs text-muted-foreground leading-tight">{label}</p>
               </div>
             </div>
           </CardContent>

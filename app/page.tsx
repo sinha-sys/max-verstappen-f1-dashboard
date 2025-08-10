@@ -99,10 +99,10 @@ export default function HomePage() {
     <div className="min-h-screen bg-background mobile-safe-area">
       <Header driverName={career?.driver || "Max Verstappen"} lastUpdated={career?.asOfDate || "Loading..."} />
       
-      <main className="container mx-auto px-3 py-4 iphone:px-4 sm:px-6 lg:px-8 lg:py-8">
-        <div className="grid gap-4 iphone:gap-6 lg:gap-8 lg:grid-cols-4">
+      <main className="container mx-auto px-2 py-3 sm:px-6 lg:px-8 lg:py-8">
+        <div className="grid gap-3 sm:gap-6 lg:gap-8 lg:grid-cols-4">
           {/* Main Content Area */}
-          <div className="lg:col-span-3 space-y-4 iphone:space-y-6 lg:space-y-8">
+          <div className="lg:col-span-3 space-y-3 sm:space-y-6 lg:space-y-8">
             {/* Mobile Driver Profile */}
             <section className="lg:hidden">
               <DriverProfile />
@@ -137,7 +137,7 @@ export default function HomePage() {
             </section>
 
             {/* Charts Section */}
-            <section className="grid gap-6 lg:grid-cols-2">
+            <section className="grid gap-3 sm:gap-6 md:grid-cols-2">
               <WinRateTrend seasons={filteredSeasons} />
               <CumulativeWins seasons={filteredSeasons} />
             </section>

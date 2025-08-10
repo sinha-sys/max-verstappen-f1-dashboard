@@ -57,23 +57,23 @@ export function RateCards({ rates }: RateCardsProps) {
   ];
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+    <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
       {rateCards.map((card) => (
         <Card key={card.title} className="hover:shadow-md transition-shadow">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-center">{card.title}</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium text-center">{card.title}</CardTitle>
           </CardHeader>
-          <CardContent className="pb-4">
+          <CardContent className="pb-3 sm:pb-4">
             <div className="flex items-center justify-center">
-              <div className="relative h-16 w-16">
+              <div className="relative h-12 w-12 sm:h-16 sm:w-16">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={card.data}
                       cx="50%"
                       cy="50%"
-                      innerRadius={20}
-                      outerRadius={32}
+                      innerRadius={16}
+                      outerRadius={24}
                       startAngle={90}
                       endAngle={-270}
                       dataKey="value"
@@ -84,7 +84,7 @@ export function RateCards({ rates }: RateCardsProps) {
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-xs font-bold">{formatPercentage(card.value)}</span>
+                  <span className="text-xs sm:text-sm font-bold">{formatPercentage(card.value)}</span>
                 </div>
               </div>
             </div>
@@ -95,12 +95,12 @@ export function RateCards({ rates }: RateCardsProps) {
       {/* Average Points per Start */}
       <Card className="hover:shadow-md transition-shadow">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-center">Avg Points/Start</CardTitle>
+          <CardTitle className="text-xs sm:text-sm font-medium text-center">Avg Points/Start</CardTitle>
         </CardHeader>
-        <CardContent className="pb-4">
-          <div className="flex items-center justify-center h-16">
+        <CardContent className="pb-3 sm:pb-4">
+          <div className="flex items-center justify-center h-12 sm:h-16">
             <div className="text-center">
-              <div className="text-2xl font-bold text-indigo-600">
+              <div className="text-lg sm:text-2xl font-bold text-indigo-600">
                 {formatNumber(rates.avgPointsPerStart)}
               </div>
               <div className="text-xs text-muted-foreground">points</div>

@@ -10,17 +10,17 @@ export function Header({ driverName, lastUpdated }: HeaderProps) {
   return (
     <header className="border-b bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between">
-          <div className="flex items-center space-x-4">
+        <div className="flex h-16 sm:h-20 items-center justify-between">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             {/* Driver Image */}
             <div className="flex-shrink-0">
-              <div className="relative w-20 h-20">
+              <div className="relative w-12 h-12 sm:w-20 sm:h-20">
                 <Image
                   src="/images/max-verstappen.jpg"
                   alt="Max Verstappen"
                   width={80}
                   height={80}
-                  className="rounded-full object-cover border-2 border-primary/20 relative z-10"
+                  className="rounded-full object-cover border-2 border-primary/20 relative z-10 w-12 h-12 sm:w-20 sm:h-20"
                   priority
                   onError={(e) => {
                     // Hide the image and show placeholder
@@ -33,13 +33,13 @@ export function Header({ driverName, lastUpdated }: HeaderProps) {
                   }}
                 />
                 {/* Fallback placeholder - hidden by default */}
-                <div className="placeholder absolute inset-0 rounded-full bg-gradient-to-br from-red-500 to-blue-500 items-center justify-center text-white font-bold text-lg hidden">
+                <div className="placeholder absolute inset-0 rounded-full bg-gradient-to-br from-red-500 to-blue-500 items-center justify-center text-white font-bold text-sm sm:text-lg hidden">
                   MV
                 </div>
               </div>
             </div>
             <div>
-              <h1 className="text-xl font-bold">{driverName}</h1>
+              <h1 className="text-lg sm:text-xl font-bold">{driverName}</h1>
               <p className="text-xs text-muted-foreground">
                 F1 Career Dashboard
               </p>
@@ -55,40 +55,48 @@ export function Header({ driverName, lastUpdated }: HeaderProps) {
           </div>
         </div>
 
-        {/* Legend */}
+        {/* Legend - More compact on mobile */}
         <div className="border-t py-2">
-          <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
               <div className="h-2 w-2 rounded-full bg-blue-500"></div>
-              Starts
+              <span className="hidden sm:inline">Starts</span>
+              <span className="sm:hidden">S</span>
             </span>
             <span className="flex items-center gap-1">
               <div className="h-2 w-2 rounded-full bg-yellow-500"></div>
-              Wins
+              <span className="hidden sm:inline">Wins</span>
+              <span className="sm:hidden">W</span>
             </span>
             <span className="flex items-center gap-1">
               <div className="h-2 w-2 rounded-full bg-green-500"></div>
-              Podiums
+              <span className="hidden sm:inline">Podiums</span>
+              <span className="sm:hidden">P</span>
             </span>
             <span className="flex items-center gap-1">
               <div className="h-2 w-2 rounded-full bg-purple-500"></div>
-              Poles
+              <span className="hidden sm:inline">Poles</span>
+              <span className="sm:hidden">Pol</span>
             </span>
             <span className="flex items-center gap-1">
               <div className="h-2 w-2 rounded-full bg-pink-500"></div>
-              Fastest Laps
+              <span className="hidden sm:inline">Fastest Laps</span>
+              <span className="sm:hidden">FL</span>
             </span>
             <span className="flex items-center gap-1">
               <div className="h-2 w-2 rounded-full bg-indigo-500"></div>
-              Points
+              <span className="hidden sm:inline">Points</span>
+              <span className="sm:hidden">Pts</span>
             </span>
             <span className="flex items-center gap-1">
               <div className="h-2 w-2 rounded-full bg-red-500"></div>
-              DNFs
+              <span className="hidden sm:inline">DNFs</span>
+              <span className="sm:hidden">DNF</span>
             </span>
             <span className="flex items-center gap-1">
               <div className="h-2 w-2 rounded-full bg-amber-500"></div>
-              Titles
+              <span className="hidden sm:inline">Titles</span>
+              <span className="sm:hidden">T</span>
             </span>
           </div>
         </div>

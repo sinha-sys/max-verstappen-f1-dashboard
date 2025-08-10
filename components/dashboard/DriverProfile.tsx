@@ -9,9 +9,9 @@ export function DriverProfile() {
   const [isOpen, setIsOpen] = useState(false);
 
   const profileContent = (
-    <div className="space-y-4">
+    <div className="space-y-3 sm:space-y-4">
       <section>
-        <h3 className="text-lg font-semibold mb-2">About Max Verstappen</h3>
+        <h3 className="text-base sm:text-lg font-semibold mb-2">About Max Verstappen</h3>
         <p className="text-sm text-muted-foreground leading-relaxed">
           Max Emilian Verstappen is a Dutch Formula 1 driver for <strong>Red Bull Racing</strong>, 
           widely recognized as one of the most dominant competitors in modern motorsport. Born on 
@@ -28,8 +28,8 @@ export function DriverProfile() {
       </section>
 
       <section>
-        <h4 className="font-semibold mb-2">Career Highlights</h4>
-        <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+        <h4 className="text-sm sm:text-base font-semibold mb-2">Career Highlights</h4>
+        <ul className="text-xs sm:text-sm text-muted-foreground space-y-1 list-disc list-inside">
           <li>Formula 1 debut in 2015 with Toro Rosso at age 17.</li>
           <li>Youngest race winner in F1 history – 2016 Spanish Grand Prix.</li>
           <li>Four-time World Champion (2021, 2022, 2023, 2024).</li>
@@ -39,7 +39,7 @@ export function DriverProfile() {
       </section>
 
       <section>
-        <h4 className="font-semibold mb-2">Driving Style & Strengths</h4>
+        <h4 className="text-sm sm:text-base font-semibold mb-2">Driving Style & Strengths</h4>
         <p className="text-sm text-muted-foreground leading-relaxed">
           Verstappen is known for his fearless overtaking, precision under pressure, and adaptability 
           to varying track conditions. His ability to manage tyres while maintaining pace, combined 
@@ -49,7 +49,7 @@ export function DriverProfile() {
       </section>
 
       <section>
-        <h4 className="font-semibold mb-2">Off the Track</h4>
+        <h4 className="text-sm sm:text-base font-semibold mb-2">Off the Track</h4>
         <p className="text-sm text-muted-foreground leading-relaxed">
           Away from the circuit, Verstappen is an avid sim racer, often competing in online endurance 
           events. He has a large global fanbase, significant social media presence, and plays a major 
@@ -81,10 +81,10 @@ export function DriverProfile() {
         <Collapsible open={isOpen} onOpenChange={setIsOpen}>
           <Card>
             <CollapsibleTrigger asChild>
-              <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
-                <CardTitle className="flex items-center justify-between">
+              <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors touch-manipulation">
+                <CardTitle className="flex items-center justify-between text-base sm:text-lg">
                   <div className="flex items-center gap-2">
-                    <User className="h-5 w-5 text-primary" />
+                    <User className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                     Driver Profile
                   </div>
                   {isOpen ? (
