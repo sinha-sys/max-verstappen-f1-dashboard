@@ -1,0 +1,31 @@
+# Cloudflare Pages Headers Configuration
+
+/*
+  # Security headers
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  
+  # Cache control for static assets
+  Cache-Control: public, max-age=31536000, immutable
+
+/_next/static/*
+  # Cache Next.js static assets for 1 year
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.css
+  # Cache CSS files for 1 year
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.js
+  # Cache JavaScript files for 1 year
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.woff2
+  # Cache font files for 1 year
+  Cache-Control: public, max-age=31536000, immutable
+
+/data/*
+  # Cache data files for 1 hour (can be updated more frequently)
+  Cache-Control: public, max-age=3600

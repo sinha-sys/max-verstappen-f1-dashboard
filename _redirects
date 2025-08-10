@@ -1,0 +1,9 @@
+# Cloudflare Pages Redirects Configuration
+
+# Redirect API routes to static files for backwards compatibility
+/api/stats /data/max.json 200
+/api/seasons /data/seasons.json 200
+/api/records /data/records.json 200
+
+# SPA fallback for client-side routing
+/* /index.html 200
