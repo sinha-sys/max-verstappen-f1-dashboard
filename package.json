@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "build:cloudflare": "next build",
+    "build": "npm run clean && next build",
+    "build:cloudflare": "npm run clean && next build",
+    "clean": "rm -rf .next/cache",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",

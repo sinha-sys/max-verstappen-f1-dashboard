@@ -13,6 +13,10 @@
 /.next/
 /out/
 
+# next.js cache (exclude large webpack cache files)
+/.next/cache/webpack/client-production/
+/.next/cache/webpack/server-production/
+
 # production
 /build
 

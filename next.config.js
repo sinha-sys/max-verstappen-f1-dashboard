@@ -6,9 +6,27 @@ const nextConfig = {
   swcMinify: true,
   poweredByHeader: false,
   compress: true,
-  // Cloudflare Pages compatibility
+  // Cloudflare Pages optimizations
   experimental: {
-    // Remove serverComponentsExternalPackages to avoid conflicts
+    // Optimize for smaller builds
+  },
+  // Optimize bundle size and reduce cache
+  webpack: (config, { isServer, dev }) => {
+    // Only disable cache in production to avoid large files
+    if (!dev) {
+      config.cache = {
+        type: 'memory', // Use memory cache instead of filesystem
+      };
+      // Optimize chunk sizes
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          chunks: 'all',
+          maxSize: 20000000, // 20MB max chunk size
+        },
+      };
+    }
+    return config;
   },
 };
 
