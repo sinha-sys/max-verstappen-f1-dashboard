@@ -1,4 +1,5 @@
 import { ThemeToggle } from "@/components/theme-toggle";
+import Image from "next/image";
 
 interface HeaderProps {
   driverName: string;
@@ -9,8 +10,30 @@ export function Header({ driverName, lastUpdated }: HeaderProps) {
   return (
     <header className="border-b bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-20 items-center justify-between">
           <div className="flex items-center space-x-4">
+            {/* Driver Image */}
+            <div className="flex-shrink-0">
+              <div className="relative w-20 h-20">
+                <Image
+                  src="/images/max-verstappen.jpg"
+                  alt="Max Verstappen"
+                  width={80}
+                  height={80}
+                  className="rounded-full object-cover border-2 border-primary/20"
+                  priority
+                  onError={(e) => {
+                    // Fallback to a placeholder or hide image on error
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                  }}
+                />
+                {/* Fallback placeholder */}
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-red-500 to-blue-500 flex items-center justify-center text-white font-bold text-lg">
+                  MV
+                </div>
+              </div>
+            </div>
             <div>
               <h1 className="text-xl font-bold">{driverName}</h1>
               <p className="text-xs text-muted-foreground">

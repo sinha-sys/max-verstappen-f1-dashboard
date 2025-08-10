@@ -1,0 +1,3 @@
+# Image Placeholder
+
+Save the Max Verstappen image as max-verstappen.jpg in this directory.
