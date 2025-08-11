@@ -194,13 +194,15 @@ export default function HomePage() {
             <Separator className="hidden sm:block" />
 
             {/* Filter Controls - Keep close to data it affects */}
-            <section className="w-full">
-              <FilterControls
-                filters={filters}
-                onFiltersChange={setFilters}
-                minYear={minYear}
-                maxYear={maxYear}
-              />
+            <section className="w-full flex justify-center">
+              <div className="w-full max-w-md sm:max-w-lg">
+                <FilterControls
+                  filters={filters}
+                  onFiltersChange={setFilters}
+                  minYear={minYear}
+                  maxYear={maxYear}
+                />
+              </div>
             </section>
 
             {/* Charts Section - Stack vertically on mobile for better readability */}

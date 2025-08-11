@@ -125,13 +125,15 @@ export default function ResultsPage() {
 
           <div className="space-y-6 lg:space-y-8">
             {/* Filter Controls */}
-            <section className="w-full">
-              <FilterControls
-                filters={filters}
-                onFiltersChange={setFilters}
-                minYear={minYear}
-                maxYear={maxYear}
-              />
+            <section className="w-full flex justify-center">
+              <div className="w-full max-w-md sm:max-w-lg">
+                <FilterControls
+                  filters={filters}
+                  onFiltersChange={setFilters}
+                  minYear={minYear}
+                  maxYear={maxYear}
+                />
+              </div>
             </section>
 
             <Separator />
