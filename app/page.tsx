@@ -7,7 +7,7 @@ import { KPIGroup } from "@/components/dashboard/KPIGroup";
 import { RateCards } from "@/components/dashboard/RateCards";
 import { WinRateTrend } from "@/components/dashboard/Charts/WinRateTrend";
 import { CumulativeWins } from "@/components/dashboard/Charts/CumulativeWins";
-import { SeasonTable } from "@/components/dashboard/SeasonTable";
+
 import { Records } from "@/components/dashboard/Records";
 import { FilterControls } from "@/components/dashboard/FilterControls";
 
@@ -214,13 +214,6 @@ export default function HomePage() {
                   <CumulativeWins seasons={filteredSeasons} />
                 </div>
               </div>
-            </section>
-
-            <Separator className="hidden sm:block" />
-
-            {/* Season Table - Horizontally scrollable */}
-            <section className="w-full min-w-0">
-              <SeasonTable seasons={filteredSeasons} />
             </section>
 
             <Separator className="hidden sm:block" />
