@@ -10,7 +10,7 @@ import { CumulativeWins } from "@/components/dashboard/Charts/CumulativeWins";
 import { SeasonTable } from "@/components/dashboard/SeasonTable";
 import { Records } from "@/components/dashboard/Records";
 import { FilterControls } from "@/components/dashboard/FilterControls";
-import { DriverProfile } from "@/components/dashboard/DriverProfile";
+
 import { Separator } from "@/components/ui/separator";
 import type { CareerTotals, RateSummary, SeasonStat, RecordItem, FilterState } from "@/lib/types";
 import Script from "next/script";
@@ -168,13 +168,10 @@ export default function HomePage() {
         <Header driverName={career?.driver || "Max Verstappen"} lastUpdated={career?.asOfDate || "Loading..."} />
       
       <main className="container mx-auto px-3 py-3 sm:px-6 lg:px-8 lg:py-8 max-w-full overflow-x-hidden" itemScope itemType="https://schema.org/Person">
-        <div className="grid gap-3 sm:gap-6 lg:gap-8 lg:grid-cols-4 w-full">
+        <div className="w-full">
           {/* Main Content Area */}
-          <div className="lg:col-span-3 space-y-3 sm:space-y-6 lg:space-y-8 min-w-0 w-full">
-            {/* Mobile Driver Profile - Collapsible */}
-            <section className="lg:hidden w-full">
-              <DriverProfile />
-            </section>
+          <div className="space-y-3 sm:space-y-6 lg:space-y-8 min-w-0 w-full">
+
 
             {/* KPI Section - Primary stats */}
             {career && (
@@ -233,13 +230,6 @@ export default function HomePage() {
               <Records records={records} />
             </section>
           </div>
-
-          {/* Sidebar - Driver Profile */}
-          <aside className="lg:col-span-1">
-            <div className="sticky top-8">
-              <DriverProfile />
-            </div>
-          </aside>
         </div>
       </main>
     </div>
