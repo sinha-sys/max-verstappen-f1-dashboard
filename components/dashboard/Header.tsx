@@ -54,52 +54,6 @@ export function Header({ driverName, lastUpdated }: HeaderProps) {
             <ThemeToggle />
           </div>
         </div>
-
-        {/* Legend - More compact on mobile */}
-        <div className="border-t py-2 overflow-x-hidden">
-          <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 md:gap-4 text-xs text-muted-foreground max-w-full">
-            <span className="flex items-center gap-1">
-              <div className="h-2 w-2 rounded-full bg-blue-500"></div>
-              <span className="hidden sm:inline">Starts</span>
-              <span className="sm:hidden">S</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <div className="h-2 w-2 rounded-full bg-yellow-500"></div>
-              <span className="hidden sm:inline">Wins</span>
-              <span className="sm:hidden">W</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <div className="h-2 w-2 rounded-full bg-green-500"></div>
-              <span className="hidden sm:inline">Podiums</span>
-              <span className="sm:hidden">P</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <div className="h-2 w-2 rounded-full bg-purple-500"></div>
-              <span className="hidden sm:inline">Poles</span>
-              <span className="sm:hidden">Pol</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <div className="h-2 w-2 rounded-full bg-pink-500"></div>
-              <span className="hidden sm:inline">Fastest Laps</span>
-              <span className="sm:hidden">FL</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <div className="h-2 w-2 rounded-full bg-indigo-500"></div>
-              <span className="hidden sm:inline">Points</span>
-              <span className="sm:hidden">Pts</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <div className="h-2 w-2 rounded-full bg-red-500"></div>
-              <span className="hidden sm:inline">DNFs</span>
-              <span className="sm:hidden">DNF</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <div className="h-2 w-2 rounded-full bg-amber-500"></div>
-              <span className="hidden sm:inline">Titles</span>
-              <span className="sm:hidden">T</span>
-            </span>
-          </div>
-        </div>
       </div>
     </header>
   );
