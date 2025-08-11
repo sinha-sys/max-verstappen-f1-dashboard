@@ -9,8 +9,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://maxverstapen.pages.dev'),
-  title: "Max Verstappen – Career Stats, Biography & Records | Formula 1 World Champion",
-  description: "Explore Max Verstappen's complete Formula 1 profile — from his record-breaking debut at 17 to four consecutive World Championships. View updated career statistics, season results, and F1 records.",
+  title: "Max Verstappen F1 Stats | Career Dashboard & Records",
+  description: "Max Verstappen's complete F1 career stats, win rates, championships, and performance data. Interactive dashboard with 4x World Champion records.",
   keywords: [
     "Max Verstappen", 
     "Formula 1", 
@@ -38,8 +38,8 @@ export const metadata: Metadata = {
   category: "Sports",
   classification: "Formula 1 Statistics",
   openGraph: {
-    title: "Max Verstappen – Career Stats, Biography & Records | Formula 1 World Champion",
-    description: "Explore Max Verstappen's complete Formula 1 profile — from his record-breaking debut at 17 to four consecutive World Championships. View updated career statistics, season results, and F1 records.",
+    title: "Max Verstappen F1 Stats | Career Dashboard & Records",
+    description: "Max Verstappen's complete F1 career stats, win rates, championships, and performance data. Interactive dashboard with 4x World Champion records.",
     type: "profile",
     siteName: "Max Verstappen Stats",
     locale: "en_US",
@@ -55,8 +55,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Max Verstappen – Career Stats, Biography & Records | Formula 1 World Champion",
-    description: "Explore Max Verstappen's complete Formula 1 profile — from his record-breaking debut at 17 to four consecutive World Championships.",
+    title: "Max Verstappen F1 Stats | Career Dashboard & Records",
+    description: "Max Verstappen's complete F1 career stats, win rates, championships, and performance data. Interactive dashboard with 4x World Champion records.",
     images: ["/images/max-verstappen.jpg"],
     creator: "@F1Stats",
   },
