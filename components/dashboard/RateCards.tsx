@@ -57,34 +57,45 @@ export function RateCards({ rates }: RateCardsProps) {
   ];
 
   return (
-    <div className="grid gap-2 grid-cols-2 sm:gap-3 sm:grid-cols-3 lg:grid-cols-5 w-full min-w-0">
+    <div className="grid gap-3 grid-cols-2 sm:gap-4 sm:grid-cols-3 lg:grid-cols-5 w-full min-w-0">
       {rateCards.map((card) => (
-        <Card key={card.title} className="hover:shadow-md transition-shadow min-w-0">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-xs sm:text-sm font-medium text-center">{card.title}</CardTitle>
+        <Card key={card.title} className="hover:shadow-lg transition-all duration-300 hover:scale-105 min-w-0">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm sm:text-base font-semibold text-center">{card.title}</CardTitle>
           </CardHeader>
-          <CardContent className="pb-3 sm:pb-4">
-            <div className="flex items-center justify-center">
-              <div className="relative h-12 w-12 sm:h-16 sm:w-16">
+          <CardContent className="pb-4 sm:pb-6">
+            <div className="flex flex-col items-center space-y-3">
+              {/* Large, prominent percentage value */}
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold" style={{ color: card.color }}>
+                {formatPercentage(card.value)}
+              </div>
+              
+              {/* Larger, more visible pie chart */}
+              <div className="relative h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={card.data}
                       cx="50%"
                       cy="50%"
-                      innerRadius={16}
-                      outerRadius={24}
+                      innerRadius="45%"
+                      outerRadius="85%"
                       startAngle={90}
                       endAngle={-270}
                       dataKey="value"
+                      stroke="none"
                     >
                       <Cell fill={card.color} />
-                      <Cell fill="hsl(var(--muted))" />
+                      <Cell fill="hsl(var(--muted-foreground) / 0.2)" />
                     </Pie>
                   </PieChart>
                 </ResponsiveContainer>
+                {/* Optional: Add a subtle center dot for better visual appeal */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-xs sm:text-sm font-bold">{formatPercentage(card.value)}</span>
+                  <div 
+                    className="w-2 h-2 sm:w-3 sm:h-3 rounded-full opacity-60" 
+                    style={{ backgroundColor: card.color }}
+                  />
                 </div>
               </div>
             </div>
@@ -92,18 +103,25 @@ export function RateCards({ rates }: RateCardsProps) {
         </Card>
       ))}
 
-      {/* Average Points per Start */}
-      <Card className="hover:shadow-md transition-shadow min-w-0">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-xs sm:text-sm font-medium text-center">Avg Points/Start</CardTitle>
+      {/* Average Points per Start - Enhanced */}
+      <Card className="hover:shadow-lg transition-all duration-300 hover:scale-105 min-w-0">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm sm:text-base font-semibold text-center">Avg Points/Start</CardTitle>
         </CardHeader>
-        <CardContent className="pb-3 sm:pb-4">
-          <div className="flex items-center justify-center h-12 sm:h-16">
-            <div className="text-center">
-              <div className="text-lg sm:text-2xl font-bold text-indigo-600">
-                {formatNumber(rates.avgPointsPerStart)}
+        <CardContent className="pb-4 sm:pb-6">
+          <div className="flex flex-col items-center space-y-3">
+            {/* Large, prominent points value */}
+            <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-indigo-600">
+              {formatNumber(rates.avgPointsPerStart)}
+            </div>
+            
+            {/* Visual element for consistency */}
+            <div className="flex items-center justify-center h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24">
+              <div className="relative w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center">
+                <div className="text-white text-xs sm:text-sm md:text-base font-bold">
+                  PTS
+                </div>
               </div>
-              <div className="text-xs text-muted-foreground">points</div>
             </div>
           </div>
         </CardContent>
