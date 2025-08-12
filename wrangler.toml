@@ -7,7 +7,7 @@ pages_build_output_dir = "out"
 [[d1_databases]]
 binding = "DB"
 database_name = "maxdb"
-database_id = "YOUR_DATABASE_ID_HERE"
+database_id = "6d53b703-c3cb-49a9-a570-3cb705834e16"
 
 # Environment variables
 [env.production]
