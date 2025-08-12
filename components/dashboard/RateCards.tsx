@@ -1,8 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatPercentage, formatNumber } from "@/lib/format";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { ExternalLink } from "lucide-react";
 import type { RateSummary } from "@/lib/types";
 
 interface RateCardsProps {
@@ -58,50 +60,75 @@ export function RateCards({ rates }: RateCardsProps) {
 
   return (
     <div className="grid gap-3 grid-cols-2 sm:gap-4 sm:grid-cols-3 lg:grid-cols-5 w-full min-w-0">
-      {rateCards.map((card) => (
-        <Card key={card.title} className="hover:shadow-lg transition-all duration-300 hover:scale-105 min-w-0">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm sm:text-base font-semibold text-center">{card.title}</CardTitle>
-          </CardHeader>
-          <CardContent className="pb-4 sm:pb-6">
-            <div className="flex flex-col items-center space-y-3">
-              {/* Large, prominent percentage value */}
-              <div className="text-2xl sm:text-3xl md:text-4xl font-bold" style={{ color: card.color }}>
-                {formatPercentage(card.value)}
-              </div>
-              
-              {/* Larger, more visible pie chart */}
-              <div className="relative h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={card.data}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius="45%"
-                      outerRadius="85%"
-                      startAngle={90}
-                      endAngle={-270}
-                      dataKey="value"
-                      stroke="none"
-                    >
-                      <Cell fill={card.color} />
-                      <Cell fill="hsl(var(--muted-foreground) / 0.2)" />
-                    </Pie>
-                  </PieChart>
-                </ResponsiveContainer>
-                {/* Optional: Add a subtle center dot for better visual appeal */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div 
-                    className="w-2 h-2 sm:w-3 sm:h-3 rounded-full opacity-60" 
-                    style={{ backgroundColor: card.color }}
-                  />
+      {rateCards.map((card) => {
+        // Make Win Rate card clickable
+        const isWinRate = card.title === "Win Rate";
+        const CardComponent = isWinRate ? "div" : Card;
+        
+        const cardContent = (
+          <>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm sm:text-base font-semibold text-center flex items-center justify-center gap-1">
+                {card.title}
+                {isWinRate && <ExternalLink className="h-3 w-3 opacity-60" />}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pb-4 sm:pb-6">
+              <div className="flex flex-col items-center space-y-3">
+                {/* Large, prominent percentage value */}
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold" style={{ color: card.color }}>
+                  {formatPercentage(card.value)}
+                </div>
+                
+                {/* Larger, more visible pie chart */}
+                <div className="relative h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={card.data}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius="45%"
+                        outerRadius="85%"
+                        startAngle={90}
+                        endAngle={-270}
+                        dataKey="value"
+                        stroke="none"
+                      >
+                        <Cell fill={card.color} />
+                        <Cell fill="hsl(var(--muted-foreground) / 0.2)" />
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                  {/* Optional: Add a subtle center dot for better visual appeal */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div 
+                      className="w-2 h-2 sm:w-3 sm:h-3 rounded-full opacity-60" 
+                      style={{ backgroundColor: card.color }}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+            </CardContent>
+          </>
+        );
+
+        if (isWinRate) {
+          return (
+            <Link key={card.title} href="/win-rate" className="block min-w-0">
+              <Card className="hover:shadow-lg transition-all duration-300 hover:scale-105 min-w-0 cursor-pointer hover:bg-muted/20">
+                {cardContent}
+              </Card>
+            </Link>
+          );
+        }
+
+        return (
+          <Card key={card.title} className="hover:shadow-lg transition-all duration-300 hover:scale-105 min-w-0">
+            {cardContent}
+          </Card>
+        );
+      })}
 
       {/* Average Points per Start - Enhanced */}
       <Card className="hover:shadow-lg transition-all duration-300 hover:scale-105 min-w-0">

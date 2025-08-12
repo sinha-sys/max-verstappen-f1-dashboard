@@ -221,6 +221,27 @@ export async function getDriverInfo(db: D1Database, slug: string) {
   };
 }
 
+// Win Rate data queries
+export async function getWinRateData(db: D1Database) {
+  const stmt = db.prepare(`
+    SELECT rank, driver_name, starts, wins, win_percentage, era, notes
+    FROM f1_drivers_win_rate
+    ORDER BY rank ASC
+  `);
+  
+  const result = await stmt.all();
+  
+  return result.results?.map((row: any) => ({
+    rank: row.rank,
+    driverName: row.driver_name,
+    starts: row.starts,
+    wins: row.wins,
+    winPercentage: row.win_percentage,
+    era: row.era,
+    notes: row.notes
+  })) || [];
+}
+
 // Development fallback functions (using existing JSON files)
 export async function getCareerStatsFromJSON() {
   const fs = await import('fs');
@@ -251,4 +272,100 @@ export async function getRecordsFromJSON() {
   const fileContents = fs.readFileSync(filePath, 'utf8');
   
   return JSON.parse(fileContents);
+}
+
+export async function getWinRateDataFromJSON() {
+  // Static win rate data for development fallback
+  return [
+    {
+      rank: 1,
+      driverName: "Juan Manuel Fangio",
+      starts: 51,
+      wins: 24,
+      winPercentage: 47.06,
+      era: "1950s",
+      notes: "Reigns supreme in win percentage—almost one win for every two races"
+    },
+    {
+      rank: 2,
+      driverName: "Alberto Ascari",
+      starts: 32,
+      wins: 13,
+      winPercentage: 40.62,
+      era: "1950s",
+      notes: "Exceptionally efficient win rate from mid-20th century era"
+    },
+    {
+      rank: 3,
+      driverName: "Jim Clark",
+      starts: 72,
+      wins: 25,
+      winPercentage: 34.72,
+      era: "1960s",
+      notes: "Shine with exceptionally efficient win rates from mid-20th century era"
+    },
+    {
+      rank: 4,
+      driverName: "Michael Schumacher",
+      starts: 306,
+      wins: 91,
+      winPercentage: 29.74,
+      era: "Modern",
+      notes: "Remains in the elite with nearly 30% win rate"
+    },
+    {
+      rank: 5,
+      driverName: "Max Verstappen",
+      starts: 218,
+      wins: 65,
+      winPercentage: 29.82,
+      era: "Current",
+      notes: "Among modern drivers, leads the pack with consistent performance"
+    },
+    {
+      rank: 6,
+      driverName: "Lewis Hamilton",
+      starts: 365,
+      wins: 105,
+      winPercentage: 28.77,
+      era: "Modern",
+      notes: "Among modern drivers, showcasing consistent performance across vastly more races"
+    },
+    {
+      rank: 7,
+      driverName: "Jackie Stewart",
+      starts: 99,
+      wins: 27,
+      winPercentage: 27.27,
+      era: "1970s",
+      notes: "All-time great whose percentage reflects both skill and era-specific race calendars"
+    },
+    {
+      rank: 8,
+      driverName: "Alain Prost",
+      starts: 199,
+      wins: 51,
+      winPercentage: 25.63,
+      era: "1980s",
+      notes: "All-time great whose percentage reflects both skill and era-specific race calendars"
+    },
+    {
+      rank: 9,
+      driverName: "Ayrton Senna",
+      starts: 161,
+      wins: 41,
+      winPercentage: 25.47,
+      era: "1980s-1990s",
+      notes: "All-time great whose percentage reflects both skill and era-specific race calendars"
+    },
+    {
+      rank: 10,
+      driverName: "Stirling Moss",
+      starts: 66,
+      wins: 16,
+      winPercentage: 24.24,
+      era: "1950s-1960s",
+      notes: "All-time great whose percentage reflects both skill and era-specific race calendars"
+    }
+  ];
 }

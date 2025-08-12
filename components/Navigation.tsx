@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
-import { Home, User, Calendar, Menu, X } from "lucide-react";
+import { Home, User, Calendar, Trophy, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navigationItems = [
@@ -19,6 +19,12 @@ const navigationItems = [
     href: "/results",
     icon: Calendar,
     description: "Season-by-season results and statistics"
+  },
+  {
+    name: "Win Rate",
+    href: "/win-rate",
+    icon: Trophy,
+    description: "Top F1 drivers by career win percentage"
   },
   {
     name: "Profile",
@@ -38,7 +44,7 @@ export function Navigation() {
       <nav className="hidden md:block border-b bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/50">
         <div className="container mx-auto px-6 lg:px-8">
           <div className="flex h-14 items-center justify-center">
-            <div className="flex space-x-6 lg:space-x-8">
+            <div className="flex space-x-4 lg:space-x-6">
               {navigationItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = pathname === item.href;
