@@ -50,21 +50,35 @@ export function getDatabase(): D1Database {
   throw new Error('Database not available. Make sure you are running in Cloudflare Workers environment.');
 }
 
-// Career stats queries
-export async function getCareerStats(db: D1Database) {
-  const stmt = db.prepare(`
+// Career stats queries - Multi-driver support with backward compatibility
+export async function getCareerStats(db: D1Database, driverSlug: string = 'max-verstappen') {
+  // Try new multi-driver structure first
+  let stmt = db.prepare(`
     SELECT 
       driver, as_of_date, starts, wins, podiums, poles, fastest_laps,
       points, dnfs, championships, win_rate, podium_rate, pole_rate,
       dnf_rate, avg_points_per_start
-    FROM career_stats 
-    WHERE id = 1
+    FROM current_career_stats
+    WHERE slug = ?
   `);
   
-  const result = await stmt.first();
+  let result = await stmt.bind(driverSlug).first();
+  
+  // Fallback to old structure for backward compatibility
+  if (!result && driverSlug === 'max-verstappen') {
+    stmt = db.prepare(`
+      SELECT 
+        driver, as_of_date, starts, wins, podiums, poles, fastest_laps,
+        points, dnfs, championships, win_rate, podium_rate, pole_rate,
+        dnf_rate, avg_points_per_start
+      FROM career_stats 
+      WHERE id = 1
+    `);
+    result = await stmt.first();
+  }
   
   if (!result) {
-    throw new Error('Career stats not found');
+    throw new Error(`Career stats not found for driver: ${driverSlug}`);
   }
   
   return {
@@ -88,15 +102,28 @@ export async function getCareerStats(db: D1Database) {
   };
 }
 
-// Season results queries
-export async function getSeasonResults(db: D1Database) {
-  const stmt = db.prepare(`
+// Season results queries - Multi-driver support with backward compatibility
+export async function getSeasonResults(db: D1Database, driverSlug: string = 'max-verstappen') {
+  // Try new multi-driver structure first
+  let stmt = db.prepare(`
     SELECT season, starts, wins, podiums, poles, fastest_laps, points, rank
-    FROM season_results
+    FROM driver_season_results dsr
+    JOIN drivers d ON d.id = dsr.driver_id
+    WHERE d.slug = ?
     ORDER BY season ASC
   `);
   
-  const result = await stmt.all();
+  let result = await stmt.bind(driverSlug).all();
+  
+  // Fallback to old structure for backward compatibility
+  if ((!result.results || result.results.length === 0) && driverSlug === 'max-verstappen') {
+    stmt = db.prepare(`
+      SELECT season, starts, wins, podiums, poles, fastest_laps, points, rank
+      FROM season_results
+      ORDER BY season ASC
+    `);
+    result = await stmt.all();
+  }
   
   return result.results?.map((row: any) => ({
     season: row.season,
@@ -110,21 +137,88 @@ export async function getSeasonResults(db: D1Database) {
   })) || [];
 }
 
-// Records queries
-export async function getRecords(db: D1Database) {
-  const stmt = db.prepare(`
+// Records queries - Multi-driver support with backward compatibility
+export async function getRecords(db: D1Database, driverSlug: string = 'max-verstappen') {
+  // Try new multi-driver structure first
+  let stmt = db.prepare(`
     SELECT category, value, note
-    FROM records
-    ORDER BY id ASC
+    FROM driver_records dr
+    JOIN drivers d ON d.id = dr.driver_id
+    WHERE d.slug = ? AND dr.active = TRUE
+    ORDER BY dr.id ASC
   `);
   
-  const result = await stmt.all();
+  let result = await stmt.bind(driverSlug).all();
+  
+  // Fallback to old structure for backward compatibility
+  if ((!result.results || result.results.length === 0) && driverSlug === 'max-verstappen') {
+    stmt = db.prepare(`
+      SELECT category, value, note
+      FROM records
+      ORDER BY id ASC
+    `);
+    result = await stmt.all();
+  }
   
   return result.results?.map((row: any) => ({
     category: row.category,
     value: row.value,
     note: row.note
   })) || [];
+}
+
+// New multi-driver utility functions
+
+// Get list of all drivers
+export async function getAllDrivers(db: D1Database) {
+  const stmt = db.prepare(`
+    SELECT id, full_name, short_name, nationality, team_current, status, bio_summary, slug
+    FROM drivers
+    WHERE status = 'active'
+    ORDER BY full_name
+  `);
+  
+  const result = await stmt.all();
+  
+  return result.results?.map((row: any) => ({
+    id: row.id,
+    fullName: row.full_name,
+    shortName: row.short_name,
+    nationality: row.nationality,
+    currentTeam: row.team_current,
+    status: row.status,
+    bioSummary: row.bio_summary,
+    slug: row.slug
+  })) || [];
+}
+
+// Get driver info by slug
+export async function getDriverInfo(db: D1Database, slug: string) {
+  const stmt = db.prepare(`
+    SELECT id, full_name, short_name, nationality, birth_date, debut_season, 
+           team_current, status, bio_summary, slug
+    FROM drivers
+    WHERE slug = ?
+  `);
+  
+  const result = await stmt.first(slug);
+  
+  if (!result) {
+    throw new Error(`Driver not found: ${slug}`);
+  }
+  
+  return {
+    id: result.id,
+    fullName: result.full_name,
+    shortName: result.short_name,
+    nationality: result.nationality,
+    birthDate: result.birth_date,
+    debutSeason: result.debut_season,
+    currentTeam: result.team_current,
+    status: result.status,
+    bioSummary: result.bio_summary,
+    slug: result.slug
+  };
 }
 
 // Development fallback functions (using existing JSON files)
