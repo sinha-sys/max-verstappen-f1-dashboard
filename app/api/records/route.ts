@@ -1,20 +1,33 @@
 import { NextResponse } from "next/server";
-import { readFileSync } from "fs";
-import { join } from "path";
+import { getRecords, getRecordsFromJSON, type Env } from "@/lib/database";
 import type { RecordItem } from "@/lib/types";
 
-export async function GET() {
+export async function GET(request: Request, { env }: { env?: Env }) {
   try {
-    const filePath = join(process.cwd(), "data", "records.json");
-    const fileContents = readFileSync(filePath, "utf8");
-    const records: RecordItem[] = JSON.parse(fileContents);
+    let recordsData: RecordItem[];
     
-    return NextResponse.json(records);
+    // Try to use D1 database if available (Cloudflare environment)
+    if (env?.DB) {
+      recordsData = await getRecords(env.DB);
+    } else {
+      // Fallback to JSON file for development
+      recordsData = await getRecordsFromJSON();
+    }
+    
+    return NextResponse.json(recordsData);
   } catch (error) {
     console.error("Error reading records data:", error);
-    return NextResponse.json(
-      { error: "Failed to load records data" },
-      { status: 500 }
-    );
+    
+    // If D1 fails, try JSON fallback
+    try {
+      const recordsData = await getRecordsFromJSON();
+      return NextResponse.json(recordsData);
+    } catch (fallbackError) {
+      console.error("Fallback to JSON also failed:", fallbackError);
+      return NextResponse.json(
+        { error: "Failed to load records data" },
+        { status: 500 }
+      );
+    }
   }
 }

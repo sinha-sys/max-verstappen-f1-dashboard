@@ -1,23 +1,33 @@
 import { NextResponse } from "next/server";
-import { readFileSync } from "fs";
-import { join } from "path";
+import { getCareerStats, getCareerStatsFromJSON, type Env } from "@/lib/database";
 import type { CareerTotals, RateSummary } from "@/lib/types";
 
-export async function GET() {
+export async function GET(request: Request, { env }: { env?: Env }) {
   try {
-    const filePath = join(process.cwd(), "data", "max.json");
-    const fileContents = readFileSync(filePath, "utf8");
-    const data = JSON.parse(fileContents);
+    let careerData: CareerTotals & { rates: RateSummary };
     
-    // Validate the data structure
-    const career: CareerTotals & { rates: RateSummary } = data.career;
+    // Try to use D1 database if available (Cloudflare environment)
+    if (env?.DB) {
+      careerData = await getCareerStats(env.DB);
+    } else {
+      // Fallback to JSON file for development
+      careerData = await getCareerStatsFromJSON();
+    }
     
-    return NextResponse.json({ career });
+    return NextResponse.json({ career: careerData });
   } catch (error) {
-    console.error("Error reading stats data:", error);
-    return NextResponse.json(
-      { error: "Failed to load stats data" },
-      { status: 500 }
-    );
+    console.error("Error reading career data:", error);
+    
+    // If D1 fails, try JSON fallback
+    try {
+      const careerData = await getCareerStatsFromJSON();
+      return NextResponse.json({ career: careerData });
+    } catch (fallbackError) {
+      console.error("Fallback to JSON also failed:", fallbackError);
+      return NextResponse.json(
+        { error: "Failed to load career data" },
+        { status: 500 }
+      );
+    }
   }
 }
