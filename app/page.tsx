@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getCareerClient, getSeasonsClient } from "@/lib/fetchers";
 import { Header } from "@/components/dashboard/Header";
 import { KPIGroup } from "@/components/dashboard/KPIGroup";
@@ -23,6 +24,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setMounted(true);
@@ -59,7 +61,7 @@ export default function HomePage() {
         <div className="text-center space-y-4">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
           <p className="text-muted-foreground">
-            {!mounted ? "Initializing..." : "Loading dashboard data..."}
+            {!mounted ? t('loading.initializing') : t('loading.loadingDashboard')}
           </p>
         </div>
       </div>
@@ -70,7 +72,7 @@ export default function HomePage() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <h2 className="text-xl font-semibold text-destructive">Error loading data</h2>
+          <h2 className="text-xl font-semibold text-destructive">{t('error.loadingData')}</h2>
           <p className="text-muted-foreground">{error}</p>
         </div>
       </div>
