@@ -13,5 +13,17 @@ database_id = "6d53b703-c3cb-49a9-a570-3cb705834e16"
 [env.production]
 NODE_ENV = "production"
 
+# D1 Database bindings for production
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "maxdb"
+database_id = "6d53b703-c3cb-49a9-a570-3cb705834e16"
+
 [env.preview]
 NODE_ENV = "development"
+
+# D1 Database bindings for preview
+[[env.preview.d1_databases]]
+binding = "DB"
+database_name = "maxdb"
+database_id = "6d53b703-c3cb-49a9-a570-3cb705834e16"
