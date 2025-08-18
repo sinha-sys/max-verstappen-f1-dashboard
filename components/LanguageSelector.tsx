@@ -44,12 +44,12 @@ export function LanguageSelector() {
         <>
           {/* Backdrop */}
           <div 
-            className="fixed inset-0 z-40" 
+            className="fixed inset-0 z-[9998]" 
             onClick={() => setIsOpen(false)}
           />
           
           {/* Dropdown */}
-          <Card className="absolute right-0 top-full mt-2 w-48 z-50 shadow-lg">
+          <Card className="absolute right-0 top-full mt-2 w-48 z-[9999] shadow-xl border-2">
             <CardContent className="p-2">
               <div className="space-y-1">
                 {languages.map((language) => (
