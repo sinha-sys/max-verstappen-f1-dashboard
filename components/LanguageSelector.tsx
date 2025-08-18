@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent } from "@/components/ui/card";
 import { Globe, ChevronDown } from "lucide-react";
@@ -16,9 +16,18 @@ const languages = [
 
 export function LanguageSelector() {
   const [isOpen, setIsOpen] = useState(false);
+  const [buttonRect, setButtonRect] = useState<DOMRect | null>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const { i18n, t } = useTranslation();
 
   const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
+
+  useEffect(() => {
+    if (isOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      setButtonRect(rect);
+    }
+  }, [isOpen]);
 
   const handleLanguageChange = (langCode: string) => {
     i18n.changeLanguage(langCode);
@@ -28,10 +37,11 @@ export function LanguageSelector() {
   };
 
   return (
-    <div className="relative z-[100]">
+    <div className="relative">
       <button
+        ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-muted relative z-[101]"
+        className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-muted"
         aria-label={t('select')}
       >
         <Globe className="h-4 w-4" />
@@ -40,17 +50,24 @@ export function LanguageSelector() {
         <ChevronDown className={cn("h-3 w-3 transition-transform", isOpen && "rotate-180")} />
       </button>
 
-      {isOpen && (
+      {isOpen && buttonRect && (
         <>
           {/* Backdrop */}
           <div 
-            className="fixed inset-0 z-[99]" 
+            className="fixed inset-0 z-[9999]" 
             onClick={() => setIsOpen(false)}
           />
           
-          {/* Dropdown */}
-          <div className="absolute right-0 top-full mt-2 z-[102]">
-            <Card className="w-48 shadow-2xl border-2 bg-background/95 backdrop-blur-sm">
+          {/* Dropdown - Fixed positioning relative to viewport */}
+          <div 
+            className="fixed z-[10000]"
+            style={{
+              top: buttonRect.bottom + 8,
+              left: buttonRect.right - 192, // 192px = w-48 (12rem * 16px)
+              minWidth: '12rem'
+            }}
+          >
+            <Card className="shadow-2xl border-2 bg-background backdrop-blur-sm">
               <CardContent className="p-2">
                 <div className="space-y-1">
                   {languages.map((language) => (
