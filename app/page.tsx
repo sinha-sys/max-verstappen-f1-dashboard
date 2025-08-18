@@ -9,20 +9,17 @@ import { WinRateTrend } from "@/components/dashboard/Charts/WinRateTrend";
 import { CumulativeWins } from "@/components/dashboard/Charts/CumulativeWins";
 
 import { Records } from "@/components/dashboard/Records";
-import { FilterControls } from "@/components/dashboard/FilterControls";
 import { RaceCountdown } from "@/components/dashboard/RaceCountdown";
 
 import { Separator } from "@/components/ui/separator";
-import type { CareerTotals, RateSummary, SeasonStat, RecordItem, FilterState } from "@/lib/types";
+import type { CareerTotals, RateSummary, SeasonStat, RecordItem } from "@/lib/types";
 import Script from "next/script";
 
 export default function HomePage() {
   const [career, setCareer] = useState<(CareerTotals & { rates: RateSummary }) | null>(null);
   const [allSeasons, setAllSeasons] = useState<SeasonStat[]>([]);
   const [records, setRecords] = useState<RecordItem[]>([]);
-  const [filters, setFilters] = useState<FilterState>({
-    yearRange: [2015, 2025],
-  });
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -47,10 +44,7 @@ export default function HomePage() {
         setAllSeasons(seasonsData);
         setRecords(recordsData);
 
-        // Set initial filter range based on actual data
-        const minYear = Math.min(...seasonsData.map(s => s.season));
-        const maxYear = Math.max(...seasonsData.map(s => s.season));
-        setFilters({ yearRange: [minYear, maxYear] });
+
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load data");
       } finally {
@@ -89,13 +83,8 @@ export default function HomePage() {
     return null;
   }
 
-  // Filter seasons based on year range
-  const filteredSeasons = allSeasons.filter(
-    season => season.season >= filters.yearRange[0] && season.season <= filters.yearRange[1]
-  );
-
-  const minYear = Math.min(...allSeasons.map(s => s.season));
-  const maxYear = Math.max(...allSeasons.map(s => s.season));
+  // Use all seasons data without filtering
+  const filteredSeasons = allSeasons;
 
   // Generate structured data for SEO
   const structuredData = career ? {
@@ -198,20 +187,6 @@ export default function HomePage() {
                 <RateCards rates={career.rates} />
               </section>
             )}
-
-            <Separator className="hidden sm:block" />
-
-            {/* Filter Controls - Keep close to data it affects */}
-            <section className="w-full flex justify-center">
-              <div className="w-full max-w-md sm:max-w-lg">
-                <FilterControls
-                  filters={filters}
-                  onFiltersChange={setFilters}
-                  minYear={minYear}
-                  maxYear={maxYear}
-                />
-              </div>
-            </section>
 
             {/* Charts Section - Stack vertically on mobile for better readability */}
             <section className="w-full min-w-0" aria-labelledby="charts-heading">
