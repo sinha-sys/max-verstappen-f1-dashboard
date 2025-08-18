@@ -113,12 +113,12 @@ export function RaceCountdown() {
     return (
       <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
         <CardContent className="p-4">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3 flex-1">
+          <div className="flex items-center justify-center gap-6 sm:gap-8">
+            <div className="flex items-center gap-3">
               <div className="animate-pulse">
                 <div className="h-5 w-5 bg-muted rounded"></div>
               </div>
-              <div className="animate-pulse flex-1">
+              <div className="animate-pulse text-center">
                 <div className="h-4 bg-muted rounded w-32 mb-1"></div>
                 <div className="h-3 bg-muted rounded w-24"></div>
               </div>
@@ -169,22 +169,22 @@ export function RaceCountdown() {
         : 'bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20'
     }`}>
       <CardContent className="p-4">
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-center gap-6 sm:gap-8">
           {/* Race Info - Left Side */}
-          <div className="flex items-center gap-3 min-w-0 flex-1">
+          <div className="flex items-center gap-3">
             <Clock className={`h-5 w-5 flex-shrink-0 ${isRaceSoon ? 'text-red-500' : 'text-primary'}`} />
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-2 mb-1">
-                <h3 className="font-semibold text-sm sm:text-base truncate">{nextRace.name}</h3>
+            <div className="text-center sm:text-left">
+              <div className="flex items-center justify-center sm:justify-start gap-2 mb-1">
+                <h3 className="font-semibold text-sm sm:text-base">{nextRace.name}</h3>
                 {isRaceToday && (
                   <Badge variant="destructive" className="text-xs animate-pulse">
                     TODAY
                   </Badge>
                 )}
               </div>
-              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <div className="flex items-center justify-center sm:justify-start gap-1 text-xs text-muted-foreground">
                 <MapPin className="h-3 w-3 flex-shrink-0" />
-                <span className="truncate">{nextRace.location}</span>
+                <span>{nextRace.location}</span>
                 <span className="mx-1">•</span>
                 <span className="whitespace-nowrap">Round {nextRace.round}</span>
               </div>
