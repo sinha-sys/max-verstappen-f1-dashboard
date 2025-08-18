@@ -112,10 +112,31 @@ export function RaceCountdown() {
   if (!mounted || loading) {
     return (
       <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
-        <CardContent className="p-6">
-          <div className="animate-pulse">
-            <div className="h-4 bg-muted rounded w-3/4 mb-2"></div>
-            <div className="h-8 bg-muted rounded w-1/2"></div>
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3 flex-1">
+              <div className="animate-pulse">
+                <div className="h-5 w-5 bg-muted rounded"></div>
+              </div>
+              <div className="animate-pulse flex-1">
+                <div className="h-4 bg-muted rounded w-32 mb-1"></div>
+                <div className="h-3 bg-muted rounded w-24"></div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="animate-pulse text-center">
+                <div className="h-6 w-8 bg-muted rounded mb-1"></div>
+                <div className="h-3 w-8 bg-muted rounded"></div>
+              </div>
+              <div className="animate-pulse text-center">
+                <div className="h-6 w-8 bg-muted rounded mb-1"></div>
+                <div className="h-3 w-8 bg-muted rounded"></div>
+              </div>
+              <div className="animate-pulse text-center">
+                <div className="h-6 w-8 bg-muted rounded mb-1"></div>
+                <div className="h-3 w-8 bg-muted rounded"></div>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -125,10 +146,14 @@ export function RaceCountdown() {
   if (!nextRace || !timeRemaining) {
     return (
       <Card className="bg-gradient-to-r from-muted/50 to-muted/30">
-        <CardContent className="p-6 text-center">
-          <Flag className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-          <h3 className="text-lg font-semibold text-muted-foreground">Season Complete</h3>
-          <p className="text-sm text-muted-foreground">No more races scheduled for 2025</p>
+        <CardContent className="p-4">
+          <div className="flex items-center justify-center gap-3">
+            <Flag className="h-5 w-5 text-muted-foreground" />
+            <div className="text-center">
+              <h3 className="font-semibold text-muted-foreground">Season Complete</h3>
+              <p className="text-sm text-muted-foreground">No more races scheduled for 2025</p>
+            </div>
+          </div>
         </CardContent>
       </Card>
     );
@@ -143,61 +168,65 @@ export function RaceCountdown() {
         ? 'bg-gradient-to-r from-red-500/10 to-orange-500/10 border-red-500/30 shadow-lg' 
         : 'bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20'
     }`}>
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-lg">
-          <Clock className={`h-5 w-5 ${isRaceSoon ? 'text-red-500' : 'text-primary'}`} />
-          Next Race
-          {isRaceToday && (
-            <Badge variant="destructive" className="ml-2 animate-pulse">
-              TODAY
-            </Badge>
-          )}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Race Info */}
-        <div>
-          <h3 className="font-semibold text-lg">{nextRace.name}</h3>
-          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            <MapPin className="h-3 w-3" />
-            <span>{nextRace.location}</span>
-            <span className="mx-1">•</span>
-            <span>Round {nextRace.round}</span>
+      <CardContent className="p-4">
+        <div className="flex items-center justify-between gap-4">
+          {/* Race Info - Left Side */}
+          <div className="flex items-center gap-3 min-w-0 flex-1">
+            <Clock className={`h-5 w-5 flex-shrink-0 ${isRaceSoon ? 'text-red-500' : 'text-primary'}`} />
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className="font-semibold text-sm sm:text-base truncate">{nextRace.name}</h3>
+                {isRaceToday && (
+                  <Badge variant="destructive" className="text-xs animate-pulse">
+                    TODAY
+                  </Badge>
+                )}
+              </div>
+              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                <MapPin className="h-3 w-3 flex-shrink-0" />
+                <span className="truncate">{nextRace.location}</span>
+                <span className="mx-1">•</span>
+                <span className="whitespace-nowrap">Round {nextRace.round}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Countdown - Right Side */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="text-center">
+              <div className={`text-lg sm:text-xl font-bold leading-none ${isRaceSoon ? 'text-red-500' : 'text-primary'}`}>
+                {timeRemaining.days}
+              </div>
+              <div className="text-xs text-muted-foreground">days</div>
+            </div>
+            <div className="text-muted-foreground">:</div>
+            <div className="text-center">
+              <div className={`text-lg sm:text-xl font-bold leading-none ${isRaceSoon ? 'text-red-500' : 'text-primary'}`}>
+                {String(timeRemaining.hours).padStart(2, '0')}
+              </div>
+              <div className="text-xs text-muted-foreground">hrs</div>
+            </div>
+            <div className="text-muted-foreground">:</div>
+            <div className="text-center">
+              <div className={`text-lg sm:text-xl font-bold leading-none ${isRaceSoon ? 'text-red-500' : 'text-primary'}`}>
+                {String(timeRemaining.minutes).padStart(2, '0')}
+              </div>
+              <div className="text-xs text-muted-foreground">min</div>
+            </div>
+            <div className="text-center hidden sm:block">
+              <div className={`text-lg sm:text-xl font-bold leading-none ${isRaceSoon ? 'text-red-500' : 'text-primary'}`}>
+                {String(timeRemaining.seconds).padStart(2, '0')}
+              </div>
+              <div className="text-xs text-muted-foreground">sec</div>
+            </div>
           </div>
         </div>
 
-        {/* Countdown */}
-        <div className="grid grid-cols-4 gap-2 text-center">
-          <div className="bg-background/50 rounded-lg p-2">
-            <div className={`text-2xl font-bold ${isRaceSoon ? 'text-red-500' : 'text-primary'}`}>
-              {timeRemaining.days}
-            </div>
-            <div className="text-xs text-muted-foreground">Days</div>
-          </div>
-          <div className="bg-background/50 rounded-lg p-2">
-            <div className={`text-2xl font-bold ${isRaceSoon ? 'text-red-500' : 'text-primary'}`}>
-              {timeRemaining.hours}
-            </div>
-            <div className="text-xs text-muted-foreground">Hours</div>
-          </div>
-          <div className="bg-background/50 rounded-lg p-2">
-            <div className={`text-2xl font-bold ${isRaceSoon ? 'text-red-500' : 'text-primary'}`}>
-              {timeRemaining.minutes}
-            </div>
-            <div className="text-xs text-muted-foreground">Minutes</div>
-          </div>
-          <div className="bg-background/50 rounded-lg p-2">
-            <div className={`text-2xl font-bold ${isRaceSoon ? 'text-red-500' : 'text-primary'}`}>
-              {timeRemaining.seconds}
-            </div>
-            <div className="text-xs text-muted-foreground">Seconds</div>
-          </div>
-        </div>
-
-        {/* Local Time */}
-        <div className="text-center pt-2 border-t">
-          <p className="text-xs text-muted-foreground">Your local time:</p>
-          <p className="text-sm font-medium">{formatLocalTime(nextRace)}</p>
+        {/* Local Time - Compact Bottom Row */}
+        <div className="mt-2 pt-2 border-t text-center">
+          <p className="text-xs text-muted-foreground">
+            <span className="font-medium">{formatLocalTime(nextRace)}</span>
+          </p>
         </div>
       </CardContent>
     </Card>

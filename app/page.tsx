@@ -174,11 +174,9 @@ export default function HomePage() {
           <div className="space-y-3 sm:space-y-6 lg:space-y-8 min-w-0 w-full">
 
             {/* Race Countdown - Next F1 Race */}
-            <section className="w-full flex justify-center" aria-labelledby="countdown-heading">
-              <div className="w-full max-w-md sm:max-w-lg">
-                <h2 id="countdown-heading" className="sr-only">Next F1 Race Countdown</h2>
-                <RaceCountdown />
-              </div>
+            <section className="w-full" aria-labelledby="countdown-heading">
+              <h2 id="countdown-heading" className="sr-only">Next F1 Race Countdown</h2>
+              <RaceCountdown />
             </section>
 
             <Separator className="hidden sm:block" />
