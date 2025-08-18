@@ -3,10 +3,9 @@ import Image from "next/image";
 
 interface HeaderProps {
   driverName: string;
-  lastUpdated: string;
 }
 
-export function Header({ driverName, lastUpdated }: HeaderProps) {
+export function Header({ driverName }: HeaderProps) {
   return (
     <header className="border-b bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/50 w-full overflow-x-hidden">
       <div className="container mx-auto px-3 sm:px-6 lg:px-8 max-w-full">
@@ -47,10 +46,6 @@ export function Header({ driverName, lastUpdated }: HeaderProps) {
           </div>
 
           <div className="flex items-center space-x-4">
-            <div className="hidden sm:block text-right">
-              <p className="text-sm font-medium">Last Updated</p>
-              <p className="text-xs text-muted-foreground">{lastUpdated}</p>
-            </div>
             <ThemeToggle />
           </div>
         </div>

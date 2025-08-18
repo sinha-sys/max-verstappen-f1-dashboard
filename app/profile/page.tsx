@@ -3,21 +3,45 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { User } from "lucide-react";
+import { Records } from "@/components/dashboard/Records";
+import { getRecordsClient } from "@/lib/fetchers";
+import type { RecordItem } from "@/lib/types";
 import Script from "next/script";
 
 export default function ProfilePage() {
   const [mounted, setMounted] = useState(false);
+  const [records, setRecords] = useState<RecordItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted) {
+  useEffect(() => {
+    if (!mounted) return;
+    
+    const fetchRecords = async () => {
+      try {
+        const recordsData = await getRecordsClient();
+        setRecords(recordsData);
+      } catch (error) {
+        console.error("Failed to load records:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecords();
+  }, [mounted]);
+
+  if (!mounted || loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
         <div className="text-center space-y-4">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="text-muted-foreground">Initializing...</p>
+          <p className="text-muted-foreground">
+            {!mounted ? "Initializing..." : "Loading profile data..."}
+          </p>
         </div>
       </div>
     );
@@ -158,6 +182,11 @@ export default function ProfilePage() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Career Records & Achievements */}
+          <div className="mt-8">
+            <Records records={records} />
+          </div>
         </main>
       </div>
     </>

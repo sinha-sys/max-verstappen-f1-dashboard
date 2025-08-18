@@ -1,24 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getCareerClient, getSeasonsClient, getRecordsClient } from "@/lib/fetchers";
+import { getCareerClient, getSeasonsClient } from "@/lib/fetchers";
 import { Header } from "@/components/dashboard/Header";
 import { KPIGroup } from "@/components/dashboard/KPIGroup";
 import { RateCards } from "@/components/dashboard/RateCards";
 import { WinRateTrend } from "@/components/dashboard/Charts/WinRateTrend";
 import { CumulativeWins } from "@/components/dashboard/Charts/CumulativeWins";
 
-import { Records } from "@/components/dashboard/Records";
+
 import { RaceCountdown } from "@/components/dashboard/RaceCountdown";
 
 import { Separator } from "@/components/ui/separator";
-import type { CareerTotals, RateSummary, SeasonStat, RecordItem } from "@/lib/types";
+import type { CareerTotals, RateSummary, SeasonStat } from "@/lib/types";
 import Script from "next/script";
 
 export default function HomePage() {
   const [career, setCareer] = useState<(CareerTotals & { rates: RateSummary }) | null>(null);
   const [allSeasons, setAllSeasons] = useState<SeasonStat[]>([]);
-  const [records, setRecords] = useState<RecordItem[]>([]);
+
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -34,15 +34,13 @@ export default function HomePage() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [careerData, seasonsData, recordsData] = await Promise.all([
+        const [careerData, seasonsData] = await Promise.all([
           getCareerClient(),
           getSeasonsClient(),
-          getRecordsClient(),
         ]);
 
         setCareer(careerData.career);
         setAllSeasons(seasonsData);
-        setRecords(recordsData);
 
 
       } catch (err) {
@@ -155,7 +153,7 @@ export default function HomePage() {
       )}
       
       <div className="min-h-screen bg-background mobile-safe-area">
-        <Header driverName={career?.driver || "Max Verstappen"} lastUpdated={career?.asOfDate || "Loading..."} />
+        <Header driverName={career?.driver || "Max Verstappen"} />
       
       <main className="container mx-auto px-3 py-3 sm:px-6 lg:px-8 lg:py-8 max-w-full overflow-x-hidden" itemScope itemType="https://schema.org/Person">
         <div className="w-full">
@@ -201,12 +199,7 @@ export default function HomePage() {
               </div>
             </section>
 
-            <Separator className="hidden sm:block" />
 
-            {/* Records Section - Last for easy access */}
-            <section className="w-full min-w-0">
-              <Records records={records} />
-            </section>
           </div>
         </div>
       </main>
