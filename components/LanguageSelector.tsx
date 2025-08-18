@@ -26,6 +26,8 @@ export function LanguageSelector() {
     if (isOpen && buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
       setButtonRect(rect);
+    } else if (!isOpen) {
+      setButtonRect(null);
     }
   }, [isOpen]);
 
@@ -50,7 +52,7 @@ export function LanguageSelector() {
         <ChevronDown className={cn("h-3 w-3 transition-transform", isOpen && "rotate-180")} />
       </button>
 
-      {isOpen && buttonRect && (
+      {isOpen && (
         <>
           {/* Backdrop */}
           <div 
@@ -62,8 +64,9 @@ export function LanguageSelector() {
           <div 
             className="fixed z-[10000]"
             style={{
-              top: buttonRect.bottom + 8,
-              left: buttonRect.right - 192, // 192px = w-48 (12rem * 16px)
+              top: buttonRect ? buttonRect.bottom + 8 : 60,
+              left: buttonRect ? buttonRect.right - 192 : 'auto',
+              right: buttonRect ? 'auto' : 16,
               minWidth: '12rem'
             }}
           >
