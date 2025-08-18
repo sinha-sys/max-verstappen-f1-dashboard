@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { useTranslation } from "react-i18next";
 import { TrendingUp } from "lucide-react";
 import type { SeasonStat } from "@/lib/types";
 
@@ -10,6 +11,8 @@ interface WinRateTrendProps {
 }
 
 export function WinRateTrend({ seasons }: WinRateTrendProps) {
+  const { t } = useTranslation();
+  
   const data = seasons.map((season) => ({
     season: season.season,
     winRate: season.starts > 0 ? (season.wins / season.starts) * 100 : 0,
@@ -22,10 +25,10 @@ export function WinRateTrend({ seasons }: WinRateTrendProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <TrendingUp className="h-5 w-5 text-yellow-600" />
-          Win Rate Trend
+          {t('charts.winRateTrend')}
         </CardTitle>
         <p className="text-sm text-muted-foreground">
-          Percentage of races won each season, showing Max&apos;s evolution from promising rookie to championship dominance
+          {t('charts.winRateTrendDesc')}
         </p>
       </CardHeader>
       <CardContent>

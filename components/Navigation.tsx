@@ -3,46 +3,50 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent } from "@/components/ui/card";
 import { Home, User, Calendar, Trophy, Clock, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const navigationItems = [
+const getNavigationItems = (t: any) => [
   {
-    name: "Dashboard",
+    name: t('navigation.dashboard'),
     href: "/",
     icon: Home,
-    description: "Career stats and performance data"
+    description: t('navigation.dashboardDesc')
   },
   {
-    name: "Results",
+    name: t('navigation.results'),
     href: "/results",
     icon: Calendar,
-    description: "Season-by-season results and statistics"
+    description: t('navigation.resultsDesc')
   },
   {
-    name: "Win Rate",
+    name: t('navigation.winRate'),
     href: "/win-rate",
     icon: Trophy,
-    description: "Top F1 drivers by career win percentage"
+    description: t('navigation.winRateDesc')
   },
   {
-    name: "Timeline",
+    name: t('navigation.timeline'),
     href: "/timeline",
     icon: Clock,
-    description: "Interactive career timeline and milestones"
+    description: t('navigation.timelineDesc')
   },
   {
-    name: "Profile",
+    name: t('navigation.profile'),
     href: "/profile",
     icon: User,
-    description: "Biography and career highlights"
+    description: t('navigation.profileDesc')
   }
 ];
 
 export function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { t } = useTranslation();
+  
+  const navigationItems = getNavigationItems(t);
 
   return (
     <>
@@ -80,7 +84,7 @@ export function Navigation() {
       <nav className="md:hidden border-b bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/50">
         <div className="container mx-auto px-3 sm:px-6">
           <div className="flex h-14 items-center justify-between">
-            <h2 className="text-lg font-semibold">Navigation</h2>
+            <h2 className="text-lg font-semibold">{t('navigation.dashboard')}</h2>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"

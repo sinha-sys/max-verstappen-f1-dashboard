@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "react-i18next";
 import { Trophy } from "lucide-react";
 import type { RecordItem } from "@/lib/types";
 
@@ -8,12 +9,13 @@ interface RecordsProps {
 }
 
 export function Records({ records }: RecordsProps) {
+  const { t } = useTranslation();
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Trophy className="h-5 w-5 text-amber-600" />
-          Career Records & Achievements
+          {t('records.title')}
         </CardTitle>
       </CardHeader>
       <CardContent>

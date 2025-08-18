@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { useTranslation } from "react-i18next";
 import { Trophy } from "lucide-react";
 import type { SeasonStat } from "@/lib/types";
 
@@ -10,6 +11,8 @@ interface CumulativeWinsProps {
 }
 
 export function CumulativeWins({ seasons }: CumulativeWinsProps) {
+  const { t } = useTranslation();
+  
   let cumulativeWins = 0;
   const data = seasons.map((season) => {
     cumulativeWins += season.wins;
@@ -25,10 +28,10 @@ export function CumulativeWins({ seasons }: CumulativeWinsProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Trophy className="h-5 w-5 text-yellow-600" />
-          Cumulative Wins
+          {t('charts.cumulativeWins')}
         </CardTitle>
         <p className="text-sm text-muted-foreground">
-          Total career victories accumulated over time, highlighting the acceleration during championship years
+          {t('charts.cumulativeWinsDesc')}
         </p>
       </CardHeader>
       <CardContent>

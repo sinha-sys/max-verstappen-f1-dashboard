@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { formatNumber, formatPoints } from "@/lib/format";
+import { useTranslation } from "react-i18next";
 import { Trophy, Flag, Target, Zap, Timer, MapPin, AlertTriangle, Crown } from "lucide-react";
 import type { CareerTotals } from "@/lib/types";
 
@@ -8,52 +9,54 @@ interface KPIGroupProps {
 }
 
 export function KPIGroup({ career }: KPIGroupProps) {
+  const { t } = useTranslation();
+  
   const kpis = [
     {
       icon: Flag,
-      label: "Starts",
+      label: t('kpi.starts'),
       value: formatNumber(career.starts),
       color: "text-blue-600",
     },
     {
       icon: Trophy,
-      label: "Wins",
+      label: t('kpi.wins'),
       value: formatNumber(career.wins),
       color: "text-yellow-600",
     },
     {
       icon: Target,
-      label: "Podiums",
+      label: t('kpi.podiums'),
       value: formatNumber(career.podiums),
       color: "text-green-600",
     },
     {
       icon: Zap,
-      label: "Poles",
+      label: t('kpi.poles'),
       value: formatNumber(career.poles),
       color: "text-purple-600",
     },
     {
       icon: Timer,
-      label: "Fastest Laps",
+      label: t('kpi.fastestLaps'),
       value: formatNumber(career.fastestLaps),
       color: "text-pink-600",
     },
     {
       icon: MapPin,
-      label: "Points",
+      label: t('kpi.points'),
       value: formatPoints(career.points),
       color: "text-indigo-600",
     },
     {
       icon: AlertTriangle,
-      label: "DNFs",
+      label: t('kpi.dnfs'),
       value: formatNumber(career.dnfs),
       color: "text-red-600",
     },
     {
       icon: Crown,
-      label: "Championships",
+      label: t('kpi.championships'),
       value: formatNumber(career.championships),
       color: "text-amber-600",
     },

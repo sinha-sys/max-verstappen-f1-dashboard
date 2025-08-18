@@ -1,5 +1,6 @@
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageSelector } from "@/components/LanguageSelector";
+import { useTranslation } from "react-i18next";
 import Image from "next/image";
 
 interface HeaderProps {
@@ -7,6 +8,7 @@ interface HeaderProps {
 }
 
 export function Header({ driverName }: HeaderProps) {
+  const { t } = useTranslation();
   return (
     <header className="border-b bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/50 w-full overflow-x-hidden">
       <div className="container mx-auto px-3 sm:px-6 lg:px-8 max-w-full">
@@ -39,9 +41,9 @@ export function Header({ driverName }: HeaderProps) {
               </div>
             </div>
                                 <div>
-                      <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent" itemProp="name">{driverName}</h1>
+                      <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent" itemProp="name">{t('header.title')}</h1>
                       <p className="text-sm sm:text-base text-muted-foreground font-medium" itemProp="description">
-                        F1 Career Dashboard
+                        {t('header.subtitle')}
                       </p>
                     </div>
           </div>

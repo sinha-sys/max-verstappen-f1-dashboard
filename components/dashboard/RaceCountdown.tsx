@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Flag, MapPin } from "lucide-react";
@@ -19,6 +20,7 @@ export function RaceCountdown() {
   const [timeRemaining, setTimeRemaining] = useState<TimeRemaining | null>(null);
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setMounted(true);
@@ -150,8 +152,8 @@ export function RaceCountdown() {
           <div className="flex items-center justify-center gap-3">
             <Flag className="h-5 w-5 text-muted-foreground" />
             <div className="text-center">
-              <h3 className="font-semibold text-muted-foreground">Season Complete</h3>
-              <p className="text-sm text-muted-foreground">No more races scheduled for 2025</p>
+              <h3 className="font-semibold text-muted-foreground">{t('countdown.seasonComplete')}</h3>
+              <p className="text-sm text-muted-foreground">{t('countdown.noMoreRaces')}</p>
             </div>
           </div>
         </CardContent>
@@ -178,7 +180,7 @@ export function RaceCountdown() {
                 <h3 className="font-semibold text-sm sm:text-base">{nextRace.name}</h3>
                 {isRaceToday && (
                   <Badge variant="destructive" className="text-xs animate-pulse">
-                    TODAY
+                    {t('countdown.today')}
                   </Badge>
                 )}
               </div>
@@ -197,27 +199,27 @@ export function RaceCountdown() {
               <div className={`text-lg sm:text-xl font-bold leading-none ${isRaceSoon ? 'text-red-500' : 'text-primary'}`}>
                 {timeRemaining.days}
               </div>
-              <div className="text-xs text-muted-foreground">days</div>
+              <div className="text-xs text-muted-foreground">{t('countdown.days')}</div>
             </div>
             <div className="text-muted-foreground">:</div>
             <div className="text-center">
               <div className={`text-lg sm:text-xl font-bold leading-none ${isRaceSoon ? 'text-red-500' : 'text-primary'}`}>
                 {String(timeRemaining.hours).padStart(2, '0')}
               </div>
-              <div className="text-xs text-muted-foreground">hrs</div>
+              <div className="text-xs text-muted-foreground">{t('countdown.hours')}</div>
             </div>
             <div className="text-muted-foreground">:</div>
             <div className="text-center">
               <div className={`text-lg sm:text-xl font-bold leading-none ${isRaceSoon ? 'text-red-500' : 'text-primary'}`}>
                 {String(timeRemaining.minutes).padStart(2, '0')}
               </div>
-              <div className="text-xs text-muted-foreground">min</div>
+              <div className="text-xs text-muted-foreground">{t('countdown.minutes')}</div>
             </div>
             <div className="text-center hidden sm:block">
               <div className={`text-lg sm:text-xl font-bold leading-none ${isRaceSoon ? 'text-red-500' : 'text-primary'}`}>
                 {String(timeRemaining.seconds).padStart(2, '0')}
               </div>
-              <div className="text-xs text-muted-foreground">sec</div>
+              <div className="text-xs text-muted-foreground">{t('countdown.seconds')}</div>
             </div>
           </div>
         </div>
