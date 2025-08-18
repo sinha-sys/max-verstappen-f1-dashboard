@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
-import { Home, User, Calendar, Trophy, Menu, X } from "lucide-react";
+import { Home, User, Calendar, Trophy, Clock, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navigationItems = [
@@ -25,6 +25,12 @@ const navigationItems = [
     href: "/win-rate",
     icon: Trophy,
     description: "Top F1 drivers by career win percentage"
+  },
+  {
+    name: "Timeline",
+    href: "/timeline",
+    icon: Clock,
+    description: "Interactive career timeline and milestones"
   },
   {
     name: "Profile",
