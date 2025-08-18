@@ -10,6 +10,7 @@ import { CumulativeWins } from "@/components/dashboard/Charts/CumulativeWins";
 
 import { Records } from "@/components/dashboard/Records";
 import { FilterControls } from "@/components/dashboard/FilterControls";
+import { RaceCountdown } from "@/components/dashboard/RaceCountdown";
 
 import { Separator } from "@/components/ui/separator";
 import type { CareerTotals, RateSummary, SeasonStat, RecordItem, FilterState } from "@/lib/types";
@@ -172,6 +173,15 @@ export default function HomePage() {
           {/* Main Content Area */}
           <div className="space-y-3 sm:space-y-6 lg:space-y-8 min-w-0 w-full">
 
+            {/* Race Countdown - Next F1 Race */}
+            <section className="w-full flex justify-center" aria-labelledby="countdown-heading">
+              <div className="w-full max-w-md sm:max-w-lg">
+                <h2 id="countdown-heading" className="sr-only">Next F1 Race Countdown</h2>
+                <RaceCountdown />
+              </div>
+            </section>
+
+            <Separator className="hidden sm:block" />
 
             {/* KPI Section - Primary stats */}
             {career && (

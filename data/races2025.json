@@ -1,0 +1,72 @@
+[
+  {
+    "round": 15,
+    "name": "Dutch Grand Prix",
+    "location": "Zandvoort",
+    "date": "2025-08-31",
+    "startTimeGMT": "14:00"
+  },
+  {
+    "round": 16,
+    "name": "Italian Grand Prix",
+    "location": "Monza",
+    "date": "2025-09-07",
+    "startTimeGMT": "14:00"
+  },
+  {
+    "round": 17,
+    "name": "Azerbaijan Grand Prix",
+    "location": "Baku",
+    "date": "2025-09-21",
+    "startTimeGMT": "12:00"
+  },
+  {
+    "round": 18,
+    "name": "Singapore Grand Prix",
+    "location": "Marina Bay",
+    "date": "2025-10-05",
+    "startTimeGMT": "13:00"
+  },
+  {
+    "round": 19,
+    "name": "United States Grand Prix",
+    "location": "Austin",
+    "date": "2025-10-19",
+    "startTimeGMT": "20:00"
+  },
+  {
+    "round": 20,
+    "name": "Mexico City Grand Prix",
+    "location": "Mexico City",
+    "date": "2025-10-26",
+    "startTimeGMT": "20:00"
+  },
+  {
+    "round": 21,
+    "name": "São Paulo Grand Prix",
+    "location": "Brazil",
+    "date": "2025-11-09",
+    "startTimeGMT": "17:00"
+  },
+  {
+    "round": 22,
+    "name": "Las Vegas Grand Prix",
+    "location": "Las Vegas",
+    "date": "2025-11-23",
+    "startTimeGMT": "04:00"
+  },
+  {
+    "round": 23,
+    "name": "Qatar Grand Prix",
+    "location": "Lusail",
+    "date": "2025-11-30",
+    "startTimeGMT": "16:00"
+  },
+  {
+    "round": 24,
+    "name": "Abu Dhabi Grand Prix",
+    "location": "Yas Marina",
+    "date": "2025-12-07",
+    "startTimeGMT": "13:00"
+  }
+]
