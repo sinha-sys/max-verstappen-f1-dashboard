@@ -10,7 +10,7 @@ interface HeaderProps {
 export function Header({ driverName }: HeaderProps) {
   const { t } = useTranslation();
   return (
-    <header className="border-b bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/50 w-full overflow-x-hidden">
+    <header className="border-b bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/50 w-full overflow-x-hidden relative z-50">
       <div className="container mx-auto px-3 sm:px-6 lg:px-8 max-w-full">
         <div className="flex h-16 sm:h-20 items-center justify-between">
           <div className="flex items-center space-x-2 sm:space-x-4">
