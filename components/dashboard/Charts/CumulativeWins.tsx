@@ -27,6 +27,9 @@ export function CumulativeWins({ seasons }: CumulativeWinsProps) {
           <Trophy className="h-5 w-5 text-yellow-600" />
           Cumulative Wins
         </CardTitle>
+        <p className="text-sm text-muted-foreground">
+          Total career victories accumulated over time, highlighting the acceleration during championship years
+        </p>
       </CardHeader>
       <CardContent>
         <div className="h-48 sm:h-64">

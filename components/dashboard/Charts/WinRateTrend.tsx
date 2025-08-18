@@ -24,6 +24,9 @@ export function WinRateTrend({ seasons }: WinRateTrendProps) {
           <TrendingUp className="h-5 w-5 text-yellow-600" />
           Win Rate Trend
         </CardTitle>
+        <p className="text-sm text-muted-foreground">
+          Percentage of races won each season, showing Max&apos;s evolution from promising rookie to championship dominance
+        </p>
       </CardHeader>
       <CardContent>
         <div className="h-48 sm:h-64">
