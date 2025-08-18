@@ -1,0 +1,112 @@
+{
+  "navigation": {
+    "dashboard": "Dashboard",
+    "results": "Results",
+    "winRate": "Win Rate",
+    "timeline": "Timeline",
+    "profile": "Profile",
+    "dashboardDesc": "Career stats and performance data",
+    "resultsDesc": "Season-by-season results and statistics",
+    "winRateDesc": "Top F1 drivers by career win percentage",
+    "timelineDesc": "Interactive career timeline and milestones",
+    "profileDesc": "Biography and career highlights"
+  },
+  "header": {
+    "title": "Max Verstappen",
+    "subtitle": "F1 Career Dashboard"
+  },
+  "countdown": {
+    "nextRace": "Next Race",
+    "today": "TODAY",
+    "days": "days",
+    "hours": "hrs",
+    "minutes": "min",
+    "seconds": "sec",
+    "seasonComplete": "Season Complete",
+    "noMoreRaces": "No more races scheduled for 2025"
+  },
+  "kpi": {
+    "starts": "Starts",
+    "wins": "Wins",
+    "podiums": "Podiums",
+    "poles": "Poles",
+    "fastestLaps": "Fastest Laps",
+    "points": "Points",
+    "dnfs": "DNFs",
+    "championships": "Championships"
+  },
+  "rates": {
+    "winRate": "Win Rate",
+    "podiumRate": "Podium Rate",
+    "poleRate": "Pole Rate",
+    "dnfRate": "DNF Rate",
+    "avgPoints": "Avg Points"
+  },
+  "charts": {
+    "winRateTrend": "Win Rate Trend",
+    "winRateTrendDesc": "Percentage of races won each season, showing Max's evolution from promising rookie to championship dominance",
+    "cumulativeWins": "Cumulative Wins",
+    "cumulativeWinsDesc": "Total career victories accumulated over time, highlighting the acceleration during championship years"
+  },
+  "records": {
+    "title": "Career Records & Achievements",
+    "description": "Max Verstappen's most significant F1 records and career milestones"
+  },
+  "profile": {
+    "title": "Driver Profile",
+    "aboutTitle": "About Max Verstappen",
+    "aboutText1": "Max Emilian Verstappen is a Dutch Formula 1 driver for Red Bull Racing, widely recognized as one of the most dominant competitors in modern motorsport. Born on September 30, 1997, in Hasselt, Belgium, Verstappen made history in 2015 as the youngest driver ever to start an F1 Grand Prix at just 17 years old.",
+    "aboutText2": "Since his mid-season promotion to Red Bull Racing in 2016 — where he won his debut race at the Spanish Grand Prix — Verstappen has rewritten Formula 1's record books. His aggressive yet controlled driving style, exceptional racecraft, and consistency have earned him four consecutive World Championships (2021–2024) and a place among the sport's greats.",
+    "careerHighlights": "Career Highlights",
+    "highlight1": "Formula 1 debut in 2015 with Toro Rosso at age 17.",
+    "highlight2": "Youngest race winner in F1 history – 2016 Spanish Grand Prix.",
+    "highlight3": "Four-time World Champion (2021, 2022, 2023, 2024).",
+    "highlight4": "Holds single-season records for most wins (19 in 2023) and most points (575 in 2023).",
+    "highlight5": "Leader in sprint race victories and multiple consecutive win streaks.",
+    "drivingStyle": "Driving Style & Strengths",
+    "drivingStyleText": "Verstappen is known for his fearless overtaking, precision under pressure, and adaptability to varying track conditions. His ability to manage tyres while maintaining pace, combined with top-tier qualifying speed, makes him one of the most complete drivers in the history of Formula 1.",
+    "personalLife": "Personal Life & Interests",
+    "personalLifeText": "Away from the circuit, Verstappen is an avid sim racer, often competing in online endurance events. He has a large global fanbase, significant social media presence, and plays a major role in Red Bull's brand identity in motorsport. Known for his straightforward personality and competitive spirit, he continues to push the boundaries of what's possible in Formula 1.",
+    "quickFacts": "Quick Facts",
+    "born": "Born:",
+    "nationality": "Nationality:",
+    "team": "Team:",
+    "debut": "F1 Debut:",
+    "carNumber": "Car Number:",
+    "championshipsCount": "Championships:",
+    "bornValue": "September 30, 1997",
+    "nationalityValue": "Dutch",
+    "teamValue": "Red Bull Racing",
+    "debutValue": "2015 Australian Grand Prix",
+    "carNumberValue": "1 (World Champion)",
+    "championshipsValue": "4 (2021, 2022, 2023, 2024)"
+  },
+  "timeline": {
+    "title": "Career Timeline",
+    "subtitle": "Max Verstappen's Formula 1 journey from debut to championship dominance",
+    "allEvents": "All Events",
+    "championship": "Championship",
+    "record": "Record",
+    "win": "Win",
+    "debut": "Debut",
+    "milestone": "Milestone"
+  },
+  "loading": {
+    "initializing": "Initializing...",
+    "loadingDashboard": "Loading dashboard data...",
+    "loadingTimeline": "Loading timeline data...",
+    "loadingProfile": "Loading profile data..."
+  },
+  "error": {
+    "loadingData": "Error loading data",
+    "failedToLoad": "Failed to load data"
+  },
+  "language": {
+    "select": "Language",
+    "english": "English",
+    "dutch": "Nederlands",
+    "german": "Deutsch",
+    "russian": "Русский",
+    "chinese": "中文"
+  }
+}

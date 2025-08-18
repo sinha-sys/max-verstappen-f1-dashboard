@@ -1,0 +1,112 @@
+{
+  "navigation": {
+    "dashboard": "Dashboard",
+    "results": "Ergebnisse",
+    "winRate": "Siegquote",
+    "timeline": "Zeitlinie",
+    "profile": "Profil",
+    "dashboardDesc": "Karriere-Statistiken und Leistungsdaten",
+    "resultsDesc": "Saison-für-Saison Ergebnisse und Statistiken",
+    "winRateDesc": "Top F1-Fahrer nach Karriere-Siegquote",
+    "timelineDesc": "Interaktive Karriere-Zeitlinie und Meilensteine",
+    "profileDesc": "Biografie und Karriere-Höhepunkte"
+  },
+  "header": {
+    "title": "Max Verstappen",
+    "subtitle": "F1 Karriere Dashboard"
+  },
+  "countdown": {
+    "nextRace": "Nächstes Rennen",
+    "today": "HEUTE",
+    "days": "Tage",
+    "hours": "Std",
+    "minutes": "Min",
+    "seconds": "Sek",
+    "seasonComplete": "Saison Beendet",
+    "noMoreRaces": "Keine weiteren Rennen für 2025 geplant"
+  },
+  "kpi": {
+    "starts": "Starts",
+    "wins": "Siege",
+    "podiums": "Podestplätze",
+    "poles": "Pole-Positionen",
+    "fastestLaps": "Schnellste Runden",
+    "points": "Punkte",
+    "dnfs": "Ausfälle",
+    "championships": "Meisterschaften"
+  },
+  "rates": {
+    "winRate": "Siegquote",
+    "podiumRate": "Podestquote",
+    "poleRate": "Pole-Quote",
+    "dnfRate": "Ausfallquote",
+    "avgPoints": "Ø Punkte"
+  },
+  "charts": {
+    "winRateTrend": "Siegquote Trend",
+    "winRateTrendDesc": "Prozentsatz der gewonnenen Rennen pro Saison, zeigt Max's Entwicklung vom vielversprechenden Rookie zur Meisterschafts-Dominanz",
+    "cumulativeWins": "Kumulative Siege",
+    "cumulativeWinsDesc": "Gesamte Karriere-Siege über die Zeit angesammelt, hebt die Beschleunigung während der Meisterschaftsjahre hervor"
+  },
+  "records": {
+    "title": "Karriere-Rekorde & Erfolge",
+    "description": "Max Verstappens bedeutendste F1-Rekorde und Karriere-Meilensteine"
+  },
+  "profile": {
+    "title": "Fahrer-Profil",
+    "aboutTitle": "Über Max Verstappen",
+    "aboutText1": "Max Emilian Verstappen ist ein niederländischer Formel-1-Fahrer für Red Bull Racing, weithin anerkannt als einer der dominantesten Konkurrenten im modernen Motorsport. Geboren am 30. September 1997 in Hasselt, Belgien, schrieb Verstappen 2015 Geschichte als der jüngste Fahrer, der jemals einen F1-Grand-Prix startete, mit nur 17 Jahren.",
+    "aboutText2": "Seit seiner Beförderung zu Red Bull Racing mitten in der Saison 2016 — wo er sein Debütrennen beim Spanischen Grand Prix gewann — hat Verstappen die Rekordbücher der Formel 1 neu geschrieben. Sein aggressiver, aber kontrollierter Fahrstil, außergewöhnliche Rennkunst und Beständigkeit haben ihm vier aufeinanderfolgende Weltmeisterschaften (2021–2024) eingebracht und einen Platz unter den Größten des Sports.",
+    "careerHighlights": "Karriere-Höhepunkte",
+    "highlight1": "Formel-1-Debüt 2015 mit Toro Rosso im Alter von 17 Jahren.",
+    "highlight2": "Jüngster Rennsieger in der F1-Geschichte – 2016 Spanischer Grand Prix.",
+    "highlight3": "Vierfacher Weltmeister (2021, 2022, 2023, 2024).",
+    "highlight4": "Hält Saisonrekorde für die meisten Siege (19 in 2023) und die meisten Punkte (575 in 2023).",
+    "highlight5": "Führend bei Sprint-Rennen-Siegen und mehreren aufeinanderfolgenden Siegesserien.",
+    "drivingStyle": "Fahrstil & Stärken",
+    "drivingStyleText": "Verstappen ist bekannt für seine furchtlosen Überholmanöver, Präzision unter Druck und Anpassungsfähigkeit an verschiedene Streckenbedingungen. Seine Fähigkeit, Reifen zu managen und dabei das Tempo zu halten, kombiniert mit erstklassiger Qualifying-Geschwindigkeit, macht ihn zu einem der komplettesten Fahrer in der Geschichte der Formel 1.",
+    "personalLife": "Privatleben & Interessen",
+    "personalLifeText": "Abseits der Rennstrecke ist Verstappen ein begeisterter Sim-Racer, der oft an Online-Langstreckenrennen teilnimmt. Er hat eine große globale Fanbase, eine bedeutende Social-Media-Präsenz und spielt eine wichtige Rolle in Red Bulls Markenidentität im Motorsport. Bekannt für seine direkte Persönlichkeit und seinen Wettkampfgeist, verschiebt er weiterhin die Grenzen dessen, was in der Formel 1 möglich ist.",
+    "quickFacts": "Schnelle Fakten",
+    "born": "Geboren:",
+    "nationality": "Nationalität:",
+    "team": "Team:",
+    "debut": "F1-Debüt:",
+    "carNumber": "Startnummer:",
+    "championshipsCount": "Meisterschaften:",
+    "bornValue": "30. September 1997",
+    "nationalityValue": "Niederländisch",
+    "teamValue": "Red Bull Racing",
+    "debutValue": "2015 Australischer Grand Prix",
+    "carNumberValue": "1 (Weltmeister)",
+    "championshipsValue": "4 (2021, 2022, 2023, 2024)"
+  },
+  "timeline": {
+    "title": "Karriere-Zeitlinie",
+    "subtitle": "Max Verstappens Formel-1-Reise vom Debüt zur Meisterschafts-Dominanz",
+    "allEvents": "Alle Ereignisse",
+    "championship": "Meisterschaft",
+    "record": "Rekord",
+    "win": "Sieg",
+    "debut": "Debüt",
+    "milestone": "Meilenstein"
+  },
+  "loading": {
+    "initializing": "Initialisierung...",
+    "loadingDashboard": "Dashboard-Daten laden...",
+    "loadingTimeline": "Zeitlinie-Daten laden...",
+    "loadingProfile": "Profil-Daten laden..."
+  },
+  "error": {
+    "loadingData": "Fehler beim Laden der Daten",
+    "failedToLoad": "Laden der Daten fehlgeschlagen"
+  },
+  "language": {
+    "select": "Sprache",
+    "english": "English",
+    "dutch": "Nederlands",
+    "german": "Deutsch",
+    "russian": "Русский",
+    "chinese": "中文"
+  }
+}

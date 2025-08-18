@@ -1,0 +1,112 @@
+{
+  "navigation": {
+    "dashboard": "仪表板",
+    "results": "成绩",
+    "winRate": "胜率",
+    "timeline": "时间线",
+    "profile": "个人资料",
+    "dashboardDesc": "职业生涯统计和表现数据",
+    "resultsDesc": "逐赛季成绩和统计数据",
+    "winRateDesc": "按职业生涯胜率排名的顶级F1车手",
+    "timelineDesc": "互动职业生涯时间线和里程碑",
+    "profileDesc": "传记和职业生涯亮点"
+  },
+  "header": {
+    "title": "马克斯·维斯塔潘",
+    "subtitle": "F1职业生涯仪表板"
+  },
+  "countdown": {
+    "nextRace": "下一场比赛",
+    "today": "今天",
+    "days": "天",
+    "hours": "小时",
+    "minutes": "分钟",
+    "seconds": "秒",
+    "seasonComplete": "赛季结束",
+    "noMoreRaces": "2025年没有更多比赛安排"
+  },
+  "kpi": {
+    "starts": "出赛次数",
+    "wins": "胜利",
+    "podiums": "领奖台",
+    "poles": "杆位",
+    "fastestLaps": "最快圈速",
+    "points": "积分",
+    "dnfs": "退赛",
+    "championships": "冠军"
+  },
+  "rates": {
+    "winRate": "胜率",
+    "podiumRate": "领奖台率",
+    "poleRate": "杆位率",
+    "dnfRate": "退赛率",
+    "avgPoints": "平均积分"
+  },
+  "charts": {
+    "winRateTrend": "胜率趋势",
+    "winRateTrendDesc": "每赛季获胜比赛的百分比，展示马克斯从有前途的新秀到冠军统治地位的演变",
+    "cumulativeWins": "累计胜利",
+    "cumulativeWinsDesc": "随时间累积的职业生涯总胜利数，突出了冠军年份期间的加速"
+  },
+  "records": {
+    "title": "职业生涯记录与成就",
+    "description": "马克斯·维斯塔潘最重要的F1记录和职业生涯里程碑"
+  },
+  "profile": {
+    "title": "车手资料",
+    "aboutTitle": "关于马克斯·维斯塔潘",
+    "aboutText1": "马克斯·埃米利安·维斯塔潘是红牛车队的荷兰一级方程式车手，被广泛认为是现代赛车运动中最具统治力的竞争者之一。1997年9月30日出生于比利时哈瑟尔特，维斯塔潘在2015年创造了历史，成为有史以来最年轻的F1大奖赛起跑车手，当时年仅17岁。",
+    "aboutText2": "自2016年赛季中期晋升至红牛车队——在那里他赢得了西班牙大奖赛的首秀——维斯塔潘重写了一级方程式的记录册。他激进而受控的驾驶风格、卓越的比赛技巧和一致性为他赢得了四个连续的世界冠军（2021-2024）和在这项运动中伟大车手的地位。",
+    "careerHighlights": "职业生涯亮点",
+    "highlight1": "2015年17岁时在红牛二队首次参加一级方程式比赛。",
+    "highlight2": "F1历史上最年轻的比赛获胜者——2016年西班牙大奖赛。",
+    "highlight3": "四届世界冠军（2021、2022、2023、2024）。",
+    "highlight4": "保持单赛季最多胜利（2023年19胜）和最多积分（2023年575分）记录。",
+    "highlight5": "在冲刺赛胜利和多次连续获胜方面领先。",
+    "drivingStyle": "驾驶风格与优势",
+    "drivingStyleText": "维斯塔潘以其无畏的超车、压力下的精准和对不同赛道条件的适应能力而闻名。他在保持速度的同时管理轮胎的能力，结合顶级的排位赛速度，使他成为一级方程式历史上最全面的车手之一。",
+    "personalLife": "个人生活与兴趣",
+    "personalLifeText": "在赛道之外，维斯塔潘是一名狂热的模拟赛车手，经常参加在线耐力赛事。他拥有庞大的全球粉丝群、重要的社交媒体影响力，并在红牛在赛车运动中的品牌形象中发挥重要作用。以其直率的个性和竞争精神而闻名，他继续推动一级方程式可能性的边界。",
+    "quickFacts": "快速事实",
+    "born": "出生：",
+    "nationality": "国籍：",
+    "team": "车队：",
+    "debut": "F1首秀：",
+    "carNumber": "赛车号码：",
+    "championshipsCount": "冠军：",
+    "bornValue": "1997年9月30日",
+    "nationalityValue": "荷兰",
+    "teamValue": "红牛车队",
+    "debutValue": "2015年澳大利亚大奖赛",
+    "carNumberValue": "1号（世界冠军）",
+    "championshipsValue": "4个（2021、2022、2023、2024）"
+  },
+  "timeline": {
+    "title": "职业生涯时间线",
+    "subtitle": "马克斯·维斯塔潘从首秀到冠军统治地位的一级方程式之旅",
+    "allEvents": "所有事件",
+    "championship": "冠军",
+    "record": "记录",
+    "win": "胜利",
+    "debut": "首秀",
+    "milestone": "里程碑"
+  },
+  "loading": {
+    "initializing": "初始化中...",
+    "loadingDashboard": "加载仪表板数据...",
+    "loadingTimeline": "加载时间线数据...",
+    "loadingProfile": "加载个人资料数据..."
+  },
+  "error": {
+    "loadingData": "数据加载错误",
+    "failedToLoad": "数据加载失败"
+  },
+  "language": {
+    "select": "语言",
+    "english": "English",
+    "dutch": "Nederlands",
+    "german": "Deutsch",
+    "russian": "Русский",
+    "chinese": "中文"
+  }
+}

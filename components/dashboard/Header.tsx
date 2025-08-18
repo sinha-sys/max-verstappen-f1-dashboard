@@ -1,4 +1,5 @@
 import { ThemeToggle } from "@/components/theme-toggle";
+import { LanguageSelector } from "@/components/LanguageSelector";
 import Image from "next/image";
 
 interface HeaderProps {
@@ -46,6 +47,7 @@ export function Header({ driverName }: HeaderProps) {
           </div>
 
           <div className="flex items-center space-x-4">
+            <LanguageSelector />
             <ThemeToggle />
           </div>
         </div>
