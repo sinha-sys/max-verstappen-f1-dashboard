@@ -1,5 +1,103 @@
 [
   {
+    "round": 1,
+    "name": "Bahrain Grand Prix",
+    "location": "Sakhir",
+    "date": "2025-03-16",
+    "startTimeGMT": "15:00"
+  },
+  {
+    "round": 2,
+    "name": "Saudi Arabian Grand Prix",
+    "location": "Jeddah",
+    "date": "2025-03-23",
+    "startTimeGMT": "17:00"
+  },
+  {
+    "round": 3,
+    "name": "Australian Grand Prix",
+    "location": "Melbourne",
+    "date": "2025-04-06",
+    "startTimeGMT": "05:00"
+  },
+  {
+    "round": 4,
+    "name": "Japanese Grand Prix",
+    "location": "Suzuka",
+    "date": "2025-04-13",
+    "startTimeGMT": "05:00"
+  },
+  {
+    "round": 5,
+    "name": "Chinese Grand Prix",
+    "location": "Shanghai",
+    "date": "2025-04-20",
+    "startTimeGMT": "07:00"
+  },
+  {
+    "round": 6,
+    "name": "Miami Grand Prix",
+    "location": "Miami",
+    "date": "2025-05-04",
+    "startTimeGMT": "19:30"
+  },
+  {
+    "round": 7,
+    "name": "Emilia Romagna Grand Prix",
+    "location": "Imola",
+    "date": "2025-05-18",
+    "startTimeGMT": "13:00"
+  },
+  {
+    "round": 8,
+    "name": "Monaco Grand Prix",
+    "location": "Monaco",
+    "date": "2025-05-25",
+    "startTimeGMT": "13:00"
+  },
+  {
+    "round": 9,
+    "name": "Spanish Grand Prix",
+    "location": "Barcelona",
+    "date": "2025-06-01",
+    "startTimeGMT": "13:00"
+  },
+  {
+    "round": 10,
+    "name": "Canadian Grand Prix",
+    "location": "Montreal",
+    "date": "2025-06-15",
+    "startTimeGMT": "18:00"
+  },
+  {
+    "round": 11,
+    "name": "Austrian Grand Prix",
+    "location": "Spielberg",
+    "date": "2025-06-29",
+    "startTimeGMT": "13:00"
+  },
+  {
+    "round": 12,
+    "name": "British Grand Prix",
+    "location": "Silverstone",
+    "date": "2025-07-06",
+    "startTimeGMT": "14:00"
+  },
+  {
+    "round": 13,
+    "name": "Hungarian Grand Prix",
+    "location": "Budapest",
+    "date": "2025-07-27",
+    "startTimeGMT": "13:00"
+  },
+  {
+    "round": 14,
+    "name": "Belgian Grand Prix",
+    "location": "Spa-Francorchamps",
+    "date": "2025-08-03",
+    "startTimeGMT": "13:00"
+  },
+  {
     "round": 15,
     "name": "Dutch Grand Prix",
     "location": "Zandvoort",

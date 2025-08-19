@@ -64,22 +64,33 @@ export function RacePredictor() {
 
     const fetchNextRace = async () => {
       try {
+        console.log('Fetching races...');
         const races = await getRacesClient();
+        console.log('Fetched races:', races.length, 'races');
+        
         const now = new Date();
+        console.log('Current time:', now.toISOString());
         
         const upcomingRaces = races.filter(race => {
           const raceDateTime = new Date(`${race.date}T${race.startTimeGMT}Z`);
+          console.log(`Race ${race.name}: ${race.date}T${race.startTimeGMT}Z -> ${raceDateTime.toISOString()} (upcoming: ${raceDateTime > now})`);
           return raceDateTime > now;
         });
         
+        console.log('Upcoming races:', upcomingRaces.length);
+        
         if (upcomingRaces.length > 0) {
           const next = upcomingRaces[0];
+          console.log('Next race:', next);
           setNextRace(next);
           
           // Load existing stats
           if (userSession) {
+            console.log('Loading prediction stats for:', next.name);
             await loadPredictionStats(next.name, next.date);
           }
+        } else {
+          console.log('No upcoming races found');
         }
       } catch (error) {
         console.error('Error fetching next race:', error);
@@ -135,11 +146,15 @@ export function RacePredictor() {
   };
 
   if (loading || !nextRace) {
+    console.log('RacePredictor loading state:', { loading, nextRace: !!nextRace, userSession: !!userSession });
     return (
       <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
         <CardContent className="p-4">
           <div className="flex items-center justify-center">
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+            <span className="ml-2 text-sm text-muted-foreground">
+              {loading ? 'Loading race data...' : 'No upcoming races'}
+            </span>
           </div>
         </CardContent>
       </Card>
@@ -148,6 +163,16 @@ export function RacePredictor() {
 
   const hasVoted = userVote !== null;
   const winProbability = stats?.winProbability ?? 50;
+
+  console.log('RacePredictor render state:', {
+    nextRace: nextRace?.name,
+    userSession: userSession?.substring(0, 20) + '...',
+    userVote,
+    hasVoted,
+    voting,
+    stats,
+    winProbability
+  });
 
   return (
     <Card className="bg-gradient-to-r from-green-500/5 to-blue-500/5 border-green-500/20">
@@ -167,7 +192,10 @@ export function RacePredictor() {
           {/* Voting Buttons */}
           <div className="flex items-center justify-center gap-3">
             <Button
-              onClick={() => handleVote(true)}
+              onClick={() => {
+                console.log('YES button clicked!');
+                handleVote(true);
+              }}
               disabled={voting}
               size="sm"
               className={`flex items-center gap-2 ${
@@ -181,7 +209,10 @@ export function RacePredictor() {
               {userVote === true && <span className="text-xs">✓</span>}
             </Button>
             <Button
-              onClick={() => handleVote(false)}
+              onClick={() => {
+                console.log('NO button clicked!');
+                handleVote(false);
+              }}
               disabled={voting}
               size="sm"
               variant="destructive"
