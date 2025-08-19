@@ -101,7 +101,7 @@ export function RacePredictor() {
     fetchNextRace();
   }, [userSession, loadPredictionStats]);
 
-  const handleVote = async (prediction: boolean) => {
+  const handleVote = async (prediction: boolean, retryCount = 0) => {
     if (!nextRace) {
       setError('No race available for voting');
       return;
@@ -141,13 +141,32 @@ export function RacePredictor() {
         setUserVote(data.userVote);
         setError(null);
       } else {
+        // Retry once for 405 errors (server restart/temporary issues)
+        if (response.status === 405 && retryCount === 0) {
+          console.log('Race Predictor: Retrying vote submission after 405 error');
+          setVoting(false);
+          setTimeout(() => handleVote(prediction, 1), 1000);
+          return;
+        }
+        
         const errorData = await response.text();
         console.error('Race Predictor: Failed to submit vote:', response.status, errorData);
-        setError(`Failed to submit vote: ${response.status}`);
+        
+        // Provide more specific error messages
+        let errorMessage = `Failed to submit vote: ${response.status}`;
+        if (response.status === 405) {
+          errorMessage = 'Server temporarily unavailable. Please refresh the page and try again.';
+        } else if (response.status === 404) {
+          errorMessage = 'Voting service not found. Please refresh the page.';
+        } else if (response.status >= 500) {
+          errorMessage = 'Server error. Please try again in a moment.';
+        }
+        
+        setError(errorMessage);
       }
     } catch (error) {
       console.error('Race Predictor: Error submitting vote:', error);
-      setError('Network error submitting vote');
+      setError('Network error submitting vote. Please check your connection.');
     } finally {
       setVoting(false);
     }
