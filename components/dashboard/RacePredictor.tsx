@@ -42,13 +42,18 @@ export function RacePredictor() {
   useEffect(() => {
     const loadPredictionStats = async (raceName: string, raceDate: string) => {
       try {
-        const url = `/api/predictions?raceName=${encodeURIComponent(raceName)}&raceDate=${encodeURIComponent(raceDate)}&userSession=${encodeURIComponent(userSession)}`;
+        // Include userSession if available, otherwise just get general stats
+        const sessionParam = userSession ? `&userSession=${encodeURIComponent(userSession)}` : '';
+        const url = `/api/predictions?raceName=${encodeURIComponent(raceName)}&raceDate=${encodeURIComponent(raceDate)}${sessionParam}`;
         const response = await fetch(url);
         
         if (response.ok) {
           const data: PredictionResponse = await response.json();
           setStats(data.stats);
-          setUserVote(data.userVote);
+          // Only set userVote if we have a session and got a vote back
+          if (userSession && data.userVote !== undefined) {
+            setUserVote(data.userVote);
+          }
         }
       } catch (error) {
         console.error('Error loading prediction stats:', error);
@@ -69,10 +74,8 @@ export function RacePredictor() {
           const next = upcomingRaces[0];
           setNextRace(next);
           
-          // Load existing stats
-          if (userSession) {
-            await loadPredictionStats(next.name, next.date);
-          }
+          // Always load stats for the race, even without user session
+          await loadPredictionStats(next.name, next.date);
         }
       } catch (error) {
         console.error('Error fetching next race:', error);
@@ -81,10 +84,30 @@ export function RacePredictor() {
       }
     };
 
-    if (userSession) {
-      fetchNextRace();
-    }
+    fetchNextRace();
   }, [userSession]);
+
+  // Reload stats when userSession becomes available and we have a race
+  useEffect(() => {
+    if (userSession && nextRace) {
+      const loadPredictionStats = async (raceName: string, raceDate: string) => {
+        try {
+          const url = `/api/predictions?raceName=${encodeURIComponent(raceName)}&raceDate=${encodeURIComponent(raceDate)}&userSession=${encodeURIComponent(userSession)}`;
+          const response = await fetch(url);
+          
+          if (response.ok) {
+            const data: PredictionResponse = await response.json();
+            setStats(data.stats);
+            setUserVote(data.userVote);
+          }
+        } catch (error) {
+          console.error('Error loading prediction stats:', error);
+        }
+      };
+      
+      loadPredictionStats(nextRace.name, nextRace.date);
+    }
+  }, [userSession, nextRace]);
 
   const handleVote = async (prediction: boolean) => {
     if (!nextRace || voting || !userSession) {
@@ -187,35 +210,53 @@ export function RacePredictor() {
             </Button>
           </div>
 
-          {/* Results */}
-          {hasVoted && stats && (
-            <div className="text-center space-y-2">
-              {/* Win Probability */}
-              <div className="bg-background/50 rounded-lg p-3">
-                <div className="flex items-center justify-center gap-2 mb-1">
-                  <TrendingUp className="h-4 w-4 text-primary" />
-                  <span className="text-sm font-medium">{t('predictor.winProbability')}</span>
+          {/* Community Statistics - Always Show */}
+          <div className="text-center space-y-2">
+            {/* Win Probability */}
+            <div className="bg-background/50 rounded-lg p-3">
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <TrendingUp className="h-4 w-4 text-primary" />
+                <span className="text-sm font-medium">{t('predictor.winProbability')}</span>
+              </div>
+              <div className="text-3xl font-bold text-primary">{winProbability}%</div>
+              <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground mt-2">
+                <Users className="h-3 w-3" />
+                <span>{t('predictor.totalVotes', { count: stats?.totalVotes || 0 })}</span>
+              </div>
+              
+              {/* Vote breakdown */}
+              <div className="flex justify-center gap-4 mt-2 text-xs">
+                <div className="flex items-center gap-1">
+                  <ThumbsUp className="h-3 w-3 text-green-600" />
+                  <span>{stats?.yesVotes || 0}</span>
                 </div>
-                <div className="text-3xl font-bold text-primary">{winProbability}%</div>
-                <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground mt-2">
-                  <Users className="h-3 w-3" />
-                  <span>{t('predictor.totalVotes', { count: stats.totalVotes })}</span>
-                </div>
-                
-                {/* Vote breakdown */}
-                <div className="flex justify-center gap-4 mt-2 text-xs">
-                  <div className="flex items-center gap-1">
-                    <ThumbsUp className="h-3 w-3 text-green-600" />
-                    <span>{stats.yesVotes}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <ThumbsDown className="h-3 w-3 text-red-600" />
-                    <span>{stats.noVotes}</span>
-                  </div>
+                <div className="flex items-center gap-1">
+                  <ThumbsDown className="h-3 w-3 text-red-600" />
+                  <span>{stats?.noVotes || 0}</span>
                 </div>
               </div>
+              
+              {/* User's vote indicator */}
+              {hasVoted && (
+                <div className="mt-2 pt-2 border-t border-border/50">
+                  <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+                    <span>{t('predictor.yourVote')}</span>
+                    {userVote ? (
+                      <div className="flex items-center gap-1 text-green-600">
+                        <ThumbsUp className="h-3 w-3" />
+                        <span>{t('predictor.yes')}</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-1 text-red-600">
+                        <ThumbsDown className="h-3 w-3" />
+                        <span>{t('predictor.no')}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </CardContent>
     </Card>
