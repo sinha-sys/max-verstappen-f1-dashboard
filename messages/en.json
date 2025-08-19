@@ -52,6 +52,65 @@
     "title": "Career Records & Achievements",
     "description": "Max Verstappen's most significant F1 records and career milestones"
   },
+  "timeline": {
+    "title": "Career Timeline",
+    "subtitle": "Max Verstappen's Formula 1 journey from debut to championship dominance",
+    "careerSummary": "Career Summary",
+    "raceWins": "Race Wins",
+    "polePositions": "Pole Positions",
+    "careerPoints": "Career Points",
+    "filters": {
+      "all": "All Events",
+      "championship": "Championship",
+      "record": "Record",
+      "win": "Win",
+      "debut": "Debut",
+      "milestone": "Milestone"
+    },
+    "ordinals": {
+      "first": "First",
+      "second": "Second",
+      "third": "Third",
+      "fourth": "Fourth"
+    },
+    "events": {
+      "debut": {
+        "date": "March 15, 2015",
+        "title": "Formula 1 Debut",
+        "description": "Made F1 debut at Australian Grand Prix with Toro Rosso at age 17, becoming the youngest driver ever to start an F1 race."
+      },
+      "firstWin": {
+        "date": "May 15, 2016",
+        "title": "First F1 Victory",
+        "description": "Won the Spanish Grand Prix in his first race for Red Bull Racing, becoming the youngest race winner in F1 history."
+      },
+      "championship": {
+        "title": "{{ordinal}} World Championship",
+        "description": "Won the {{year}} Formula 1 World Championship with {{wins}} wins, {{podiums}} podiums, and {{points}} points."
+      },
+      "recordSeason": {
+        "title": "Record-Breaking Season",
+        "description": "Set F1 records for most wins in a season (19) and most points in a season (575), with 10 consecutive victories."
+      },
+      "milestone10": {
+        "title": "10th Career Victory",
+        "description": "Reached 10 career wins, establishing himself as a consistent race winner."
+      },
+      "milestone25": {
+        "title": "25th Career Victory",
+        "description": "Reached 25 career wins, joining the elite group of F1 drivers with 25+ victories."
+      },
+      "milestone50": {
+        "title": "50th Career Victory",
+        "description": "Achieved 50 career wins, cementing his place among F1's greatest drivers."
+      },
+      "promotion": {
+        "date": "May 5, 2016",
+        "title": "Promoted to Red Bull Racing",
+        "description": "Mid-season promotion from Toro Rosso to Red Bull Racing, replacing Daniil Kvyat."
+      }
+    }
+  },
   "profile": {
     "title": "Driver Profile",
     "aboutTitle": "About Max Verstappen",
@@ -80,16 +139,6 @@
     "debutValue": "2015 Australian Grand Prix",
     "carNumberValue": "1 (World Champion)",
     "championshipsValue": "4 (2021, 2022, 2023, 2024)"
-  },
-  "timeline": {
-    "title": "Career Timeline",
-    "subtitle": "Max Verstappen's Formula 1 journey from debut to championship dominance",
-    "allEvents": "All Events",
-    "championship": "Championship",
-    "record": "Record",
-    "win": "Win",
-    "debut": "Debut",
-    "milestone": "Milestone"
   },
   "loading": {
     "initializing": "Initializing...",

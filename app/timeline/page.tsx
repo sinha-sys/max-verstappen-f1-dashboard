@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getCareerClient, getSeasonsClient, getRecordsClient } from "@/lib/fetchers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -35,6 +36,7 @@ export default function TimelinePage() {
   const [mounted, setMounted] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<TimelineEvent | null>(null);
   const [filterType, setFilterType] = useState<TimelineEvent['type'] | 'all'>('all');
+  const { t } = useTranslation();
 
   useEffect(() => {
     setMounted(true);
@@ -57,7 +59,7 @@ export default function TimelinePage() {
         setRecords(recordsData);
 
         // Generate timeline events from the data
-        const events = generateTimelineEvents(seasonsData, recordsData);
+        const events = generateTimelineEvents(seasonsData, recordsData, t);
         setTimelineEvents(events);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load data");
@@ -67,18 +69,18 @@ export default function TimelinePage() {
     };
 
     fetchData();
-  }, [mounted]);
+  }, [mounted, t]);
 
-  const generateTimelineEvents = (seasonsData: SeasonStat[], recordsData: RecordItem[]): TimelineEvent[] => {
+  const generateTimelineEvents = (seasonsData: SeasonStat[], recordsData: RecordItem[], t: any): TimelineEvent[] => {
     const events: TimelineEvent[] = [];
 
     // Add F1 debut
     events.push({
       id: 'debut-2015',
       year: 2015,
-      date: 'March 15, 2015',
-      title: 'Formula 1 Debut',
-      description: 'Made F1 debut at Australian Grand Prix with Toro Rosso at age 17, becoming the youngest driver ever to start an F1 race.',
+      date: t('timeline.events.debut.date'),
+      title: t('timeline.events.debut.title'),
+      description: t('timeline.events.debut.description'),
       type: 'debut',
       icon: Flag,
       significance: 'major'
@@ -88,9 +90,9 @@ export default function TimelinePage() {
     events.push({
       id: 'first-win-2016',
       year: 2016,
-      date: 'May 15, 2016',
-      title: 'First F1 Victory',
-      description: 'Won the Spanish Grand Prix in his first race for Red Bull Racing, becoming the youngest race winner in F1 history.',
+      date: t('timeline.events.firstWin.date'),
+      title: t('timeline.events.firstWin.title'),
+      description: t('timeline.events.firstWin.description'),
       type: 'win',
       icon: Trophy,
       significance: 'major'
@@ -101,11 +103,17 @@ export default function TimelinePage() {
     championshipYears.forEach((year, index) => {
       const seasonData = seasonsData.find(s => s.season === year);
       if (seasonData) {
+        const ordinals = [t('timeline.ordinals.first'), t('timeline.ordinals.second'), t('timeline.ordinals.third'), t('timeline.ordinals.fourth')];
         events.push({
           id: `championship-${year}`,
           year,
-          title: `${index === 0 ? 'First' : index === 1 ? 'Second' : index === 2 ? 'Third' : 'Fourth'} World Championship`,
-          description: `Won the ${year} Formula 1 World Championship with ${seasonData.wins} wins, ${seasonData.podiums} podiums, and ${seasonData.points} points.`,
+          title: t('timeline.events.championship.title', { ordinal: ordinals[index] }),
+          description: t('timeline.events.championship.description', { 
+            year, 
+            wins: seasonData.wins, 
+            podiums: seasonData.podiums, 
+            points: seasonData.points 
+          }),
           type: 'championship',
           icon: Award,
           stats: {
@@ -125,8 +133,8 @@ export default function TimelinePage() {
       events.push({
         id: 'record-2023',
         year: 2023,
-        title: 'Record-Breaking Season',
-        description: 'Set F1 records for most wins in a season (19) and most points in a season (575), with 10 consecutive victories.',
+        title: t('timeline.events.recordSeason.title'),
+        description: t('timeline.events.recordSeason.description'),
         type: 'record',
         icon: Star,
         stats: {
@@ -147,8 +155,8 @@ export default function TimelinePage() {
         events.push({
           id: 'milestone-10-wins',
           year: season.season,
-          title: '10th Career Victory',
-          description: 'Reached 10 career wins, establishing himself as a consistent race winner.',
+          title: t('timeline.events.milestone10.title'),
+          description: t('timeline.events.milestone10.description'),
           type: 'milestone',
           icon: Target,
           significance: 'important'
@@ -159,8 +167,8 @@ export default function TimelinePage() {
         events.push({
           id: 'milestone-25-wins',
           year: season.season,
-          title: '25th Career Victory',
-          description: 'Reached 25 career wins, joining the elite group of F1 drivers with 25+ victories.',
+          title: t('timeline.events.milestone25.title'),
+          description: t('timeline.events.milestone25.description'),
           type: 'milestone',
           icon: Target,
           significance: 'important'
@@ -171,8 +179,8 @@ export default function TimelinePage() {
         events.push({
           id: 'milestone-50-wins',
           year: season.season,
-          title: '50th Career Victory',
-          description: 'Achieved 50 career wins, cementing his place among F1\'s greatest drivers.',
+          title: t('timeline.events.milestone50.title'),
+          description: t('timeline.events.milestone50.description'),
           type: 'milestone',
           icon: Target,
           significance: 'major'
@@ -184,9 +192,9 @@ export default function TimelinePage() {
     events.push({
       id: 'red-bull-promotion-2016',
       year: 2016,
-      date: 'May 5, 2016',
-      title: 'Promoted to Red Bull Racing',
-      description: 'Mid-season promotion from Toro Rosso to Red Bull Racing, replacing Daniil Kvyat.',
+      date: t('timeline.events.promotion.date'),
+      title: t('timeline.events.promotion.title'),
+      description: t('timeline.events.promotion.description'),
       type: 'milestone',
       icon: Zap,
       significance: 'important'
@@ -229,7 +237,7 @@ export default function TimelinePage() {
         <div className="text-center space-y-4">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
           <p className="text-muted-foreground">
-            {!mounted ? "Initializing..." : "Loading timeline data..."}
+            {!mounted ? t('loading.initializing') : t('loading.loadingTimeline')}
           </p>
         </div>
       </div>
@@ -240,7 +248,7 @@ export default function TimelinePage() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <h2 className="text-xl font-semibold text-destructive">Error loading data</h2>
+          <h2 className="text-xl font-semibold text-destructive">{t('error.loadingData')}</h2>
           <p className="text-muted-foreground">{error}</p>
         </div>
       </div>
@@ -278,10 +286,10 @@ export default function TimelinePage() {
           <div className="mb-8 text-center">
             <h1 className="text-3xl sm:text-4xl font-bold mb-2 flex items-center justify-center gap-3">
               <Clock className="h-8 w-8 text-primary" />
-              Career Timeline
+              {t('timeline.title')}
             </h1>
             <p className="text-lg text-muted-foreground mb-6">
-              Max Verstappen&apos;s Formula 1 journey from debut to championship dominance
+              {t('timeline.subtitle')}
             </p>
             
             {/* Filter buttons */}
@@ -296,7 +304,7 @@ export default function TimelinePage() {
                       : 'bg-muted text-muted-foreground hover:bg-muted/80'
                   }`}
                 >
-                  {type === 'all' ? 'All Events' : type.charAt(0).toUpperCase() + type.slice(1)}
+                  {type === 'all' ? t('timeline.filters.all') : t(`timeline.filters.${type}`)}
                 </button>
               ))}
             </div>
@@ -337,7 +345,7 @@ export default function TimelinePage() {
                                 <CardTitle className="text-lg sm:text-xl">{event.title}</CardTitle>
                                 <div className="flex items-center gap-2 mt-1">
                                   <Badge variant={getEventBadgeVariant(event.type)} className="text-xs">
-                                    {event.type.charAt(0).toUpperCase() + event.type.slice(1)}
+                                    {t(`timeline.filters.${event.type}`)}
                                   </Badge>
                                   <span className="text-sm text-muted-foreground font-medium">
                                     {event.date || event.year}
@@ -360,25 +368,25 @@ export default function TimelinePage() {
                               {event.stats.wins !== undefined && (
                                 <div className="text-center">
                                   <div className="text-2xl font-bold text-primary">{event.stats.wins}</div>
-                                  <div className="text-xs text-muted-foreground">Wins</div>
+                                  <div className="text-xs text-muted-foreground">{t('kpi.wins')}</div>
                                 </div>
                               )}
                               {event.stats.podiums !== undefined && (
                                 <div className="text-center">
                                   <div className="text-2xl font-bold text-primary">{event.stats.podiums}</div>
-                                  <div className="text-xs text-muted-foreground">Podiums</div>
+                                  <div className="text-xs text-muted-foreground">{t('kpi.podiums')}</div>
                                 </div>
                               )}
                               {event.stats.poles !== undefined && (
                                 <div className="text-center">
                                   <div className="text-2xl font-bold text-primary">{event.stats.poles}</div>
-                                  <div className="text-xs text-muted-foreground">Poles</div>
+                                  <div className="text-xs text-muted-foreground">{t('kpi.poles')}</div>
                                 </div>
                               )}
                               {event.stats.points !== undefined && (
                                 <div className="text-center">
                                   <div className="text-2xl font-bold text-primary">{event.stats.points}</div>
-                                  <div className="text-xs text-muted-foreground">Points</div>
+                                  <div className="text-xs text-muted-foreground">{t('kpi.points')}</div>
                                 </div>
                               )}
                             </div>
@@ -398,34 +406,34 @@ export default function TimelinePage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Trophy className="h-5 w-5 text-primary" />
-                  Career Summary
+                  {t('timeline.careerSummary')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
                   <div className="text-center">
                     <div className="text-3xl font-bold text-primary">{career.championships}</div>
-                    <div className="text-sm text-muted-foreground">Championships</div>
+                    <div className="text-sm text-muted-foreground">{t('kpi.championships')}</div>
                   </div>
                   <div className="text-center">
                     <div className="text-3xl font-bold text-primary">{career.wins}</div>
-                    <div className="text-sm text-muted-foreground">Race Wins</div>
+                    <div className="text-sm text-muted-foreground">{t('timeline.raceWins')}</div>
                   </div>
                   <div className="text-center">
                     <div className="text-3xl font-bold text-primary">{career.podiums}</div>
-                    <div className="text-sm text-muted-foreground">Podiums</div>
+                    <div className="text-sm text-muted-foreground">{t('kpi.podiums')}</div>
                   </div>
                   <div className="text-center">
                     <div className="text-3xl font-bold text-primary">{career.poles}</div>
-                    <div className="text-sm text-muted-foreground">Pole Positions</div>
+                    <div className="text-sm text-muted-foreground">{t('timeline.polePositions')}</div>
                   </div>
                   <div className="text-center">
                     <div className="text-3xl font-bold text-primary">{career.fastestLaps}</div>
-                    <div className="text-sm text-muted-foreground">Fastest Laps</div>
+                    <div className="text-sm text-muted-foreground">{t('kpi.fastestLaps')}</div>
                   </div>
                   <div className="text-center">
                     <div className="text-3xl font-bold text-primary">{career.points}</div>
-                    <div className="text-sm text-muted-foreground">Career Points</div>
+                    <div className="text-sm text-muted-foreground">{t('timeline.careerPoints')}</div>
                   </div>
                 </div>
               </CardContent>
