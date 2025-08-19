@@ -42,14 +42,20 @@ export function RacePredictor() {
   useEffect(() => {
     const loadPredictionStats = async (raceName: string, raceDate: string) => {
       try {
-        const response = await fetch(
-          `/api/predictions?raceName=${encodeURIComponent(raceName)}&raceDate=${encodeURIComponent(raceDate)}&userSession=${encodeURIComponent(userSession)}`
-        );
+        const url = `/api/predictions?raceName=${encodeURIComponent(raceName)}&raceDate=${encodeURIComponent(raceDate)}&userSession=${encodeURIComponent(userSession)}`;
+        console.log('Loading prediction stats from:', url);
+        
+        const response = await fetch(url);
+        console.log('Stats response status:', response.status);
         
         if (response.ok) {
           const data: PredictionResponse = await response.json();
+          console.log('Stats response data:', data);
           setStats(data.stats);
           setUserVote(data.userVote);
+        } else {
+          const errorData = await response.text();
+          console.error('Failed to load stats:', response.status, errorData);
         }
       } catch (error) {
         console.error('Error loading prediction stats:', error);
@@ -88,8 +94,12 @@ export function RacePredictor() {
   }, [userSession]);
 
   const handleVote = async (prediction: boolean) => {
-    if (!nextRace || voting) return;
+    if (!nextRace || voting || !userSession) {
+      console.log('Vote blocked:', { nextRace: !!nextRace, voting, userSession: !!userSession });
+      return;
+    }
     
+    console.log('Submitting vote:', { raceName: nextRace.name, raceDate: nextRace.date, prediction, userSession });
     setVoting(true);
     
     try {
@@ -106,12 +116,16 @@ export function RacePredictor() {
         }),
       });
       
+      console.log('Vote response status:', response.status);
+      
       if (response.ok) {
-        const data: { stats: PredictionStats; userVote: boolean } = await response.json();
+        const data: { success: boolean; stats: PredictionStats; userVote: boolean } = await response.json();
+        console.log('Vote response data:', data);
         setStats(data.stats);
         setUserVote(data.userVote);
       } else {
-        console.error('Failed to submit vote:', response.status);
+        const errorData = await response.text();
+        console.error('Failed to submit vote:', response.status, errorData);
       }
     } catch (error) {
       console.error('Error submitting vote:', error);
