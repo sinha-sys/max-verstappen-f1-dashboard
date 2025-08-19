@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -26,40 +26,51 @@ export function RacePredictor() {
   const [loading, setLoading] = useState(true);
   const [voting, setVoting] = useState(false);
   const [userSession, setUserSession] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
   const { t } = useTranslation();
 
   // Generate or get user session ID
   useEffect(() => {
-    let sessionId = localStorage.getItem('race-predictor-session');
-    if (!sessionId) {
-      sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      localStorage.setItem('race-predictor-session', sessionId);
+    try {
+      let sessionId = localStorage.getItem('race-predictor-session');
+      if (!sessionId) {
+        sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        localStorage.setItem('race-predictor-session', sessionId);
+      }
+      setUserSession(sessionId);
+    } catch (error) {
+      console.error('Race Predictor: Error initializing session:', error);
+      setError('Failed to initialize user session');
     }
-    setUserSession(sessionId);
+  }, []);
+
+  // Load prediction stats
+  const loadPredictionStats = useCallback(async (raceName: string, raceDate: string, sessionId?: string) => {
+    try {
+      const sessionParam = sessionId ? `&userSession=${encodeURIComponent(sessionId)}` : '';
+      const url = `/api/predictions?raceName=${encodeURIComponent(raceName)}&raceDate=${encodeURIComponent(raceDate)}${sessionParam}`;
+      
+      const response = await fetch(url);
+      
+      if (response.ok) {
+        const data: PredictionResponse = await response.json();
+        setStats(data.stats);
+        if (sessionId && data.userVote !== undefined) {
+          setUserVote(data.userVote);
+        }
+        setError(null);
+      } else {
+        console.error('Race Predictor: Failed to load stats:', response.status, response.statusText);
+        setError(`Failed to load prediction stats: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('Race Predictor: Error loading prediction stats:', error);
+      setError('Network error loading prediction stats');
+    }
   }, []);
 
   // Find next race
   useEffect(() => {
-    const loadPredictionStats = async (raceName: string, raceDate: string) => {
-      try {
-        // Include userSession if available, otherwise just get general stats
-        const sessionParam = userSession ? `&userSession=${encodeURIComponent(userSession)}` : '';
-        const url = `/api/predictions?raceName=${encodeURIComponent(raceName)}&raceDate=${encodeURIComponent(raceDate)}${sessionParam}`;
-        const response = await fetch(url);
-        
-        if (response.ok) {
-          const data: PredictionResponse = await response.json();
-          setStats(data.stats);
-          // Only set userVote if we have a session and got a vote back
-          if (userSession && data.userVote !== undefined) {
-            setUserVote(data.userVote);
-          }
-        }
-      } catch (error) {
-        console.error('Error loading prediction stats:', error);
-      }
-    };
-
     const fetchNextRace = async () => {
       try {
         const races = await getRacesClient();
@@ -74,71 +85,69 @@ export function RacePredictor() {
           const next = upcomingRaces[0];
           setNextRace(next);
           
-          // Always load stats for the race, even without user session
-          await loadPredictionStats(next.name, next.date);
+          // Load stats for the race
+          await loadPredictionStats(next.name, next.date, userSession);
+        } else {
+          setError('No upcoming races found');
         }
       } catch (error) {
-        console.error('Error fetching next race:', error);
+        console.error('Race Predictor: Error fetching next race:', error);
+        setError('Failed to fetch race data');
       } finally {
         setLoading(false);
       }
     };
 
     fetchNextRace();
-  }, [userSession]);
-
-  // Reload stats when userSession becomes available and we have a race
-  useEffect(() => {
-    if (userSession && nextRace) {
-      const loadPredictionStats = async (raceName: string, raceDate: string) => {
-        try {
-          const url = `/api/predictions?raceName=${encodeURIComponent(raceName)}&raceDate=${encodeURIComponent(raceDate)}&userSession=${encodeURIComponent(userSession)}`;
-          const response = await fetch(url);
-          
-          if (response.ok) {
-            const data: PredictionResponse = await response.json();
-            setStats(data.stats);
-            setUserVote(data.userVote);
-          }
-        } catch (error) {
-          console.error('Error loading prediction stats:', error);
-        }
-      };
-      
-      loadPredictionStats(nextRace.name, nextRace.date);
-    }
-  }, [userSession, nextRace]);
+  }, [userSession, loadPredictionStats]);
 
   const handleVote = async (prediction: boolean) => {
-    if (!nextRace || voting || !userSession) {
+    if (!nextRace) {
+      setError('No race available for voting');
+      return;
+    }
+    
+    if (voting) {
+      return;
+    }
+    
+    if (!userSession) {
+      setError('User session not initialized');
       return;
     }
     
     setVoting(true);
+    setError(null);
     
     try {
+      const payload = {
+        raceName: nextRace.name,
+        raceDate: nextRace.date,
+        prediction,
+        userSession,
+      };
+      
       const response = await fetch('/api/predictions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          raceName: nextRace.name,
-          raceDate: nextRace.date,
-          prediction,
-          userSession,
-        }),
+        body: JSON.stringify(payload),
       });
       
       if (response.ok) {
         const data: { success: boolean; stats: PredictionStats; userVote: boolean } = await response.json();
         setStats(data.stats);
         setUserVote(data.userVote);
+        setError(null);
       } else {
-        console.error('Failed to submit vote:', response.status);
+        const errorData = await response.text();
+        console.error('Race Predictor: Failed to submit vote:', response.status, errorData);
+        setError(`Failed to submit vote: ${response.status}`);
       }
     } catch (error) {
-      console.error('Error submitting vote:', error);
+      console.error('Race Predictor: Error submitting vote:', error);
+      setError('Network error submitting vote');
     } finally {
       setVoting(false);
     }
@@ -149,10 +158,23 @@ export function RacePredictor() {
       <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
         <CardContent className="p-4">
           <div className="flex items-center justify-center">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-            <span className="ml-2 text-sm text-muted-foreground">
-              {loading ? 'Loading race data...' : 'No upcoming races'}
-            </span>
+            {loading ? (
+              <>
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+                <span className="ml-2 text-sm text-muted-foreground">Loading race data...</span>
+              </>
+            ) : (
+              <div className="text-center">
+                <span className="text-sm text-muted-foreground">
+                  {error || 'No upcoming races'}
+                </span>
+                {error && (
+                  <div className="mt-2 text-xs text-red-500">
+                    Check browser console for details
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
@@ -209,6 +231,14 @@ export function RacePredictor() {
               {userVote === false && <span className="text-xs">✓</span>}
             </Button>
           </div>
+
+          {/* Error Display */}
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-center">
+              <div className="text-sm text-red-600">{error}</div>
+              <div className="text-xs text-red-500 mt-1">Check browser console for details</div>
+            </div>
+          )}
 
           {/* Community Statistics - Always Show */}
           <div className="text-center space-y-2">
