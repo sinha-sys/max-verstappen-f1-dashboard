@@ -88,7 +88,7 @@ export function RacePredictor() {
   }, [userSession]);
 
   const handleVote = async (prediction: boolean) => {
-    if (!nextRace || voting || userVote !== null) return;
+    if (!nextRace || voting) return;
     
     setVoting(true);
     
@@ -110,16 +110,8 @@ export function RacePredictor() {
         const data: { stats: PredictionStats; userVote: boolean } = await response.json();
         setStats(data.stats);
         setUserVote(data.userVote);
-      } else if (response.status === 409) {
-        // User already voted - reload stats
-        const response = await fetch(
-          `/api/predictions?raceName=${encodeURIComponent(nextRace.name)}&raceDate=${encodeURIComponent(nextRace.date)}&userSession=${encodeURIComponent(userSession)}`
-        );
-        if (response.ok) {
-          const data: PredictionResponse = await response.json();
-          setStats(data.stats);
-          setUserVote(data.userVote);
-        }
+      } else {
+        console.error('Failed to submit vote:', response.status);
       }
     } catch (error) {
       console.error('Error submitting vote:', error);
@@ -158,57 +150,65 @@ export function RacePredictor() {
             </p>
           </div>
 
-          {/* Voting Buttons or Results */}
-          {!hasVoted ? (
-            <div className="flex items-center justify-center gap-3">
-              <Button
-                onClick={() => handleVote(true)}
-                disabled={voting}
-                size="sm"
-                className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white"
-              >
-                <ThumbsUp className="h-4 w-4" />
-                <span className="hidden sm:inline">{t('predictor.yes')}</span>
-              </Button>
-              <Button
-                onClick={() => handleVote(false)}
-                disabled={voting}
-                size="sm"
-                variant="destructive"
-                className="flex items-center gap-2"
-              >
-                <ThumbsDown className="h-4 w-4" />
-                <span className="hidden sm:inline">{t('predictor.no')}</span>
-              </Button>
-            </div>
-          ) : (
+          {/* Voting Buttons */}
+          <div className="flex items-center justify-center gap-3">
+            <Button
+              onClick={() => handleVote(true)}
+              disabled={voting}
+              size="sm"
+              className={`flex items-center gap-2 ${
+                userVote === true 
+                  ? 'bg-green-600 hover:bg-green-700 text-white ring-2 ring-green-300' 
+                  : 'bg-green-600 hover:bg-green-700 text-white'
+              }`}
+            >
+              <ThumbsUp className="h-4 w-4" />
+              <span className="hidden sm:inline">{t('predictor.yes')}</span>
+              {userVote === true && <span className="text-xs">✓</span>}
+            </Button>
+            <Button
+              onClick={() => handleVote(false)}
+              disabled={voting}
+              size="sm"
+              variant="destructive"
+              className={`flex items-center gap-2 ${
+                userVote === false 
+                  ? 'ring-2 ring-red-300' 
+                  : ''
+              }`}
+            >
+              <ThumbsDown className="h-4 w-4" />
+              <span className="hidden sm:inline">{t('predictor.no')}</span>
+              {userVote === false && <span className="text-xs">✓</span>}
+            </Button>
+          </div>
+
+          {/* Results */}
+          {hasVoted && stats && (
             <div className="text-center space-y-2">
-              {/* User's vote */}
-              <div className="flex items-center justify-center gap-2">
-                <span className="text-sm text-muted-foreground">{t('predictor.yourVote')}</span>
-                {userVote ? (
-                  <ThumbsUp className="h-4 w-4 text-green-600" />
-                ) : (
-                  <ThumbsDown className="h-4 w-4 text-red-600" />
-                )}
-                <span className="text-sm font-medium">
-                  {userVote ? t('predictor.yes') : t('predictor.no')}
-                </span>
-              </div>
-              
               {/* Win Probability */}
-              <div className="bg-background/50 rounded-lg p-2">
+              <div className="bg-background/50 rounded-lg p-3">
                 <div className="flex items-center justify-center gap-2 mb-1">
-                  <TrendingUp className="h-3 w-3 text-primary" />
+                  <TrendingUp className="h-4 w-4 text-primary" />
                   <span className="text-sm font-medium">{t('predictor.winProbability')}</span>
                 </div>
-                <div className="text-2xl font-bold text-primary">{winProbability}%</div>
-                {stats && (
-                  <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground mt-1">
-                    <Users className="h-3 w-3" />
-                    <span>{t('predictor.totalVotes', { count: stats.totalVotes })}</span>
+                <div className="text-3xl font-bold text-primary">{winProbability}%</div>
+                <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground mt-2">
+                  <Users className="h-3 w-3" />
+                  <span>{t('predictor.totalVotes', { count: stats.totalVotes })}</span>
+                </div>
+                
+                {/* Vote breakdown */}
+                <div className="flex justify-center gap-4 mt-2 text-xs">
+                  <div className="flex items-center gap-1">
+                    <ThumbsUp className="h-3 w-3 text-green-600" />
+                    <span>{stats.yesVotes}</span>
                   </div>
-                )}
+                  <div className="flex items-center gap-1">
+                    <ThumbsDown className="h-3 w-3 text-red-600" />
+                    <span>{stats.noVotes}</span>
+                  </div>
+                </div>
               </div>
             </div>
           )}

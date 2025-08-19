@@ -15,16 +15,43 @@ interface PredictionStats {
   winProbability: number;
 }
 
-// Mock database functions (replace with actual D1 database calls in production)
+// In-memory storage for demo purposes (replace with actual D1 database in production)
+interface StoredPrediction {
+  raceName: string;
+  raceDate: string;
+  prediction: boolean;
+  userSession: string;
+  timestamp: number;
+}
+
+// Simple in-memory storage
+const predictions: StoredPrediction[] = [];
+
 async function savePrediction(data: PredictionRequest): Promise<boolean> {
   try {
-    // In production, this would use Cloudflare D1:
-    // const result = await env.DB.prepare(
-    //   "INSERT OR IGNORE INTO race_predictions (race_name, race_date, prediction, user_session) VALUES (?, ?, ?, ?)"
-    // ).bind(data.raceName, data.raceDate, data.prediction, data.userSession).run();
+    // Check if user already voted for this race
+    const existingIndex = predictions.findIndex(
+      p => p.raceName === data.raceName && 
+           p.raceDate === data.raceDate && 
+           p.userSession === data.userSession
+    );
     
-    // For now, simulate success
-    console.log('Saving prediction:', data);
+    if (existingIndex >= 0) {
+      // Update existing vote
+      predictions[existingIndex] = {
+        ...data,
+        timestamp: Date.now()
+      };
+    } else {
+      // Add new vote
+      predictions.push({
+        ...data,
+        timestamp: Date.now()
+      });
+    }
+    
+    console.log('Saved prediction:', data);
+    console.log('Total predictions stored:', predictions.length);
     return true;
   } catch (error) {
     console.error('Error saving prediction:', error);
@@ -34,21 +61,22 @@ async function savePrediction(data: PredictionRequest): Promise<boolean> {
 
 async function getPredictionStats(raceName: string, raceDate: string): Promise<PredictionStats> {
   try {
-    // In production, this would use Cloudflare D1:
-    // const result = await env.DB.prepare(
-    //   "SELECT prediction, COUNT(*) as count FROM race_predictions WHERE race_name = ? AND race_date = ? GROUP BY prediction"
-    // ).bind(raceName, raceDate).all();
+    // Filter predictions for this specific race
+    const racePredictions = predictions.filter(
+      p => p.raceName === raceName && p.raceDate === raceDate
+    );
     
-    // For now, return mock data
-    const mockYesVotes = Math.floor(Math.random() * 100) + 50;
-    const mockNoVotes = Math.floor(Math.random() * 50) + 20;
-    const totalVotes = mockYesVotes + mockNoVotes;
-    const winProbability = totalVotes > 0 ? Math.round((mockYesVotes / totalVotes) * 100) : 50;
+    const yesVotes = racePredictions.filter(p => p.prediction === true).length;
+    const noVotes = racePredictions.filter(p => p.prediction === false).length;
+    const totalVotes = yesVotes + noVotes;
+    const winProbability = totalVotes > 0 ? Math.round((yesVotes / totalVotes) * 100) : 50;
+    
+    console.log(`Stats for ${raceName}: ${yesVotes} yes, ${noVotes} no, ${winProbability}% win probability`);
     
     return {
       totalVotes,
-      yesVotes: mockYesVotes,
-      noVotes: mockNoVotes,
+      yesVotes,
+      noVotes,
       winProbability
     };
   } catch (error) {
@@ -64,13 +92,13 @@ async function getPredictionStats(raceName: string, raceDate: string): Promise<P
 
 async function checkUserVoted(raceName: string, raceDate: string, userSession: string): Promise<boolean | null> {
   try {
-    // In production, this would use Cloudflare D1:
-    // const result = await env.DB.prepare(
-    //   "SELECT prediction FROM race_predictions WHERE race_name = ? AND race_date = ? AND user_session = ?"
-    // ).bind(raceName, raceDate, userSession).first();
+    const userPrediction = predictions.find(
+      p => p.raceName === raceName && 
+           p.raceDate === raceDate && 
+           p.userSession === userSession
+    );
     
-    // For now, return null (no vote found)
-    return null;
+    return userPrediction ? userPrediction.prediction : null;
   } catch (error) {
     console.error('Error checking user vote:', error);
     return null;
@@ -90,16 +118,7 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Check if user already voted
-    const existingVote = await checkUserVoted(body.raceName, body.raceDate, body.userSession);
-    if (existingVote !== null) {
-      return NextResponse.json(
-        { error: 'User has already voted for this race' },
-        { status: 409 }
-      );
-    }
-    
-    // Save prediction
+    // Save prediction (will update if user already voted)
     const success = await savePrediction(body);
     if (!success) {
       return NextResponse.json(
