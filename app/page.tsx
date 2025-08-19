@@ -11,6 +11,7 @@ import { CumulativeWins } from "@/components/dashboard/Charts/CumulativeWins";
 
 
 import { RaceCountdown } from "@/components/dashboard/RaceCountdown";
+import { RacePredictor } from "@/components/dashboard/RacePredictor";
 
 import { Separator } from "@/components/ui/separator";
 import type { CareerTotals, RateSummary, SeasonStat } from "@/lib/types";
@@ -162,11 +163,22 @@ export default function HomePage() {
           {/* Main Content Area */}
           <div className="space-y-3 sm:space-y-6 lg:space-y-8 min-w-0 w-full">
 
-            {/* Race Countdown - Next F1 Race */}
-            <section className="w-full" aria-labelledby="countdown-heading">
-              <h2 id="countdown-heading" className="sr-only">Next F1 Race Countdown</h2>
-              <RaceCountdown />
-            </section>
+                          {/* Race Countdown and Predictor */}
+              <section className="w-full space-y-3 sm:space-y-4" aria-labelledby="race-section-heading">
+                <h2 id="race-section-heading" className="sr-only">Next F1 Race Information</h2>
+                
+                {/* Desktop Layout - Side by side */}
+                <div className="hidden md:grid md:grid-cols-2 md:gap-4 lg:gap-6">
+                  <RaceCountdown />
+                  <RacePredictor />
+                </div>
+                
+                {/* Mobile Layout - Stacked */}
+                <div className="md:hidden space-y-3">
+                  <RaceCountdown />
+                  <RacePredictor />
+                </div>
+              </section>
 
             <Separator className="hidden sm:block" />
 
