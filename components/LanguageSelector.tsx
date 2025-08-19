@@ -21,13 +21,13 @@ export function LanguageSelector() {
   };
 
   return (
-    <div className="flex items-center gap-1 p-1 bg-muted/50 rounded-lg">
+    <div className="flex items-center gap-0.5 md:gap-1 p-0.5 md:p-1 bg-muted/50 rounded-lg">
       {languages.map((language) => (
         <button
           key={language.code}
           onClick={() => handleLanguageChange(language.code)}
           className={cn(
-            "flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all duration-200",
+            "flex items-center gap-1 px-1.5 md:px-2 py-1 rounded-md text-xs font-medium transition-all duration-200",
             "hover:bg-background hover:shadow-sm",
             i18n.language === language.code
               ? "bg-primary text-primary-foreground shadow-sm"
@@ -35,8 +35,8 @@ export function LanguageSelector() {
           )}
           title={language.fullName}
         >
-          <span className="text-sm">{language.flag}</span>
-          <span className="hidden sm:inline">{language.name}</span>
+          <span className="text-xs md:text-sm">{language.flag}</span>
+          <span className="hidden md:inline">{language.name}</span>
         </button>
       ))}
     </div>
