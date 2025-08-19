@@ -194,6 +194,7 @@ export function RacePredictor() {
             <Button
               onClick={() => {
                 console.log('YES button clicked!');
+                alert('YES button clicked! Check console for details.');
                 handleVote(true);
               }}
               disabled={voting}
@@ -211,6 +212,7 @@ export function RacePredictor() {
             <Button
               onClick={() => {
                 console.log('NO button clicked!');
+                alert('NO button clicked! Check console for details.');
                 handleVote(false);
               }}
               disabled={voting}
