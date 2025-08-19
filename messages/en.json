@@ -25,15 +25,7 @@
     "seasonComplete": "Season Complete",
     "noMoreRaces": "No more races scheduled for 2025"
   },
-  "predictor": {
-    "title": "Will Max Win?",
-    "subtitle": "Vote for {{race}}!",
-    "yes": "Yes",
-    "no": "No",
-    "yourVote": "Your vote:",
-    "winProbability": "Win Probability",
-    "totalVotes": "{{count}} votes"
-  },
+
   "kpi": {
     "starts": "Starts",
     "wins": "Wins",
