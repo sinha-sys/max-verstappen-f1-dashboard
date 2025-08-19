@@ -35,7 +35,6 @@ async function savePrediction(data: PredictionRequest): Promise<boolean> {
     const DB = env.DB || (globalThis as any).DB;
     
     if (DB) {
-      console.log('Using D1 database for storage');
       const result = await DB.prepare(`
         INSERT OR REPLACE INTO race_predictions 
         (race_name, race_date, prediction, user_session, created_at) 
@@ -47,11 +46,9 @@ async function savePrediction(data: PredictionRequest): Promise<boolean> {
         data.userSession
       ).run();
       
-      console.log('Saved prediction to D1:', data, 'Result:', result);
       return result.success;
     } else {
       // Fallback to in-memory storage
-      console.log('Using in-memory storage fallback');
       const existingIndex = predictions.findIndex(
         p => p.raceName === data.raceName && 
              p.raceDate === data.raceDate && 
@@ -64,7 +61,6 @@ async function savePrediction(data: PredictionRequest): Promise<boolean> {
         predictions.push({ ...data, timestamp: Date.now() });
       }
       
-      console.log('Saved prediction to memory:', data);
       return true;
     }
   } catch (error) {
@@ -80,7 +76,6 @@ async function getPredictionStats(raceName: string, raceDate: string): Promise<P
     const DB = env.DB || (globalThis as any).DB;
     
     if (DB) {
-      console.log('Using D1 database for stats');
       const result = await DB.prepare(`
         SELECT 
           prediction,
@@ -106,12 +101,9 @@ async function getPredictionStats(raceName: string, raceDate: string): Promise<P
       const totalVotes = yesVotes + noVotes;
       const winProbability = totalVotes > 0 ? Math.round((yesVotes / totalVotes) * 100) : 50;
       
-      console.log(`D1 Stats for ${raceName}: ${yesVotes} yes, ${noVotes} no, ${winProbability}% win probability`);
-      
       return { totalVotes, yesVotes, noVotes, winProbability };
     } else {
       // Fallback to in-memory storage
-      console.log('Using in-memory storage for stats');
       const racePredictions = predictions.filter(
         p => p.raceName === raceName && p.raceDate === raceDate
       );
@@ -120,8 +112,6 @@ async function getPredictionStats(raceName: string, raceDate: string): Promise<P
       const noVotes = racePredictions.filter(p => p.prediction === false).length;
       const totalVotes = yesVotes + noVotes;
       const winProbability = totalVotes > 0 ? Math.round((yesVotes / totalVotes) * 100) : 50;
-      
-      console.log(`Memory Stats for ${raceName}: ${yesVotes} yes, ${noVotes} no, ${winProbability}% win probability`);
       
       return { totalVotes, yesVotes, noVotes, winProbability };
     }
@@ -177,8 +167,6 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    console.log('Received prediction request:', body);
-    
     // Save prediction (automatically detects D1 vs in-memory)
     const success = await savePrediction(body);
     if (!success) {
@@ -190,8 +178,6 @@ export async function POST(request: NextRequest) {
     
     // Get updated stats
     const stats = await getPredictionStats(body.raceName, body.raceDate);
-    
-    console.log('Returning prediction response:', { success: true, stats, userVote: body.prediction });
     
     return NextResponse.json({
       success: true,
@@ -223,8 +209,6 @@ export async function GET(request: NextRequest) {
       );
     }
     
-    console.log('Received stats request:', { raceName, raceDate, userSession });
-    
     // Get stats (automatically detects D1 vs in-memory)
     const stats = await getPredictionStats(raceName, raceDate);
     
@@ -233,8 +217,6 @@ export async function GET(request: NextRequest) {
     if (userSession) {
       userVote = await checkUserVoted(raceName, raceDate, userSession);
     }
-    
-    console.log('Returning stats response:', { stats, userVote });
     
     return NextResponse.json({
       stats,
