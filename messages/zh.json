@@ -5,11 +5,13 @@
     "winRate": "胜率",
     "timeline": "时间线",
     "profile": "个人资料",
+    "predictions": "预测",
     "dashboardDesc": "职业生涯统计和表现数据",
     "resultsDesc": "逐赛季成绩和统计数据",
     "winRateDesc": "按职业生涯胜率排名的顶级F1车手",
     "timelineDesc": "互动职业生涯时间线和里程碑",
-    "profileDesc": "传记和职业生涯亮点"
+    "profileDesc": "传记和职业生涯亮点",
+    "predictionsDesc": "对F1预测和社区投票进行投票"
   },
   "header": {
     "title": "马克斯·维斯塔潘",

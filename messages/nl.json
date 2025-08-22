@@ -5,11 +5,13 @@
     "winRate": "Winpercentage",
     "timeline": "Tijdlijn",
     "profile": "Profiel",
+    "predictions": "Voorspellingen",
     "dashboardDesc": "Carrière statistieken en prestatie gegevens",
     "resultsDesc": "Seizoen-voor-seizoen resultaten en statistieken",
     "winRateDesc": "Top F1 coureurs op carrière winpercentage",
     "timelineDesc": "Interactieve carrière tijdlijn en mijlpalen",
-    "profileDesc": "Biografie en carrière hoogtepunten"
+    "profileDesc": "Biografie en carrière hoogtepunten",
+    "predictionsDesc": "Stem op F1 voorspellingen en community polls"
   },
   "header": {
     "title": "Max Verstappen",

@@ -15,6 +15,8 @@ const nextConfig = {
   experimental: {
     // Optimize for smaller builds
   },
+  // Exclude API routes from static generation
+  generateBuildId: () => 'build',
   // Optimize bundle size and reduce cache
   webpack: (config, { isServer, dev }) => {
     // Only disable cache in production to avoid large files

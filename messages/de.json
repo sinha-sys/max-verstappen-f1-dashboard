@@ -5,11 +5,13 @@
     "winRate": "Siegquote",
     "timeline": "Zeitlinie",
     "profile": "Profil",
+    "predictions": "Vorhersagen",
     "dashboardDesc": "Karriere-Statistiken und Leistungsdaten",
     "resultsDesc": "Saison-für-Saison Ergebnisse und Statistiken",
     "winRateDesc": "Top F1-Fahrer nach Karriere-Siegquote",
     "timelineDesc": "Interaktive Karriere-Zeitlinie und Meilensteine",
-    "profileDesc": "Biografie und Karriere-Höhepunkte"
+    "profileDesc": "Biografie und Karriere-Höhepunkte",
+    "predictionsDesc": "Stimmen Sie über F1-Vorhersagen und Community-Umfragen ab"
   },
   "header": {
     "title": "Max Verstappen",

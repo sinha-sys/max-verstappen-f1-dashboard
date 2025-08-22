@@ -369,3 +369,265 @@ export async function getWinRateDataFromJSON() {
     }
   ];
 }
+
+// Predictions database functions
+export async function getAllPredictions(db: D1Database, userIdentifier?: string) {
+  const stmt = db.prepare(`
+    SELECT 
+      id,
+      title,
+      description,
+      category,
+      status,
+      resolution,
+      created_at,
+      updated_at,
+      expires_at,
+      yes_votes,
+      no_votes,
+      total_votes,
+      yes_percentage
+    FROM prediction_vote_summary
+    WHERE status = 'active'
+    ORDER BY created_at DESC
+  `);
+  
+  const result = await stmt.all();
+  const predictions = result.results || [];
+  
+  // If user identifier is provided, get their votes
+  if (userIdentifier && predictions.length > 0) {
+    const predictionIds = predictions.map((p: any) => p.id);
+    const placeholders = predictionIds.map(() => '?').join(',');
+    
+    const voteStmt = db.prepare(`
+      SELECT prediction_id, vote
+      FROM prediction_votes
+      WHERE user_identifier = ? AND prediction_id IN (${placeholders})
+    `);
+    
+    const voteResult = await voteStmt.bind(userIdentifier, ...predictionIds).all();
+    const userVotes = new Map(
+      (voteResult.results || []).map((v: any) => [v.prediction_id, v.vote])
+    );
+    
+    return predictions.map((p: any) => ({
+      id: p.id,
+      title: p.title,
+      description: p.description,
+      category: p.category,
+      status: p.status,
+      resolution: p.resolution,
+      createdAt: p.created_at,
+      updatedAt: p.updated_at,
+      expiresAt: p.expires_at,
+      yesVotes: p.yes_votes,
+      noVotes: p.no_votes,
+      totalVotes: p.total_votes,
+      yesPercentage: p.yes_percentage,
+      userVote: userVotes.get(p.id) || null
+    }));
+  }
+  
+  return predictions.map((p: any) => ({
+    id: p.id,
+    title: p.title,
+    description: p.description,
+    category: p.category,
+    status: p.status,
+    resolution: p.resolution,
+    createdAt: p.created_at,
+    updatedAt: p.updated_at,
+    expiresAt: p.expires_at,
+    yesVotes: p.yes_votes,
+    noVotes: p.no_votes,
+    totalVotes: p.total_votes,
+    yesPercentage: p.yes_percentage,
+    userVote: null
+  }));
+}
+
+export async function getPredictionById(db: D1Database, id: number, userIdentifier?: string) {
+  const stmt = db.prepare(`
+    SELECT 
+      id,
+      title,
+      description,
+      category,
+      status,
+      resolution,
+      created_at,
+      updated_at,
+      expires_at,
+      yes_votes,
+      no_votes,
+      total_votes,
+      yes_percentage
+    FROM prediction_vote_summary
+    WHERE id = ?
+  `);
+  
+  const result = await stmt.bind(id).first();
+  
+  if (!result) {
+    throw new Error(`Prediction not found: ${id}`);
+  }
+  
+  let userVote = null;
+  if (userIdentifier) {
+    const voteStmt = db.prepare(`
+      SELECT vote
+      FROM prediction_votes
+      WHERE prediction_id = ? AND user_identifier = ?
+    `);
+    
+    const voteResult = await voteStmt.bind(id, userIdentifier).first();
+    userVote = voteResult?.vote || null;
+  }
+  
+  return {
+    id: result.id,
+    title: result.title,
+    description: result.description,
+    category: result.category,
+    status: result.status,
+    resolution: result.resolution,
+    createdAt: result.created_at,
+    updatedAt: result.updated_at,
+    expiresAt: result.expires_at,
+    yesVotes: result.yes_votes,
+    noVotes: result.no_votes,
+    totalVotes: result.total_votes,
+    yesPercentage: result.yes_percentage,
+    userVote
+  };
+}
+
+export async function submitVote(db: D1Database, predictionId: number, vote: 'yes' | 'no', userIdentifier: string) {
+  // Check if prediction exists and is active
+  const predictionStmt = db.prepare(`
+    SELECT status FROM predictions WHERE id = ?
+  `);
+  
+  const prediction = await predictionStmt.bind(predictionId).first();
+  
+  if (!prediction) {
+    throw new Error('Prediction not found');
+  }
+  
+  if (prediction.status !== 'active') {
+    throw new Error('Prediction is not active');
+  }
+  
+  // Insert or update vote (using REPLACE to handle vote changes)
+  const stmt = db.prepare(`
+    INSERT OR REPLACE INTO prediction_votes (prediction_id, user_identifier, vote, created_at)
+    VALUES (?, ?, ?, CURRENT_TIMESTAMP)
+  `);
+  
+  const result = await stmt.bind(predictionId, userIdentifier, vote).run();
+  
+  if (!result.success) {
+    throw new Error('Failed to submit vote');
+  }
+  
+  return result;
+}
+
+export async function getUserVote(db: D1Database, predictionId: number, userIdentifier: string) {
+  const stmt = db.prepare(`
+    SELECT vote
+    FROM prediction_votes
+    WHERE prediction_id = ? AND user_identifier = ?
+  `);
+  
+  const result = await stmt.bind(predictionId, userIdentifier).first();
+  return result?.vote || null;
+}
+
+// Development fallback functions for predictions
+export async function getAllPredictionsFromJSON() {
+  // Static predictions data for development fallback
+  return [
+    {
+      id: 1,
+      title: "Will Max Verstappen leave Red Bull before the end of 2025?",
+      description: "Max has been with Red Bull Racing since 2016. Will he switch teams before the 2025 season concludes?",
+      category: "Driver Transfer",
+      status: "active" as const,
+      resolution: null,
+      createdAt: "2025-01-01T00:00:00Z",
+      updatedAt: "2025-01-01T00:00:00Z",
+      expiresAt: null,
+      yesVotes: 42,
+      noVotes: 158,
+      totalVotes: 200,
+      yesPercentage: 21.0,
+      userVote: null
+    },
+    {
+      id: 2,
+      title: "Will Lewis Hamilton win a race in 2025?",
+      description: "After moving to Ferrari, will Hamilton manage to secure at least one victory in the 2025 season?",
+      category: "Race Results",
+      status: "active" as const,
+      resolution: null,
+      createdAt: "2025-01-01T00:00:00Z",
+      updatedAt: "2025-01-01T00:00:00Z",
+      expiresAt: null,
+      yesVotes: 167,
+      noVotes: 33,
+      totalVotes: 200,
+      yesPercentage: 83.5,
+      userVote: null
+    },
+    {
+      id: 3,
+      title: "Will there be more than 5 different race winners in 2025?",
+      description: "Formula 1 has seen increased competition. Will we see diversity in race winners this season?",
+      category: "Season Outcomes",
+      status: "active" as const,
+      resolution: null,
+      createdAt: "2025-01-01T00:00:00Z",
+      updatedAt: "2025-01-01T00:00:00Z",
+      expiresAt: null,
+      yesVotes: 124,
+      noVotes: 76,
+      totalVotes: 200,
+      yesPercentage: 62.0,
+      userVote: null
+    },
+    {
+      id: 4,
+      title: "Will any driver score their first F1 win in 2025?",
+      description: "Will we see a breakthrough victory for a driver who has never won before?",
+      category: "Race Results",
+      status: "active" as const,
+      resolution: null,
+      createdAt: "2025-01-01T00:00:00Z",
+      updatedAt: "2025-01-01T00:00:00Z",
+      expiresAt: null,
+      yesVotes: 89,
+      noVotes: 111,
+      totalVotes: 200,
+      yesPercentage: 44.5,
+      userVote: null
+    },
+    {
+      id: 5,
+      title: "Will Red Bull win the Constructors Championship in 2025?",
+      description: "Red Bull has dominated recent seasons. Will they continue their streak in 2025?",
+      category: "Season Outcomes",
+      status: "active" as const,
+      resolution: null,
+      createdAt: "2025-01-01T00:00:00Z",
+      updatedAt: "2025-01-01T00:00:00Z",
+      expiresAt: null,
+      yesVotes: 134,
+      noVotes: 66,
+      totalVotes: 200,
+      yesPercentage: 67.0,
+      userVote: null
+    }
+  ];
+}

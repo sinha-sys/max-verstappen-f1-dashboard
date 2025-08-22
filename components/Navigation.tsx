@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent } from "@/components/ui/card";
-import { Home, User, Calendar, Trophy, Clock, Menu, X } from "lucide-react";
+import { Home, User, Calendar, Trophy, Clock, Menu, X, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const getNavigationItems = (t: any) => [
@@ -38,6 +38,12 @@ const getNavigationItems = (t: any) => [
     href: "/profile",
     icon: User,
     description: t('navigation.profileDesc')
+  },
+  {
+    name: t('navigation.predictions'),
+    href: "/predictions",
+    icon: TrendingUp,
+    description: t('navigation.predictionsDesc')
   }
 ];
 

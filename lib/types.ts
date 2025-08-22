@@ -67,3 +67,39 @@ export type KPIItem = {
   icon: string;
   description?: string;
 };
+
+// Predictions feature types
+export type Prediction = {
+  id: number;
+  title: string;
+  description?: string;
+  category?: string;
+  status: 'active' | 'closed' | 'resolved';
+  resolution?: 'yes' | 'no' | null;
+  createdAt: string;
+  updatedAt: string;
+  expiresAt?: string;
+  createdBy?: string;
+};
+
+export type PredictionVote = {
+  id: number;
+  predictionId: number;
+  userIdentifier: string;
+  vote: 'yes' | 'no';
+  createdAt: string;
+};
+
+export type PredictionWithVotes = Prediction & {
+  yesVotes: number;
+  noVotes: number;
+  totalVotes: number;
+  yesPercentage: number;
+  userVote?: 'yes' | 'no' | null; // Current user's vote if any
+};
+
+export type VoteRequest = {
+  predictionId: number;
+  vote: 'yes' | 'no';
+  userIdentifier: string;
+};

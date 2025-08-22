@@ -5,11 +5,13 @@
     "winRate": "Win Rate",
     "timeline": "Timeline",
     "profile": "Profile",
+    "predictions": "Predictions",
     "dashboardDesc": "Career stats and performance data",
     "resultsDesc": "Season-by-season results and statistics",
     "winRateDesc": "Top F1 drivers by career win percentage",
     "timelineDesc": "Interactive career timeline and milestones",
-    "profileDesc": "Biography and career highlights"
+    "profileDesc": "Biography and career highlights",
+    "predictionsDesc": "Vote on F1 predictions and community polls"
   },
   "header": {
     "title": "Max Verstappen",
