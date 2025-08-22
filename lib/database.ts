@@ -519,19 +519,48 @@ export async function submitVote(db: D1Database, predictionId: number, vote: 'ye
     throw new Error('Prediction is not active');
   }
   
-  // Insert or update vote (using REPLACE to handle vote changes)
-  const stmt = db.prepare(`
-    INSERT OR REPLACE INTO prediction_votes (prediction_id, user_identifier, vote, created_at)
-    VALUES (?, ?, ?, CURRENT_TIMESTAMP)
+  // Check if user has already voted
+  const existingVoteStmt = db.prepare(`
+    SELECT vote FROM prediction_votes WHERE prediction_id = ? AND user_identifier = ?
   `);
   
-  const result = await stmt.bind(predictionId, userIdentifier, vote).run();
+  const existingVote = await existingVoteStmt.bind(predictionId, userIdentifier).first();
   
-  if (!result.success) {
-    throw new Error('Failed to submit vote');
+  if (existingVote) {
+    // User has already voted - check if it's the same vote
+    if (existingVote.vote === vote) {
+      throw new Error('You have already voted for this prediction');
+    }
+    
+    // Update existing vote
+    const updateStmt = db.prepare(`
+      UPDATE prediction_votes 
+      SET vote = ?, created_at = CURRENT_TIMESTAMP 
+      WHERE prediction_id = ? AND user_identifier = ?
+    `);
+    
+    const result = await updateStmt.bind(vote, predictionId, userIdentifier).run();
+    
+    if (!result.success) {
+      throw new Error('Failed to update vote');
+    }
+    
+    return result;
+  } else {
+    // Insert new vote
+    const insertStmt = db.prepare(`
+      INSERT INTO prediction_votes (prediction_id, user_identifier, vote, created_at)
+      VALUES (?, ?, ?, CURRENT_TIMESTAMP)
+    `);
+    
+    const result = await insertStmt.bind(predictionId, userIdentifier, vote).run();
+    
+    if (!result.success) {
+      throw new Error('Failed to submit vote');
+    }
+    
+    return result;
   }
-  
-  return result;
 }
 
 export async function getUserVote(db: D1Database, predictionId: number, userIdentifier: string) {
