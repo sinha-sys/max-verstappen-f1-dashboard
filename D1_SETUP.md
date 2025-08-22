@@ -21,10 +21,14 @@ This guide will help you complete the integration of your Cloudflare D1 database
 
 ## Step 2: Create Database Schema
 
-Run the following command to create the database tables:
+Run the following commands to create the database tables:
 
 ```bash
+# Create main F1 data tables
 wrangler d1 execute maxdb --file=schema.sql
+
+# Create predictions tables (new feature)
+wrangler d1 execute maxdb --file=schema-predictions.sql
 ```
 
 ## Step 3: Migrate Your Data
@@ -48,6 +52,12 @@ wrangler d1 execute maxdb --command="SELECT * FROM season_results ORDER BY seaso
 
 # Check records
 wrangler d1 execute maxdb --command="SELECT * FROM records;"
+
+# Check predictions (new feature)
+wrangler d1 execute maxdb --command="SELECT * FROM predictions;"
+
+# Check predictions with vote summary
+wrangler d1 execute maxdb --command="SELECT * FROM prediction_vote_summary;"
 ```
 
 ## Step 5: Configure Environment Variables
@@ -94,8 +104,11 @@ The code has been set up with fallbacks:
 ### Tables Created:
 
 1. **career_stats**: Overall career statistics and rates
-2. **season_results**: Year-by-year performance data
+2. **season_results**: Year-by-year performance data  
 3. **records**: F1 records and achievements
+4. **predictions**: F1 predictions for community voting
+5. **prediction_votes**: Individual user votes on predictions
+6. **prediction_vote_summary**: View with aggregated vote counts and percentages
 
 ### Key Features:
 
