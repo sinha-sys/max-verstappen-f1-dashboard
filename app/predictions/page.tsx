@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { PredictionWithVotes } from "@/lib/types";
 import { TrendingUp, Users, Calendar, Filter } from "lucide-react";
+import predictionsData from "@/data/predictions.json";
 
 // Generate a simple user identifier for anonymous voting
 function getUserIdentifier(): string {
@@ -22,6 +23,52 @@ function getUserIdentifier(): string {
     localStorage.setItem('predictions_user_id', identifier);
   }
   return identifier;
+}
+
+// Get votes from localStorage
+function getVotesFromStorage(): Record<number, 'yes' | 'no'> {
+  if (typeof window === 'undefined') return {};
+  
+  try {
+    const votes = localStorage.getItem('prediction_votes');
+    return votes ? JSON.parse(votes) : {};
+  } catch {
+    return {};
+  }
+}
+
+// Save votes to localStorage
+function saveVotesToStorage(votes: Record<number, 'yes' | 'no'>) {
+  if (typeof window === 'undefined') return;
+  
+  try {
+    localStorage.setItem('prediction_votes', JSON.stringify(votes));
+  } catch (error) {
+    console.error('Failed to save votes to localStorage:', error);
+  }
+}
+
+// Get vote counts from localStorage (community simulation)
+function getVoteCountsFromStorage(): Record<number, { yes: number; no: number }> {
+  if (typeof window === 'undefined') return {};
+  
+  try {
+    const counts = localStorage.getItem('prediction_vote_counts');
+    return counts ? JSON.parse(counts) : {};
+  } catch {
+    return {};
+  }
+}
+
+// Save vote counts to localStorage
+function saveVoteCountsToStorage(counts: Record<number, { yes: number; no: number }>) {
+  if (typeof window === 'undefined') return;
+  
+  try {
+    localStorage.setItem('prediction_vote_counts', JSON.stringify(counts));
+  } catch (error) {
+    console.error('Failed to save vote counts to localStorage:', error);
+  }
 }
 
 
@@ -140,15 +187,32 @@ export default function PredictionsPage() {
 
   const loadPredictions = async () => {
     try {
-      const userIdentifier = getUserIdentifier();
-      const response = await fetch(`/api/predictions?userIdentifier=${encodeURIComponent(userIdentifier)}`);
-      const data = await response.json();
+      // Get base predictions data
+      const basePredictions = predictionsData;
       
-      if (data.success) {
-        setPredictions(data.data);
-      } else {
-        console.error('Failed to fetch predictions:', data.error);
-      }
+      // Get user votes and community vote counts from localStorage
+      const userVotes = getVotesFromStorage();
+      const voteCounts = getVoteCountsFromStorage();
+      
+      // Merge the data
+      const predictionsWithVotes: PredictionWithVotes[] = basePredictions.map(prediction => {
+        const counts = voteCounts[prediction.id] || { yes: prediction.yesVotes, no: prediction.noVotes };
+        const total = counts.yes + counts.no;
+        const yesPercentage = total > 0 ? (counts.yes / total) * 100 : 50;
+        
+        return {
+          ...prediction,
+          status: prediction.status as 'active' | 'closed' | 'resolved',
+          expiresAt: prediction.expiresAt || undefined,
+          yesVotes: counts.yes,
+          noVotes: counts.no,
+          totalVotes: total,
+          yesPercentage,
+          userVote: userVotes[prediction.id] || null
+        };
+      });
+      
+      setPredictions(predictionsWithVotes);
     } catch (error) {
       console.error('Error loading predictions:', error);
     } finally {
@@ -160,35 +224,44 @@ export default function PredictionsPage() {
     setVotingStates(prev => new Set([...Array.from(prev), predictionId]));
 
     try {
-      const userIdentifier = getUserIdentifier();
-      const response = await fetch('/api/predictions/vote', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          predictionId,
-          vote,
-          userIdentifier,
-        }),
-      });
-
-      const data = await response.json();
+      // Get current votes and counts
+      const currentVotes = getVotesFromStorage();
+      const currentCounts = getVoteCountsFromStorage();
       
-      if (data.success) {
-        // Update the specific prediction in state with the returned data
-        setPredictions(prev => 
-          prev.map(p => 
-            p.id === predictionId 
-              ? data.data
-              : p
-          )
-        );
-      } else {
-        console.error('Failed to submit vote:', data.error);
-        // Show error message to user
-        alert(data.error || 'Failed to submit vote');
+      // Get current prediction data
+      const prediction = predictions.find(p => p.id === predictionId);
+      if (!prediction) return;
+      
+      // Check if user already voted with the same vote
+      const previousVote = currentVotes[predictionId];
+      if (previousVote && previousVote === vote) {
+        alert('You have already voted for this prediction');
+        return;
       }
+      
+      // Initialize counts if not exists
+      if (!currentCounts[predictionId]) {
+        currentCounts[predictionId] = { 
+          yes: prediction.yesVotes, 
+          no: prediction.noVotes 
+        };
+      }
+      
+      // If user had a previous vote, subtract it
+      if (previousVote) {
+        currentCounts[predictionId][previousVote]--;
+      }
+      
+      // Add the new vote
+      currentVotes[predictionId] = vote;
+      currentCounts[predictionId][vote]++;
+      
+      // Save to localStorage
+      saveVotesToStorage(currentVotes);
+      saveVoteCountsToStorage(currentCounts);
+      
+      // Update UI
+      await loadPredictions();
     } catch (error) {
       console.error('Error submitting vote:', error);
       alert('Failed to submit vote. Please try again.');

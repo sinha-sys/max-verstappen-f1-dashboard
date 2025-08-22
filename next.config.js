@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // For Cloudflare Pages with Functions, we don't use static export
-  // output: 'export',
+  // Enable static export for Cloudflare Pages
+  output: 'export',
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
-  // distDir: 'out',
+  distDir: 'out',
   images: {
     unoptimized: true,
   },
