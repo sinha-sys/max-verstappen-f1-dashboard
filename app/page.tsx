@@ -201,6 +201,27 @@ export default function HomePage() {
               </div>
             </section>
 
+            <Separator className="hidden sm:block" />
+
+            {/* SEO Description Section */}
+            <section className="w-full" aria-labelledby="about-heading">
+              <div className="bg-card rounded-lg border p-6 sm:p-8">
+                <h2 id="about-heading" className="text-2xl font-bold mb-4 text-center">
+                  {t('seo.title', 'The Ultimate Max Verstappen F1 Statistics Hub')}
+                </h2>
+                <div className="prose prose-sm sm:prose max-w-none text-muted-foreground text-center space-y-4">
+                  <p>
+                    {t('seo.description1', 'Dive deep into Max Verstappen\'s incredible Formula 1 journey with our comprehensive statistics dashboard. Track the four-time World Champion\'s career milestones, race wins, pole positions, and championship-winning performances across every F1 season.')}
+                  </p>
+                  <p>
+                    {t('seo.description2', 'From his breakthrough victory at the 2016 Spanish Grand Prix to his dominant championship runs with Red Bull Racing, explore detailed analytics, interactive charts, and real-time F1 data. Perfect for Formula 1 enthusiasts, fantasy F1 players, and motorsport analysts seeking in-depth performance insights.')}
+                  </p>
+                  <p>
+                    {t('seo.description3', 'Join our F1 predictions community and vote on upcoming race outcomes, driver transfers, and season predictions. Stay ahead of the grid with comprehensive F1 statistics, race countdowns, and the latest Formula 1 trends.')}
+                  </p>
+                </div>
+              </div>
+            </section>
 
           </div>
         </div>
