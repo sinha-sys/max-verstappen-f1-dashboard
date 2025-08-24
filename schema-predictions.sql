@@ -15,15 +15,17 @@ CREATE TABLE IF NOT EXISTS predictions (
     created_by TEXT -- Could be used for admin tracking
 );
 
--- Votes table - stores individual user votes
+-- Votes table - stores individual user votes with user details
 CREATE TABLE IF NOT EXISTS prediction_votes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     prediction_id INTEGER NOT NULL,
-    user_identifier TEXT NOT NULL, -- IP address or session ID for anonymous voting
+    user_identifier TEXT NOT NULL, -- Generated unique identifier for the user
+    user_name TEXT NOT NULL, -- User's provided name
+    user_email TEXT NOT NULL, -- User's provided email
     vote TEXT NOT NULL CHECK (vote IN ('yes', 'no')),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (prediction_id) REFERENCES predictions(id) ON DELETE CASCADE,
-    UNIQUE(prediction_id, user_identifier) -- One vote per user per prediction
+    UNIQUE(prediction_id, user_email) -- One vote per email per prediction
 );
 
 -- Vote summary view for easy access to vote counts

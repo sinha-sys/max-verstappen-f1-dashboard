@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { PredictionWithVotes } from "@/lib/types";
 import { TrendingUp, Users, Calendar, Filter } from "lucide-react";
 import predictionsData from "@/data/predictions.json";
+import { VoteModal } from "@/components/VoteModal";
 
 // Generate a simple user identifier for anonymous voting
 function getUserIdentifier(): string {
@@ -26,7 +27,7 @@ function getUserIdentifier(): string {
 }
 
 // Get votes from localStorage
-function getVotesFromStorage(): Record<number, 'yes' | 'no'> {
+function getVotesFromStorage(): Record<string, 'yes' | 'no'> {
   if (typeof window === 'undefined') return {};
   
   try {
@@ -38,7 +39,7 @@ function getVotesFromStorage(): Record<number, 'yes' | 'no'> {
 }
 
 // Save votes to localStorage
-function saveVotesToStorage(votes: Record<number, 'yes' | 'no'>) {
+function saveVotesToStorage(votes: Record<string, 'yes' | 'no'>) {
   if (typeof window === 'undefined') return;
   
   try {
@@ -180,6 +181,15 @@ export default function PredictionsPage() {
   const [loading, setLoading] = useState(true);
   const [votingStates, setVotingStates] = useState<Set<number>>(new Set());
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pendingVote, setPendingVote] = useState<{
+    predictionId: number;
+    vote: 'yes' | 'no';
+    predictionTitle: string;
+  } | null>(null);
+  const [isSubmittingVote, setIsSubmittingVote] = useState(false);
 
   useEffect(() => {
     loadPredictions();
@@ -187,19 +197,30 @@ export default function PredictionsPage() {
 
   const loadPredictions = async () => {
     try {
-      // Get base predictions data
-      const basePredictions = predictionsData;
+      // Try to fetch from API first, fallback to local data
+      try {
+        const response = await fetch('/api/predictions');
+        const data = await response.json();
+        
+        if (data.success) {
+          setPredictions(data.data);
+          return;
+        }
+      } catch (apiError) {
+        console.log('API not available, using fallback data');
+      }
       
-      // Get user votes and community vote counts from localStorage
+      // Fallback to local data with localStorage for development
+      const basePredictions = predictionsData;
       const userVotes = getVotesFromStorage();
       const voteCounts = getVoteCountsFromStorage();
       
-      // Merge the data
       const predictionsWithVotes: PredictionWithVotes[] = basePredictions.map(prediction => {
         const counts = voteCounts[prediction.id] || { yes: prediction.yesVotes, no: prediction.noVotes };
         const total = counts.yes + counts.no;
         const yesPercentage = total > 0 ? (counts.yes / total) * 100 : 50;
         
+        // For fallback, we can't determine user vote without email, so set to null
         return {
           ...prediction,
           status: prediction.status as 'active' | 'closed' | 'resolved',
@@ -208,7 +229,7 @@ export default function PredictionsPage() {
           noVotes: counts.no,
           totalVotes: total,
           yesPercentage,
-          userVote: userVotes[prediction.id] || null
+          userVote: null
         };
       });
       
@@ -220,57 +241,117 @@ export default function PredictionsPage() {
     }
   };
 
-  const handleVote = async (predictionId: number, vote: 'yes' | 'no') => {
-    setVotingStates(prev => new Set([...Array.from(prev), predictionId]));
+  const handleVote = (predictionId: number, vote: 'yes' | 'no') => {
+    const prediction = predictions.find(p => p.id === predictionId);
+    if (!prediction) return;
+    
+    // Set pending vote and open modal
+    setPendingVote({
+      predictionId,
+      vote,
+      predictionTitle: prediction.title
+    });
+    setIsModalOpen(true);
+  };
 
+  const handleConfirmVote = async (userName: string, userEmail: string) => {
+    if (!pendingVote) return;
+    
+    setIsSubmittingVote(true);
+    
     try {
-      // Get current votes and counts
-      const currentVotes = getVotesFromStorage();
-      const currentCounts = getVoteCountsFromStorage();
-      
-      // Get current prediction data
-      const prediction = predictions.find(p => p.id === predictionId);
-      if (!prediction) return;
-      
-      // Check if user already voted with the same vote
-      const previousVote = currentVotes[predictionId];
-      if (previousVote && previousVote === vote) {
-        alert('You have already voted for this prediction');
-        return;
+      // Try to submit to API first
+      try {
+        const response = await fetch('/api/predictions/vote', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            predictionId: pendingVote.predictionId,
+            vote: pendingVote.vote,
+            userName,
+            userEmail,
+          }),
+        });
+
+        const data = await response.json();
+        
+        if (data.success) {
+          // Update the specific prediction in state
+          setPredictions(prev => 
+            prev.map(p => 
+              p.id === pendingVote.predictionId 
+                ? data.data
+                : p
+            )
+          );
+          
+          // Close modal and reset state
+          setIsModalOpen(false);
+          setPendingVote(null);
+          return;
+        } else {
+          throw new Error(data.error || 'Failed to submit vote');
+        }
+      } catch (apiError) {
+        console.log('API not available, using localStorage fallback');
+        
+        // Fallback to localStorage for development
+        const currentVotes = getVotesFromStorage();
+        const currentCounts = getVoteCountsFromStorage();
+        
+        const prediction = predictions.find(p => p.id === pendingVote.predictionId);
+        if (!prediction) return;
+        
+        // Check if user already voted with the same vote (using email as key)
+        const emailKey = `${pendingVote.predictionId}_${userEmail}`;
+        const previousVote = currentVotes[emailKey];
+        if (previousVote && previousVote === pendingVote.vote) {
+          alert('You have already voted for this prediction');
+          return;
+        }
+        
+        // Initialize counts if not exists
+        if (!currentCounts[pendingVote.predictionId]) {
+          currentCounts[pendingVote.predictionId] = { 
+            yes: prediction.yesVotes, 
+            no: prediction.noVotes 
+          };
+        }
+        
+        // If user had a previous vote, subtract it
+        if (previousVote) {
+          currentCounts[pendingVote.predictionId][previousVote]--;
+        }
+        
+        // Add the new vote
+        currentVotes[emailKey] = pendingVote.vote;
+        currentCounts[pendingVote.predictionId][pendingVote.vote]++;
+        
+        // Save to localStorage
+        saveVotesToStorage(currentVotes);
+        saveVoteCountsToStorage(currentCounts);
+        
+        // Update UI
+        await loadPredictions();
       }
       
-      // Initialize counts if not exists
-      if (!currentCounts[predictionId]) {
-        currentCounts[predictionId] = { 
-          yes: prediction.yesVotes, 
-          no: prediction.noVotes 
-        };
-      }
-      
-      // If user had a previous vote, subtract it
-      if (previousVote) {
-        currentCounts[predictionId][previousVote]--;
-      }
-      
-      // Add the new vote
-      currentVotes[predictionId] = vote;
-      currentCounts[predictionId][vote]++;
-      
-      // Save to localStorage
-      saveVotesToStorage(currentVotes);
-      saveVoteCountsToStorage(currentCounts);
-      
-      // Update UI
-      await loadPredictions();
+      // Close modal and reset state
+      setIsModalOpen(false);
+      setPendingVote(null);
     } catch (error) {
       console.error('Error submitting vote:', error);
-      alert('Failed to submit vote. Please try again.');
+      alert(error instanceof Error ? error.message : 'Failed to submit vote. Please try again.');
     } finally {
-      setVotingStates(prev => {
-        const newSet = new Set(Array.from(prev));
-        newSet.delete(predictionId);
-        return newSet;
-      });
+      setIsSubmittingVote(false);
+    }
+  };
+
+  const handleCloseModal = () => {
+    if (!isSubmittingVote) {
+      setIsModalOpen(false);
+      setPendingVote(null);
     }
   };
 
@@ -359,7 +440,17 @@ export default function PredictionsPage() {
         </div>
       )}
 
-
+      {/* Vote Confirmation Modal */}
+      {pendingVote && (
+        <VoteModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onConfirm={handleConfirmVote}
+          predictionTitle={pendingVote.predictionTitle}
+          vote={pendingVote.vote}
+          isSubmitting={isSubmittingVote}
+        />
+      )}
     </div>
   );
 }
