@@ -9,6 +9,7 @@ const languages = [
   { code: 'de', name: 'DE', flag: '🇩🇪', fullName: 'Deutsch' },
   { code: 'ru', name: 'RU', flag: '🇷🇺', fullName: 'Русский' },
   { code: 'zh', name: 'ZH', flag: '🇨🇳', fullName: '中文' },
+  { code: 'ja', name: 'JP', flag: '🇯🇵', fullName: '日本語' },
 ];
 
 export function LanguageSelector() {

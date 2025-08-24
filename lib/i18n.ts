@@ -7,6 +7,7 @@ import nl from '../messages/nl.json';
 import de from '../messages/de.json';
 import ru from '../messages/ru.json';
 import zh from '../messages/zh.json';
+import ja from '../messages/ja.json';
 
 const resources = {
   en: { translation: en },
@@ -14,6 +15,7 @@ const resources = {
   de: { translation: de },
   ru: { translation: ru },
   zh: { translation: zh },
+  ja: { translation: ja },
 };
 
 i18n
