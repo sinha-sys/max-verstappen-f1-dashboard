@@ -27,6 +27,11 @@
     "seasonComplete": "Seizoen Voltooid",
     "noMoreRaces": "Geen races meer gepland voor 2025"
   },
+  "news": {
+    "raceUpdate": "Race Update",
+    "dutchGP2025": "Max Verstappen heeft het thuispubliek verrast met een hard bevochten 2e plaats op de Nederlandse Grand Prix 2025, waardoor het circuit van Zandvoort bruiste van opwinding",
+    "dismiss": "Nieuwsmelding sluiten"
+  },
   "kpi": {
     "starts": "Starts",
     "wins": "Overwinningen",

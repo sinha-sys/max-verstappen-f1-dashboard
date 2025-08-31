@@ -167,8 +167,8 @@ export default function HomePage() {
             <section className="w-full" aria-labelledby="news-alert-heading">
               <h2 id="news-alert-heading" className="sr-only">Latest News</h2>
               <NewsAlert 
-                title="Race Update"
-                message="Max Verstappen thrilled the home crowd with a hard-fought 2nd place at the 2025 Dutch Grand Prix, keeping the Zandvoort circuit buzzing with excitement"
+                titleKey="news.raceUpdate"
+                messageKey="news.dutchGP2025"
                 type="success"
                 dismissible={true}
                 showDate={true}

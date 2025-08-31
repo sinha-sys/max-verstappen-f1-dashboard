@@ -1,26 +1,28 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { X, Trophy, Calendar } from "lucide-react";
 
 interface NewsAlertProps {
-  title?: string;
-  message: string;
+  titleKey?: string;
+  messageKey: string;
   type?: "success" | "info" | "warning";
   dismissible?: boolean;
   showDate?: boolean;
 }
 
 export function NewsAlert({ 
-  title = "Latest News",
-  message, 
+  titleKey = "news.raceUpdate",
+  messageKey, 
   type = "success", 
   dismissible = true,
   showDate = true 
 }: NewsAlertProps) {
   const [isVisible, setIsVisible] = useState(true);
+  const { t } = useTranslation();
 
   if (!isVisible) return null;
 
@@ -73,7 +75,7 @@ export function NewsAlert({
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-2">
                 <Badge variant="secondary" className={`${styles.badgeClass} text-xs font-medium`}>
-                  {title}
+                  {t(titleKey)}
                 </Badge>
                 {showDate && (
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
@@ -84,7 +86,7 @@ export function NewsAlert({
               </div>
               
               <p className={`text-sm font-medium leading-relaxed ${styles.textClass}`}>
-                {message}
+                {t(messageKey)}
               </p>
             </div>
           </div>
@@ -94,7 +96,7 @@ export function NewsAlert({
             <button
               onClick={() => setIsVisible(false)}
               className="flex-shrink-0 p-1 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-              aria-label="Dismiss news alert"
+              aria-label={t("news.dismiss")}
             >
               <X className="h-4 w-4 text-muted-foreground hover:text-foreground" />
             </button>
