@@ -11,6 +11,7 @@ import { CumulativeWins } from "@/components/dashboard/Charts/CumulativeWins";
 
 
 import { RaceCountdown } from "@/components/dashboard/RaceCountdown";
+import { NewsAlert } from "@/components/dashboard/NewsAlert";
 
 import { Separator } from "@/components/ui/separator";
 import type { CareerTotals, RateSummary, SeasonStat } from "@/lib/types";
@@ -162,11 +163,23 @@ export default function HomePage() {
           {/* Main Content Area */}
           <div className="space-y-3 sm:space-y-6 lg:space-y-8 min-w-0 w-full">
 
-                          {/* Race Countdown */}
-              <section className="w-full" aria-labelledby="race-section-heading">
-                <h2 id="race-section-heading" className="sr-only">Next F1 Race Information</h2>
-                <RaceCountdown />
-              </section>
+            {/* News Alert Section */}
+            <section className="w-full" aria-labelledby="news-alert-heading">
+              <h2 id="news-alert-heading" className="sr-only">Latest News</h2>
+              <NewsAlert 
+                title="Race Update"
+                message="Max Verstappen thrilled the home crowd with a hard-fought 2nd place at the 2025 Dutch Grand Prix, keeping the Zandvoort circuit buzzing with excitement"
+                type="success"
+                dismissible={true}
+                showDate={true}
+              />
+            </section>
+
+            {/* Race Countdown */}
+            <section className="w-full" aria-labelledby="race-section-heading">
+              <h2 id="race-section-heading" className="sr-only">Next F1 Race Information</h2>
+              <RaceCountdown />
+            </section>
 
             <Separator className="hidden sm:block" />
 
