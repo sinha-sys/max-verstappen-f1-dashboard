@@ -316,9 +316,9 @@ export async function getWinRateDataFromJSON() {
     {
       rank: 5,
       driverName: "Max Verstappen",
-      starts: 218,
+      starts: 224,
       wins: 65,
-      winPercentage: 29.82,
+      winPercentage: 29.02,
       era: "Current",
       notes: "Among modern drivers, leads the pack with consistent performance"
     },
