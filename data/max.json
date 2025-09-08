@@ -1,21 +1,21 @@
 {
   "career": {
     "driver": "Max Verstappen",
-    "asOfDate": "2025-08-31",
-    "starts": 224,
-    "wins": 65,
-    "podiums": 118,
+    "asOfDate": "2025-09-07",
+    "starts": 225,
+    "wins": 66,
+    "podiums": 119,
     "poles": 44,
     "fastestLaps": 34,
-    "points": 3228.5,
+    "points": 3253.5,
     "dnfs": 33,
     "championships": 4,
     "rates": {
-      "winRate": 0.2902,
-      "podiumRate": 0.5268,
-      "poleRate": 0.1964,
-      "dnfRate": 0.1473,
-      "avgPointsPerStart": 14.41
+      "winRate": 0.2933,
+      "podiumRate": 0.5289,
+      "poleRate": 0.1956,
+      "dnfRate": 0.1467,
+      "avgPointsPerStart": 14.46
     }
   }
 }
