@@ -80,7 +80,7 @@ export function NewsAlert({
                 {showDate && (
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <Calendar className="h-3 w-3" />
-                    <span>Aug 31, 2025</span>
+                    <span>Sep 7, 2025</span>
                   </div>
                 )}
               </div>
