@@ -5,7 +5,7 @@
     "starts": 225,
     "wins": 66,
     "podiums": 119,
-    "poles": 44,
+    "poles": 45,
     "fastestLaps": 34,
     "points": 3253.5,
     "dnfs": 33,
@@ -13,7 +13,7 @@
     "rates": {
       "winRate": 0.2933,
       "podiumRate": 0.5289,
-      "poleRate": 0.1956,
+      "poleRate": 0.2000,
       "dnfRate": 0.1467,
       "avgPointsPerStart": 14.46
     }
