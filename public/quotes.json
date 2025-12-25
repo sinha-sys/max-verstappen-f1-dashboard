@@ -1,0 +1,110 @@
+[
+  {
+    "id": 1,
+    "text": "Woah, there's a giant lizard on the track! Face to face with Godzilla then, mate!",
+    "type": "radio",
+    "context": "Singapore 2016"
+  },
+  {
+    "id": 2,
+    "text": "I am the best driver because I believe that I am the best. Every driver needs to think like that.",
+    "type": "quote",
+    "context": "On self-confidence"
+  },
+  {
+    "id": 3,
+    "text": "Can we ask for 20 seconds? Stupid idiots.",
+    "type": "radio",
+    "context": "Abu Dhabi 2024, sarcastically asking stewards for a harsher penalty"
+  },
+  {
+    "id": 4,
+    "text": "The only place that matters is first.",
+    "type": "quote",
+    "context": "On his competitive mindset"
+  },
+  {
+    "id": 5,
+    "text": "I'm pressing it 50 f***ing times before it opens!",
+    "type": "radio",
+    "context": "Spain 2022, regarding his broken DRS"
+  },
+  {
+    "id": 6,
+    "text": "I was never 'Mad Max.' I was just Max who was trying to get the best result for the team.",
+    "type": "quote",
+    "context": "On his nickname"
+  },
+  {
+    "id": 7,
+    "text": "This is boring. I should have brought my pillow.",
+    "type": "radio",
+    "context": "Monaco 2024"
+  },
+  {
+    "id": 8,
+    "text": "If you are not allowed to defend, what's racing about then?",
+    "type": "quote",
+    "context": "On racing philosophy"
+  },
+  {
+    "id": 9,
+    "text": "Haha, simply lovely!",
+    "type": "radio",
+    "context": "His signature victory catchphrase"
+  },
+  {
+    "id": 10,
+    "text": "GP2 engine, GP2! Are there two GPs?",
+    "type": "radio",
+    "context": "Brazil 2023, mocking his engineer Gianpiero Lambiase when he accidentally pressed the wrong button"
+  },
+  {
+    "id": 11,
+    "text": "The biggest critic I have in my life is my dad, so everything else is just a breeze.",
+    "type": "quote",
+    "context": "On family influence"
+  },
+  {
+    "id": 12,
+    "text": "I've got a nut flying around my feet... I hope it's not from the steering column!",
+    "type": "radio",
+    "context": "Brazil 2024"
+  },
+  {
+    "id": 13,
+    "text": "I want to win because I am the fastest out there, not by luck.",
+    "type": "quote",
+    "context": "On earning victories"
+  },
+  {
+    "id": 14,
+    "text": "A little bit of pit stop training perhaps?",
+    "type": "radio",
+    "context": "Spa 2023, suggesting an unnecessary stop just for fun because he was so far ahead"
+  },
+  {
+    "id": 15,
+    "text": "We are getting way too much info in the cockpit. Sometimes I switch off the display in my car!",
+    "type": "radio",
+    "context": "On information overload"
+  },
+  {
+    "id": 16,
+    "text": "I think you can improve on everything; you're never perfect.",
+    "type": "quote",
+    "context": "On continuous improvement"
+  },
+  {
+    "id": 17,
+    "text": "If my mom had balls, she'd be my dad.",
+    "type": "radio",
+    "context": "2020 Press Conference/Radio context"
+  },
+  {
+    "id": 18,
+    "text": "You could send the medical delegate to the stewards, maybe they can check if they are all okay.",
+    "type": "radio",
+    "context": "Hungary 2024, after a frustrating penalty"
+  }
+]
