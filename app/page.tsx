@@ -104,7 +104,7 @@ export default function HomePage() {
         {/* Quote Carousel */}
         <div className="relative">
           <Card className="bg-gray-900/50 backdrop-blur-xl border border-gray-800/50 shadow-2xl min-h-[350px] flex items-center">
-            <CardContent className="p-8 md:p-16 w-full">
+            <CardContent className="p-4 sm:p-8 md:p-16 w-full mx-8 sm:mx-0">
               <div className="text-center space-y-8">
                 {/* Content Type Badge */}
                 <div className="flex justify-center">
@@ -139,22 +139,22 @@ export default function HomePage() {
 
                 {/* Content Display */}
                 {currentQuote.type === 'stat' ? (
-                  <div className="space-y-4">
-                    <h3 className="text-xl md:text-2xl lg:text-3xl font-light text-gray-300 tracking-wide">
+                  <div className="space-y-4 px-4 sm:px-0">
+                    <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light text-gray-300 tracking-wide">
                       {currentQuote.text}
                     </h3>
-                    <div className="text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tight">
+                    <div className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tight">
                       {currentQuote.value}
                     </div>
                   </div>
                 ) : (
-                  <blockquote className="text-xl md:text-3xl lg:text-4xl font-light text-white leading-relaxed tracking-wide">
+                  <blockquote className="text-lg sm:text-xl md:text-3xl lg:text-4xl font-light text-white leading-relaxed tracking-wide px-4 sm:px-0">
                     &ldquo;{currentQuote.text}&rdquo;
                   </blockquote>
                 )}
 
                 {/* Context */}
-                <p className="text-base md:text-lg text-gray-400 font-light tracking-wide">
+                <p className="text-sm sm:text-base md:text-lg text-gray-400 font-light tracking-wide px-4 sm:px-0">
                   {currentQuote.context}
                 </p>
               </div>
@@ -164,18 +164,18 @@ export default function HomePage() {
           {/* Navigation Arrows */}
           <button
             onClick={goToPrevious}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-800/80 hover:bg-gray-700 text-white rounded-full p-4 backdrop-blur-sm border border-gray-700/50 transition-all duration-300 hover:scale-110 hover:border-gray-600"
+            className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 bg-gray-800/90 hover:bg-gray-700 text-white rounded-full p-2 sm:p-3 md:p-4 backdrop-blur-sm border border-gray-700/50 transition-all duration-300 hover:scale-110 hover:border-gray-600 z-10"
             aria-label="Previous quote"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
           
           <button
             onClick={goToNext}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-800/80 hover:bg-gray-700 text-white rounded-full p-4 backdrop-blur-sm border border-gray-700/50 transition-all duration-300 hover:scale-110 hover:border-gray-600"
+            className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 bg-gray-800/90 hover:bg-gray-700 text-white rounded-full p-2 sm:p-3 md:p-4 backdrop-blur-sm border border-gray-700/50 transition-all duration-300 hover:scale-110 hover:border-gray-600 z-10"
             aria-label="Next quote"
           >
-            <ChevronRight className="w-5 h-5" />
+            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
 
