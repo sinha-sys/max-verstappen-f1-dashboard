@@ -1,37 +1,30 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { Navigation } from "@/components/Navigation";
-import { I18nProvider } from "@/components/I18nProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://maxverstapen.pages.dev'),
-  title: "Max Verstappen F1 Stats | Career Dashboard & Records",
-  description: "Max Verstappen's complete F1 career stats, win rates, championships, and performance data. Interactive dashboard with 4x World Champion records.",
+  title: "Max Verstappen Quotes | F1 Champion Quotes & Radio Messages",
+  description: "Discover Max Verstappen's most iconic quotes and memorable team radio messages from his Formula 1 career. Interactive quote carousel featuring the 4x World Champion's best moments.",
   keywords: [
     "Max Verstappen", 
     "Formula 1", 
     "F1", 
     "Red Bull Racing", 
     "F1 World Champion", 
-    "F1 driver stats", 
+    "Max Verstappen quotes", 
     "Dutch racing driver", 
-    "Max Verstappen records",
-    "F1 statistics",
-    "Racing",
+    "F1 radio messages",
+    "Racing quotes",
+    "Formula 1 quotes",
     "Championship",
-    "Formula 1 2024",
-    "F1 season results",
-    "Grand Prix wins",
-    "Pole positions",
-    "Fastest laps",
-    "World Championship",
-    "Racing statistics",
-    "Motorsport data"
+    "Team radio",
+    "Max Verstappen sayings",
+    "F1 driver quotes",
+    "Racing inspiration",
+    "Motorsport quotes"
   ],
   authors: [{ name: "F1 Stats Team" }],
   creator: "F1 Stats Dashboard",
@@ -39,8 +32,8 @@ export const metadata: Metadata = {
   category: "Sports",
   classification: "Formula 1 Statistics",
   openGraph: {
-    title: "Max Verstappen F1 Stats | Career Dashboard & Records",
-    description: "Max Verstappen's complete F1 career stats, win rates, championships, and performance data. Interactive dashboard with 4x World Champion records.",
+    title: "Max Verstappen Quotes | F1 Champion Quotes & Radio Messages",
+    description: "Discover Max Verstappen's most iconic quotes and memorable team radio messages from his Formula 1 career. Interactive quote carousel featuring the 4x World Champion's best moments.",
     type: "profile",
     siteName: "Max Verstappen Stats",
     locale: "en_US",
@@ -56,8 +49,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Max Verstappen F1 Stats | Career Dashboard & Records",
-    description: "Max Verstappen's complete F1 career stats, win rates, championships, and performance data. Interactive dashboard with 4x World Champion records.",
+    title: "Max Verstappen Quotes | F1 Champion Quotes & Radio Messages",
+    description: "Discover Max Verstappen's most iconic quotes and memorable team radio messages from his Formula 1 career. Interactive quote carousel featuring the 4x World Champion's best moments.",
     images: ["/images/max-verstappen.jpg"],
     creator: "@F1Stats",
   },
@@ -102,19 +95,7 @@ export default function RootLayout({
         <meta name="format-detection" content="telephone=no" />
       </head>
       <body className={inter.className}>
-        <I18nProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <TooltipProvider>
-              <Navigation />
-              {children}
-            </TooltipProvider>
-          </ThemeProvider>
-        </I18nProvider>
+        {children}
       </body>
     </html>
   );

@@ -1,245 +1,183 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { getCareerClient, getSeasonsClient } from "@/lib/fetchers";
-import { Header } from "@/components/dashboard/Header";
-import { KPIGroup } from "@/components/dashboard/KPIGroup";
-import { RateCards } from "@/components/dashboard/RateCards";
-import { WinRateTrend } from "@/components/dashboard/Charts/WinRateTrend";
-import { CumulativeWins } from "@/components/dashboard/Charts/CumulativeWins";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { ChevronLeft, ChevronRight, Radio, Quote } from "lucide-react";
 
-
-import { RaceCountdown } from "@/components/dashboard/RaceCountdown";
-import { NewsAlert } from "@/components/dashboard/NewsAlert";
-
-import { Separator } from "@/components/ui/separator";
-import type { CareerTotals, RateSummary, SeasonStat } from "@/lib/types";
-import Script from "next/script";
+interface QuoteItem {
+  id: number;
+  text: string;
+  type: "quote" | "radio";
+  context: string;
+}
 
 export default function HomePage() {
-  const [career, setCareer] = useState<(CareerTotals & { rates: RateSummary }) | null>(null);
-  const [allSeasons, setAllSeasons] = useState<SeasonStat[]>([]);
-
-
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [quotes, setQuotes] = useState<QuoteItem[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [mounted, setMounted] = useState(false);
-  const { t } = useTranslation();
 
   useEffect(() => {
     setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-    
-    const fetchData = async () => {
+    // Load quotes data
+    const loadQuotes = async () => {
       try {
-        setLoading(true);
-        const [careerData, seasonsData] = await Promise.all([
-          getCareerClient(),
-          getSeasonsClient(),
-        ]);
-
-        setCareer(careerData.career);
-        setAllSeasons(seasonsData);
-
-
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load data");
-      } finally {
-        setLoading(false);
+        const response = await fetch('/data/quotes.json');
+        const quotesData = await response.json();
+        setQuotes(quotesData);
+      } catch (error) {
+        console.error('Failed to load quotes:', error);
       }
     };
+    loadQuotes();
+  }, []);
 
-    fetchData();
-  }, [mounted]);
+  // Auto-carousel functionality
+  useEffect(() => {
+    if (!isAutoPlaying || quotes.length === 0) return;
 
-  if (!mounted || loading) {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % quotes.length);
+    }, 4000); // Change quote every 4 seconds
+
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, quotes.length]);
+
+  const goToNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % quotes.length);
+    setIsAutoPlaying(false); // Stop auto-play when user interacts
+  };
+
+  const goToPrevious = () => {
+    setCurrentIndex((prev) => (prev - 1 + quotes.length) % quotes.length);
+    setIsAutoPlaying(false); // Stop auto-play when user interacts
+  };
+
+  const goToSlide = (index: number) => {
+    setCurrentIndex(index);
+    setIsAutoPlaying(false);
+  };
+
+  if (!mounted || quotes.length === 0) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
-        <div className="text-center space-y-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="text-muted-foreground">
-            {!mounted ? t('loading.initializing') : t('loading.loadingDashboard')}
-          </p>
+      <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-orange-600 flex items-center justify-center">
+        <div className="text-white text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+          <p>Loading Max Verstappen quotes...</p>
         </div>
       </div>
     );
   }
 
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <h2 className="text-xl font-semibold text-destructive">{t('error.loadingData')}</h2>
-          <p className="text-muted-foreground">{error}</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!career) {
-    return null;
-  }
-
-  // Use all seasons data without filtering
-  const filteredSeasons = allSeasons;
-
-  // Generate structured data for SEO
-  const structuredData = career ? {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Max Verstappen",
-    "jobTitle": "Formula 1 Racing Driver",
-    "description": "Four-time Formula 1 World Champion and Red Bull Racing driver",
-    "image": "https://maxverstapen.pages.dev/images/max-verstappen.jpg",
-    "url": "https://maxverstapen.pages.dev",
-    "nationality": "Dutch",
-    "birthDate": "1997-09-30",
-    "birthPlace": {
-      "@type": "Place",
-      "name": "Hasselt, Belgium"
-    },
-    "worksFor": {
-      "@type": "Organization",
-      "name": "Red Bull Racing",
-      "url": "https://www.redbull.com/int-en/redbullracing"
-    },
-    "sport": "Formula 1",
-    "award": [
-      "Formula 1 World Champion 2021",
-      "Formula 1 World Champion 2022", 
-      "Formula 1 World Champion 2023",
-      "Formula 1 World Champion 2024"
-    ],
-    "achievement": [
-      {
-        "@type": "Achievement",
-        "name": "Formula 1 Career Wins",
-        "value": career.wins.toString()
-      },
-      {
-        "@type": "Achievement", 
-        "name": "Formula 1 Pole Positions",
-        "value": career.poles.toString()
-      },
-      {
-        "@type": "Achievement",
-        "name": "Formula 1 Podium Finishes", 
-        "value": career.podiums.toString()
-      },
-      {
-        "@type": "Achievement",
-        "name": "Formula 1 Championship Points",
-        "value": career.points.toString()
-      }
-    ],
-    "sameAs": [
-      "https://en.wikipedia.org/wiki/Max_Verstappen",
-      "https://www.formula1.com/en/drivers/max-verstappen.html"
-    ]
-  } : null;
+  const currentQuote = quotes[currentIndex];
 
   return (
-    <>
-      {/* Structured Data for SEO */}
-      {structuredData && (
-        <Script
-          id="structured-data"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData),
-          }}
-        />
-      )}
-      
-      <div className="min-h-screen bg-background mobile-safe-area">
-        <Header driverName={career?.driver || "Max Verstappen"} />
-      
-      <main className="container mx-auto px-3 py-3 sm:px-6 lg:px-8 lg:py-8 max-w-full overflow-x-hidden" itemScope itemType="https://schema.org/Person">
-        <div className="w-full">
-          {/* Main Content Area */}
-          <div className="space-y-3 sm:space-y-6 lg:space-y-8 min-w-0 w-full">
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-orange-600 flex items-center justify-center p-4">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+        }}></div>
+      </div>
 
-            {/* News Alert Section */}
-            <section className="w-full" aria-labelledby="news-alert-heading">
-              <h2 id="news-alert-heading" className="sr-only">Latest News</h2>
-              <NewsAlert 
-                titleKey="news.raceUpdate"
-                messageKey="news.dutchGP2025"
-                type="success"
-                dismissible={true}
-                showDate={true}
-              />
-            </section>
-
-            {/* Race Countdown */}
-            <section className="w-full" aria-labelledby="race-section-heading">
-              <h2 id="race-section-heading" className="sr-only">Next F1 Race Information</h2>
-              <RaceCountdown />
-            </section>
-
-            <Separator className="hidden sm:block" />
-
-            {/* KPI Section - Primary stats */}
-            {career && (
-              <section className="w-full" aria-labelledby="kpi-heading">
-                <h2 id="kpi-heading" className="sr-only">Career Statistics</h2>
-                <KPIGroup career={career} />
-              </section>
-            )}
-
-            <Separator className="hidden sm:block" />
-
-            {/* Rate Cards Section - Performance percentages */}
-            {career && (
-              <section className="w-full" aria-labelledby="rates-heading">
-                <h2 id="rates-heading" className="sr-only">Performance Rates</h2>
-                <RateCards rates={career.rates} />
-              </section>
-            )}
-
-            {/* Charts Section - Stack vertically on mobile for better readability */}
-            <section className="w-full min-w-0" aria-labelledby="charts-heading">
-              <h2 id="charts-heading" className="sr-only">Performance Charts</h2>
-              <div className="grid gap-3 sm:gap-6 md:grid-cols-2 w-full">
-                <div className="min-w-0 w-full">
-                  <WinRateTrend seasons={filteredSeasons} />
-                </div>
-                <div className="min-w-0 w-full">
-                  <CumulativeWins seasons={filteredSeasons} />
-                </div>
-              </div>
-            </section>
-
-            <Separator className="hidden sm:block" />
-
-            {/* SEO Description Section */}
-            <section className="w-full" aria-labelledby="about-heading">
-              <div className="bg-card rounded-lg border p-6 sm:p-8">
-                <h2 id="about-heading" className="text-2xl font-bold mb-4 text-center">
-                  {t('seo.title', 'The Ultimate Max Verstappen F1 Statistics Hub')}
-                </h2>
-                <div className="prose prose-sm sm:prose max-w-none text-muted-foreground text-center space-y-4">
-                  <p>
-                    {t('seo.description1', 'Dive deep into Max Verstappen\'s incredible Formula 1 journey with our comprehensive statistics dashboard. Track the four-time World Champion\'s career milestones, race wins, pole positions, and championship-winning performances across every F1 season.')}
-                  </p>
-                  <p>
-                    {t('seo.description2', 'From his breakthrough victory at the 2016 Spanish Grand Prix to his dominant championship runs with Red Bull Racing, explore detailed analytics, interactive charts, and real-time F1 data. Perfect for Formula 1 enthusiasts, fantasy F1 players, and motorsport analysts seeking in-depth performance insights.')}
-                  </p>
-                  <p>
-                    {t('seo.description3', 'Join our F1 predictions community and vote on upcoming race outcomes, driver transfers, and season predictions. Stay ahead of the grid with comprehensive F1 statistics, race countdowns, and the latest Formula 1 trends.')}
-                  </p>
-                </div>
-              </div>
-            </section>
-
-          </div>
+      {/* Main Content */}
+      <div className="relative z-10 w-full max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tight">
+            MAX VERSTAPPEN
+          </h1>
+          <p className="text-xl md:text-2xl text-blue-100 font-light">
+            Quotes & Radio Messages
+          </p>
         </div>
-      </main>
+
+        {/* Quote Carousel */}
+        <div className="relative">
+          <Card className="bg-white/95 backdrop-blur-sm shadow-2xl border-0 min-h-[300px] flex items-center">
+            <CardContent className="p-8 md:p-12 w-full">
+              <div className="text-center space-y-6">
+                {/* Quote Type Badge */}
+                <div className="flex justify-center">
+                  <Badge 
+                    variant="secondary" 
+                    className={`px-4 py-2 text-sm font-medium ${
+                      currentQuote.type === 'radio' 
+                        ? 'bg-orange-100 text-orange-800 border-orange-200' 
+                        : 'bg-blue-100 text-blue-800 border-blue-200'
+                    }`}
+                  >
+                    {currentQuote.type === 'radio' ? (
+                      <>
+                        <Radio className="w-4 h-4 mr-2" />
+                        Team Radio
+                      </>
+                    ) : (
+                      <>
+                        <Quote className="w-4 h-4 mr-2" />
+                        Quote
+                      </>
+                    )}
+                  </Badge>
+                </div>
+
+                {/* Quote Text */}
+                <blockquote className="text-2xl md:text-4xl font-medium text-gray-800 leading-relaxed italic">
+                  &ldquo;{currentQuote.text}&rdquo;
+                </blockquote>
+
+                {/* Context */}
+                <p className="text-lg text-gray-600 font-light">
+                  {currentQuote.context}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Navigation Arrows */}
+          <button
+            onClick={goToPrevious}
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110"
+            aria-label="Previous quote"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+          
+          <button
+            onClick={goToNext}
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110"
+            aria-label="Next quote"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+        </div>
+
+        {/* Dots Indicator */}
+        <div className="flex justify-center mt-8 space-x-2">
+          {quotes.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                index === currentIndex
+                  ? 'bg-white scale-125'
+                  : 'bg-white/50 hover:bg-white/75'
+              }`}
+              aria-label={`Go to quote ${index + 1}`}
+            />
+          ))}
+        </div>
+
+        {/* Auto-play indicator */}
+        {isAutoPlaying && (
+          <div className="text-center mt-6">
+            <p className="text-white/70 text-sm">
+              Auto-playing • Swipe or click to control
+            </p>
+          </div>
+        )}
+      </div>
     </div>
-    </>
   );
 }
