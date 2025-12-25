@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ChevronLeft, ChevronRight, Radio, Quote } from "lucide-react";
+import { ChevronLeft, ChevronRight, Radio, Quote, Trophy } from "lucide-react";
 
 interface QuoteItem {
   id: number;
   text: string;
-  type: "quote" | "radio";
+  value?: string;
+  type: "quote" | "radio" | "stat";
   context: string;
 }
 
@@ -92,9 +93,12 @@ export default function HomePage() {
             MAX VERSTAPPEN
           </h1>
           <div className="w-24 h-0.5 bg-gradient-to-r from-orange-500 to-blue-500 mx-auto mb-4"></div>
-          <p className="text-lg md:text-xl text-gray-400 font-light tracking-wide">
-            QUOTES & RADIO MESSAGES
-          </p>
+          <div className="flex items-center justify-center gap-3">
+            <div className="w-8 h-6 bg-gradient-to-b from-red-500 via-white to-blue-500 rounded-sm shadow-lg border border-gray-600"></div>
+            <p className="text-lg md:text-xl text-gray-400 font-light tracking-wide">
+              DUTCH F1 DRIVER
+            </p>
+          </div>
         </div>
 
         {/* Quote Carousel */}
@@ -102,13 +106,15 @@ export default function HomePage() {
           <Card className="bg-gray-900/50 backdrop-blur-xl border border-gray-800/50 shadow-2xl min-h-[350px] flex items-center">
             <CardContent className="p-8 md:p-16 w-full">
               <div className="text-center space-y-8">
-                {/* Quote Type Badge */}
+                {/* Content Type Badge */}
                 <div className="flex justify-center">
                   <Badge 
                     variant="secondary" 
                     className={`px-6 py-2 text-sm font-medium border-0 ${
                       currentQuote.type === 'radio' 
                         ? 'bg-orange-500/20 text-orange-300 backdrop-blur-sm' 
+                        : currentQuote.type === 'stat'
+                        ? 'bg-green-500/20 text-green-300 backdrop-blur-sm'
                         : 'bg-blue-500/20 text-blue-300 backdrop-blur-sm'
                     }`}
                   >
@@ -116,6 +122,11 @@ export default function HomePage() {
                       <>
                         <Radio className="w-4 h-4 mr-2" />
                         TEAM RADIO
+                      </>
+                    ) : currentQuote.type === 'stat' ? (
+                      <>
+                        <Trophy className="w-4 h-4 mr-2" />
+                        CAREER STAT
                       </>
                     ) : (
                       <>
@@ -126,10 +137,21 @@ export default function HomePage() {
                   </Badge>
                 </div>
 
-                {/* Quote Text */}
-                <blockquote className="text-xl md:text-3xl lg:text-4xl font-light text-white leading-relaxed tracking-wide">
-                  &ldquo;{currentQuote.text}&rdquo;
-                </blockquote>
+                {/* Content Display */}
+                {currentQuote.type === 'stat' ? (
+                  <div className="space-y-4">
+                    <h3 className="text-xl md:text-2xl lg:text-3xl font-light text-gray-300 tracking-wide">
+                      {currentQuote.text}
+                    </h3>
+                    <div className="text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tight">
+                      {currentQuote.value}
+                    </div>
+                  </div>
+                ) : (
+                  <blockquote className="text-xl md:text-3xl lg:text-4xl font-light text-white leading-relaxed tracking-wide">
+                    &ldquo;{currentQuote.text}&rdquo;
+                  </blockquote>
+                )}
 
                 {/* Context */}
                 <p className="text-base md:text-lg text-gray-400 font-light tracking-wide">
