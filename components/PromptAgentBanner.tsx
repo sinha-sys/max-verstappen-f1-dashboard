@@ -36,10 +36,10 @@ export default function PromptAgentBanner({ position = "header" }: PromptAgentBa
           {/* Text Content - Responsive */}
           <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap justify-center">
             <span className="text-[10px] xs:text-xs sm:text-sm text-gray-300 font-medium tracking-wide whitespace-nowrap">
-              <span className="hidden sm:inline">Automate your AI research with </span>
-              <span className="sm:hidden">AI automation: </span>
+              <span className="hidden sm:inline">Automate your AI prompting with </span>
+              <span className="sm:hidden">AI prompt automation: </span>
             </span>
-            <span className="text-[10px] xs:text-xs sm:text-sm font-bold bg-gradient-to-r from-orange-500 to-blue-500 bg-clip-text text-transparent whitespace-nowrap">
+            <span className="text-[10px] xs:text-xs sm:text-sm font-bold text-orange-400 whitespace-nowrap">
               PromptAgent
             </span>
             <span className="text-xs sm:text-sm text-gray-400 font-light hidden sm:inline">
